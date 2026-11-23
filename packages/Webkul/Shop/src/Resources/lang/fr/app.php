@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Avis',
         'rma' => 'RMA',
         'wishlist' => 'Liste de souhaits',
+
+        'theme-preview' => [
+            'exit' => 'Quitter l\'aperçu',
+            'previewing' => 'Vous prévisualisez le thème :theme. Vous seul pouvez le voir.',
+        ],
     ],
 
     'subscription' => [

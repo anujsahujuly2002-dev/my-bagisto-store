@@ -11,9 +11,31 @@ Route::prefix('appearance')->group(function () {
     Route::controller(ThemeController::class)->prefix('themes')->group(function () {
         Route::get('', 'index')->name('admin.appearance.themes.index');
 
+        Route::post('upload', 'upload')->name('admin.appearance.themes.upload');
+
+        Route::get('upload/{id}', 'uploadStatus')->name('admin.appearance.themes.upload_status');
+
+        Route::post('schedules', 'storeSchedule')->name('admin.appearance.themes.schedules.store');
+
+        Route::delete('schedules/{id}', 'destroySchedule')->name('admin.appearance.themes.schedules.delete');
+
+        Route::post('preview/stop', 'stopPreview')->name('admin.appearance.themes.stop_preview');
+
+        Route::post('{code}/preview', 'preview')->name('admin.appearance.themes.preview');
+
         Route::get('{code}/impact', 'impact')->name('admin.appearance.themes.impact');
 
         Route::post('{code}/activate', 'activate')->name('admin.appearance.themes.activate');
+
+        Route::post('{code}/rollback', 'rollback')->name('admin.appearance.themes.rollback');
+
+        Route::get('{code}/images', 'images')->name('admin.appearance.themes.images.index');
+
+        Route::post('{code}/images/{image}', 'updateImage')->name('admin.appearance.themes.images.update');
+
+        Route::delete('{code}/images/{image}', 'destroyImage')->name('admin.appearance.themes.images.delete');
+
+        Route::delete('{code}', 'destroy')->name('admin.appearance.themes.delete');
     });
 
     /**

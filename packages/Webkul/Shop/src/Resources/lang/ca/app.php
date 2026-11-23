@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Ressenyes',
         'rma' => 'RMA',
         'wishlist' => 'Llista de desitjos',
+
+        'theme-preview' => [
+            'exit' => 'Surt de la previsualització',
+            'previewing' => 'Estàs previsualitzant el tema :theme. Només tu el pots veure.',
+        ],
     ],
 
     'subscription' => [

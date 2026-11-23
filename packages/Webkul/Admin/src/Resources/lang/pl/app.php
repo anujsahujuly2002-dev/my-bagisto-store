@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Zdjęcie profilowe',
             'save-btn' => 'Zapisz konto',
             'title' => 'Moje konto',
+            'theme' => 'Motyw panelu administracyjnego',
+            'theme-hint' => 'Twój wybór zastępuje motyw administracyjny sklepu ustawiony w Konfiguracji.',
+            'theme-store-default' => 'Domyślny sklepu',
             'update-success' => 'Konto zostało pomyślnie zaktualizowane',
             'upload-image-info' => 'Prześlij zdjęcie profilowe (110px X 110px) w formacie PNG lub JPG',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Wstecz',
+                'btn' => 'Obrazy',
+                'empty' => 'Ten motyw nie ma obrazów do zastąpienia. Prześlij motyw ponownie, aby uwzględnić obrazy z jego stron.',
+                'hint' => 'JPG, PNG, WebP, GIF lub AVIF, do :size MB.',
+                'info' => 'Zastąp obrazy motywu :theme. Nowy obraz od razu pojawia się w sklepie i zostaje zachowany po przesłaniu nowej wersji motywu.',
+                'replaced' => 'Zastąpiony',
+                'reset-btn' => 'Przywróć',
+                'reset-success' => 'Przywrócono oryginalny obraz szablonu.',
+                'title' => 'Obrazy motywu',
+                'update-success' => 'Obraz został zastąpiony.',
+                'upload-btn' => 'Prześlij',
+            ],
+
             'index' => [
                 'activate-btn' => 'Aktywuj',
                 'activate-success' => ':theme jest teraz aktywny w :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Wybierz kanały, które mają zacząć używać :theme.',
                     'title' => 'Aktywuj motyw',
                     'warning' => ':channel ma :count dostosowań utworzonych dla :theme. Pozostaną zapisane, ale nie pojawią się, dopóki nowy motyw jest aktywny.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Usuń',
+                'delete-confirm' => 'Usunąć ten motyw i wszystkie jego pliki? Tej operacji nie można cofnąć.',
+                'delete-in-use' => 'Ten motyw jest aktywny na: :channels. Aktywuj tam inny motyw, zanim go usuniesz.',
+                'delete-success' => 'Motyw :theme został usunięty.',
+                'rollback-btn' => 'Przywróć',
+                'rollback-confirm' => 'Przywrócić wersję tego motywu przesłaną przed bieżącą?',
+                'rollback-success' => 'Motyw :theme przywrócono do poprzedniej wersji.',
+                'rollback-unavailable' => 'Ten motyw nie ma wcześniejszej wersji do przywrócenia.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Kanał',
+                'create-btn' => 'Zaplanuj zmianę',
+                'create-success' => 'Zmiana motywu została zaplanowana.',
+                'delete-btn' => 'Usuń',
+                'delete-success' => 'Zaplanowana zmiana została usunięta.',
+                'empty' => 'Brak zaplanowanych zmian motywu.',
+                'ends-at' => 'Koniec',
+                'finished' => 'Zakończona',
+                'info' => 'Przełącz kanał na inny motyw między dwiema datami, na przykład motyw świąteczny. Po zakończeniu kanał wraca do poprzedniego motywu.',
+                'overlap' => 'Ten kanał ma już zaplanowaną zmianę motywu w części tego okresu.',
+                'pending' => 'Zaplanowana',
+                'running' => 'Trwa',
+                'save-btn' => 'Zapisz',
+                'starts-at' => 'Początek',
+                'status' => 'Status',
+                'theme' => 'Motyw',
+                'title' => 'Zaplanowane zmiany motywu',
+            ],
+
+            'upload' => [
+                'btn' => 'Prześlij motyw',
+                'confirm-btn' => 'Prześlij',
+                'file' => 'Archiwum motywu',
+                'file-hint' => 'Plik .zip o rozmiarze do :size MB. Ponowne przesłanie motywu o tym samym kodzie zastępuje go.',
+                'info' => 'Prześlij plik .zip szablonu HTML. Jego index.html staje się stroną główną, a jego nagłówek i stopka zastępują domyślne na każdej stronie.',
+                'processing' => 'Motyw jest instalowany. To okno odświeży się, gdy będzie gotowy.',
+                'section-name' => 'Sekcja :number',
+                'success' => 'Przesłano :theme. Aktywuj go na kanale, aby zacząć z niego korzystać.',
+                'title' => 'Prześlij motyw',
+                'warning' => 'JavaScript szablonu działa w Twoim sklepie. Przesyłaj tylko motywy z zaufanego źródła.',
+
+                'errors' => [
+                    'code-taken' => 'Kod :code należy do motywu wbudowanego w ten sklep. Ustaw inny kod w theme.json.',
+                    'disallowed-file' => 'Archiwum zawiera typ pliku, którego motyw nie może używać: :path.',
+                    'failed' => 'Nie udało się zainstalować motywu. Sprawdź archiwum i spróbuj ponownie.',
+                    'invalid-archive' => 'Plik nie jest prawidłowym archiwum zip.',
+                    'invalid-code' => 'Kod motywu ":code" może zawierać tylko małe litery, cyfry i myślniki.',
+                    'invalid-manifest' => 'Plik theme.json nie jest prawidłowym JSON-em.',
+                    'missing-index' => 'Archiwum nie zawiera pliku index.html w katalogu głównym.',
+                    'too-large' => 'Archiwum po rozpakowaniu przekracza :size MB.',
+                    'too-many-files' => 'Archiwum zawiera więcej niż :count plików.',
+                    'unsafe-path' => 'Archiwum zawiera niebezpieczną ścieżkę: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Obraz logo',
                         'title' => 'Logo sklepu',
                         'title-info' => 'Logo i favicon widoczne w panelu administracyjnym oraz w wiadomościach do administratora.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Motyw',
+                        'title' => 'Motyw panelu administracyjnego',
+                        'title-info' => 'Motyw używany przez panel administracyjny dla każdego administratora, który nie wybrał własnego na stronie konta.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Recenzje',
         'roles' => 'Role',
         'sales' => 'Sprzedaż',
+        'schedule' => 'Planowanie',
         'search-seo' => 'Wyszukiwanie i SEO',
         'search-synonyms' => 'Synonimy wyszukiwania',
         'search-terms' => 'Słowa kluczowe',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Podatki',
         'themes' => 'Motywy',
         'transactions' => 'Transakcje',
+        'upload' => 'Prześlij',
         'url-rewrites' => 'Przekierowania URL',
         'users' => 'Użytkownicy',
         'view' => 'Pokaż',

@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Immagine Profilo',
             'save-btn' => 'Salva Account',
             'title' => 'Il Mio Account',
+            'theme' => 'Tema del pannello di amministrazione',
+            'theme-hint' => 'La tua scelta sostituisce il tema di amministrazione del negozio impostato in Configurazione.',
+            'theme-store-default' => 'Predefinito del negozio',
             'update-success' => 'Account aggiornato con successo',
             'upload-image-info' => 'Carica un’immagine del profilo (110px X 110px) in formato PNG o JPG',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Indietro',
+                'btn' => 'Immagini',
+                'empty' => 'Questo tema non ha immagini da sostituire. Carica di nuovo il tema per includere le immagini delle sue pagine.',
+                'hint' => 'JPG, PNG, WebP, GIF o AVIF, fino a :size MB.',
+                'info' => 'Sostituisci le immagini di :theme. La nuova immagine appare subito nel negozio e viene mantenuta quando carichi una nuova versione del tema.',
+                'replaced' => 'Sostituita',
+                'reset-btn' => 'Ripristina',
+                'reset-success' => 'L\'immagine è stata ripristinata all\'originale del modello.',
+                'title' => 'Immagini del tema',
+                'update-success' => 'L\'immagine è stata sostituita.',
+                'upload-btn' => 'Carica',
+            ],
+
             'index' => [
                 'activate-btn' => 'Attiva',
                 'activate-success' => ':theme è ora attivo su :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Scegli i canali che devono iniziare a usare :theme.',
                     'title' => 'Attiva tema',
                     'warning' => ':channel ha :count personalizzazioni create per :theme. Restano salvate, ma non compariranno finché il nuovo tema è attivo.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Elimina',
+                'delete-confirm' => 'Eliminare questo tema e tutti i suoi file? L\'operazione non può essere annullata.',
+                'delete-in-use' => 'Questo tema è attivo su :channels. Attiva lì un altro tema prima di eliminarlo.',
+                'delete-success' => ':theme è stato eliminato.',
+                'rollback-btn' => 'Ripristina',
+                'rollback-confirm' => 'Ripristinare la versione di questo tema caricata prima di quella attuale?',
+                'rollback-success' => ':theme è stato ripristinato alla versione precedente.',
+                'rollback-unavailable' => 'Questo tema non ha una versione precedente da ripristinare.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Canale',
+                'create-btn' => 'Pianifica cambio',
+                'create-success' => 'Il cambio di tema è stato pianificato.',
+                'delete-btn' => 'Elimina',
+                'delete-success' => 'Il cambio pianificato è stato eliminato.',
+                'empty' => 'Nessun cambio di tema pianificato.',
+                'ends-at' => 'Termina il',
+                'finished' => 'Terminato',
+                'info' => 'Passa un canale a un altro tema tra due date, ad esempio un tema per le festività. Al termine il canale torna al tema precedente.',
+                'overlap' => 'Questo canale ha già un cambio di tema pianificato per parte di quel periodo.',
+                'pending' => 'Pianificato',
+                'running' => 'In corso',
+                'save-btn' => 'Salva',
+                'starts-at' => 'Inizia il',
+                'status' => 'Stato',
+                'theme' => 'Tema',
+                'title' => 'Cambi di tema pianificati',
+            ],
+
+            'upload' => [
+                'btn' => 'Carica tema',
+                'confirm-btn' => 'Carica',
+                'file' => 'Archivio del tema',
+                'file-hint' => 'Un .zip fino a :size MB. Caricare di nuovo un tema con lo stesso codice lo sostituisce.',
+                'info' => 'Carica lo .zip di un modello HTML. Il suo index.html diventa la home page, e la sua intestazione e il suo piè di pagina sostituiscono quelli predefiniti in ogni pagina.',
+                'processing' => 'Il tema è in fase di installazione. Questa finestra si aggiornerà quando sarà pronto.',
+                'section-name' => 'Sezione :number',
+                'success' => ':theme è stato caricato. Attivalo su un canale per iniziare a usarlo.',
+                'title' => 'Carica tema',
+                'warning' => 'Il JavaScript del modello viene eseguito nel tuo negozio. Carica solo temi da una fonte attendibile.',
+
+                'errors' => [
+                    'code-taken' => 'Il codice :code appartiene a un tema integrato in questo negozio. Imposta un codice diverso in theme.json.',
+                    'disallowed-file' => 'L\'archivio contiene un tipo di file che un tema non può usare: :path.',
+                    'failed' => 'Impossibile installare il tema. Controlla l\'archivio e riprova.',
+                    'invalid-archive' => 'Il file non è un archivio zip valido.',
+                    'invalid-code' => 'Il codice del tema ":code" può contenere solo lettere minuscole, numeri e trattini.',
+                    'invalid-manifest' => 'Il file theme.json non è un JSON valido.',
+                    'missing-index' => 'L\'archivio non contiene un index.html nella radice.',
+                    'too-large' => 'L\'archivio estratto supera :size MB.',
+                    'too-many-files' => 'L\'archivio contiene più di :count file.',
+                    'unsafe-path' => 'L\'archivio contiene un percorso non sicuro: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Immagine Logo',
                         'title' => 'Logo Admin',
                         'title-info' => 'Il logo e la favicon mostrati nel pannello di amministrazione e nelle e-mail inviate all\'amministratore.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Tema',
+                        'title' => 'Tema del pannello di amministrazione',
+                        'title-info' => 'Il tema usato dal pannello di amministrazione per ogni amministratore che non ne ha scelto uno nella propria pagina account.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Recensioni',
         'roles' => 'Ruoli',
         'sales' => 'Vendite',
+        'schedule' => 'Pianifica',
         'search-seo' => 'Ricerca & SEO',
         'search-synonyms' => 'Sinonimi di Ricerca',
         'search-terms' => 'Termini di Ricerca',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Tasse',
         'themes' => 'Temi',
         'transactions' => 'Transazioni',
+        'upload' => 'Carica',
         'url-rewrites' => 'Riscritture URL',
         'users' => 'Utenti',
         'view' => 'Vedi',

@@ -239,6 +239,21 @@ return [
             ],
         ],
     ], [
+        'key' => 'general.design.admin_theme',
+        'name' => 'admin::app.configuration.index.general.design.admin-theme.title',
+        'info' => 'admin::app.configuration.index.general.design.admin-theme.title-info',
+        'sort' => 3,
+        'fields' => [
+            [
+                'name' => 'code',
+                'title' => 'admin::app.configuration.index.general.design.admin-theme.code',
+                'type' => 'select',
+                'channel_based' => false,
+                'default' => 'default',
+                'options' => 'Webkul\Theme\AdminThemeResolver@getConfigOptions',
+            ],
+        ],
+    ], [
         'key' => 'general.design.categories',
         'name' => 'admin::app.configuration.index.general.design.menu-category.title',
         'info' => 'admin::app.configuration.index.general.design.menu-category.info',

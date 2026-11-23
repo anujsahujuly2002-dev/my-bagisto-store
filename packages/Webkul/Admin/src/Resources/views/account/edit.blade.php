@@ -103,6 +103,38 @@
 
                                 <x-admin::form.control-group.error control-name="email" />
                             </x-admin::form.control-group>
+
+                            <!-- Admin Panel Theme -->
+                            @if (count(config('themes.admin', [])) > 1)
+                                <x-admin::form.control-group class="mb-0! mt-4">
+                                    <x-admin::form.control-group.label>
+                                        @lang('admin::app.account.edit.theme')
+                                    </x-admin::form.control-group.label>
+
+                                    <x-admin::form.control-group.control
+                                        type="select"
+                                        name="theme"
+                                        :value="old('theme') ?? $user->theme"
+                                        :label="trans('admin::app.account.edit.theme')"
+                                    >
+                                        <option value="">
+                                            @lang('admin::app.account.edit.theme-store-default')
+                                        </option>
+
+                                        @foreach (app(\Webkul\Theme\AdminThemeResolver::class)->getConfigOptions() as $option)
+                                            <option value="{{ $option['value'] }}">
+                                                {{ $option['title'] }}
+                                            </option>
+                                        @endforeach
+                                    </x-admin::form.control-group.control>
+
+                                    <x-admin::form.control-group.error control-name="theme" />
+
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-300">
+                                        @lang('admin::app.account.edit.theme-hint')
+                                    </p>
+                                </x-admin::form.control-group>
+                            @endif
                         </div>
                     </div>
 

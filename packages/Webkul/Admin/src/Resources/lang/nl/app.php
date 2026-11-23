@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Profiel Afbeelding',
             'save-btn' => 'Account Opslaan',
             'title' => 'Mijn Account',
+            'theme' => 'Thema van het beheerpaneel',
+            'theme-hint' => 'Uw eigen keuze gaat voor het winkelbrede beheerthema uit de Configuratie.',
+            'theme-store-default' => 'Winkelstandaard',
             'update-success' => 'Account succesvol bijgewerkt',
             'upload-image-info' => 'Upload een profielfoto (110px X 110px) in PNG- of JPG-formaat',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Terug',
+                'btn' => 'Afbeeldingen',
+                'empty' => 'Dit thema heeft geen afbeeldingen om te vervangen. Upload het thema opnieuw om de afbeeldingen van de pagina\'s op te nemen.',
+                'hint' => 'JPG, PNG, WebP, GIF of AVIF, tot :size MB.',
+                'info' => 'Vervang de afbeeldingen van :theme. Een nieuwe afbeelding verschijnt direct in uw winkel en blijft behouden wanneer u een nieuwe versie van het thema uploadt.',
+                'replaced' => 'Vervangen',
+                'reset-btn' => 'Herstellen',
+                'reset-success' => 'De afbeelding is teruggezet naar het origineel van de sjabloon.',
+                'title' => 'Thema-afbeeldingen',
+                'update-success' => 'De afbeelding is vervangen.',
+                'upload-btn' => 'Uploaden',
+            ],
+
             'index' => [
                 'activate-btn' => 'Activeren',
                 'activate-success' => ':theme is nu actief op :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Kies de kanalen die :theme moeten gaan gebruiken.',
                     'title' => 'Thema activeren',
                     'warning' => ':channel heeft :count aanpassingen gemaakt voor :theme. Ze blijven bewaard, maar verschijnen niet zolang het nieuwe thema actief is.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Verwijderen',
+                'delete-confirm' => 'Dit thema en al zijn bestanden verwijderen? Dit kan niet ongedaan worden gemaakt.',
+                'delete-in-use' => 'Dit thema is actief op :channels. Activeer daar eerst een ander thema voordat u het verwijdert.',
+                'delete-success' => ':theme is verwijderd.',
+                'rollback-btn' => 'Terugzetten',
+                'rollback-confirm' => 'Dit thema terugzetten naar de versie die vóór de huidige is geüpload?',
+                'rollback-success' => ':theme is teruggezet naar de vorige versie.',
+                'rollback-unavailable' => 'Dit thema heeft geen eerdere versie om naar terug te zetten.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Kanaal',
+                'create-btn' => 'Wissel plannen',
+                'create-success' => 'De themawissel is gepland.',
+                'delete-btn' => 'Verwijderen',
+                'delete-success' => 'De geplande wissel is verwijderd.',
+                'empty' => 'Er zijn geen themawissels gepland.',
+                'ends-at' => 'Eindigt op',
+                'finished' => 'Afgerond',
+                'info' => 'Zet een kanaal tussen twee datums over op een ander thema, zoals een feestdagenthema. Na afloop keert het kanaal terug naar het vorige thema.',
+                'overlap' => 'Voor dit kanaal is al een themawissel gepland in een deel van die periode.',
+                'pending' => 'Gepland',
+                'running' => 'Actief',
+                'save-btn' => 'Opslaan',
+                'starts-at' => 'Begint op',
+                'status' => 'Status',
+                'theme' => 'Thema',
+                'title' => 'Geplande themawissels',
+            ],
+
+            'upload' => [
+                'btn' => 'Thema uploaden',
+                'confirm-btn' => 'Uploaden',
+                'file' => 'Thema-archief',
+                'file-hint' => 'Een .zip van maximaal :size MB. Een thema met dezelfde code opnieuw uploaden vervangt het.',
+                'info' => 'Upload een .zip van een HTML-sjabloon. De index.html wordt de startpagina, en de header en footer vervangen op elke pagina de standaard.',
+                'processing' => 'Het thema wordt geïnstalleerd. Dit venster wordt bijgewerkt zodra het klaar is.',
+                'section-name' => 'Sectie :number',
+                'success' => ':theme is geüpload. Activeer het op een kanaal om het te gaan gebruiken.',
+                'title' => 'Thema uploaden',
+                'warning' => 'Het JavaScript van het sjabloon draait in je winkel. Upload alleen thema\'s van een bron die je vertrouwt.',
+
+                'errors' => [
+                    'code-taken' => 'De code :code hoort bij een thema dat in deze winkel is ingebouwd. Stel een andere code in theme.json in.',
+                    'disallowed-file' => 'Het archief bevat een bestandstype dat een thema niet kan gebruiken: :path.',
+                    'failed' => 'Het thema kon niet worden geïnstalleerd. Controleer het archief en probeer het opnieuw.',
+                    'invalid-archive' => 'Het bestand is geen geldig zip-archief.',
+                    'invalid-code' => 'De themacode ":code" mag alleen kleine letters, cijfers en streepjes bevatten.',
+                    'invalid-manifest' => 'Het bestand theme.json is geen geldige JSON.',
+                    'missing-index' => 'Het archief heeft geen index.html in de hoofdmap.',
+                    'too-large' => 'Het archief is uitgepakt groter dan :size MB.',
+                    'too-many-files' => 'Het archief bevat meer dan :count bestanden.',
+                    'unsafe-path' => 'Het archief bevat een onveilig pad: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo-afbeelding',
                         'title' => 'Admin-logo',
                         'title-info' => 'Het logo en favicon in het beheerpaneel en in e-mails aan de beheerder.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Thema',
+                        'title' => 'Thema van het beheerpaneel',
+                        'title-info' => 'Het thema dat het beheerpaneel gebruikt voor elke beheerder die op zijn accountpagina geen eigen thema heeft gekozen.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Beoordelingen',
         'roles' => 'Rollen',
         'sales' => 'Verkopen',
+        'schedule' => 'Plannen',
         'search-seo' => 'Zoeken en SEO',
         'search-synonyms' => 'Zoeksynoniemen',
         'search-terms' => 'Zoektermen',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Belastingen',
         'themes' => 'Thema\'s',
         'transactions' => 'Transacties',
+        'upload' => 'Uploaden',
         'url-rewrites' => 'URL-herschrijvingen',
         'users' => 'Gebruikers',
         'view' => 'Bekijken',

@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Yorumlarım',
         'rma' => 'RMA',
         'wishlist' => 'Dilek Listem',
+
+        'theme-preview' => [
+            'exit' => 'Önizlemeden Çık',
+            'previewing' => ':theme temasını önizliyorsunuz. Yalnızca siz görebilirsiniz.',
+        ],
     ],
 
     'subscription' => [

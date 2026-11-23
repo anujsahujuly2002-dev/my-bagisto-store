@@ -206,6 +206,9 @@ return [
             'profile-image' => 'プロフィール画像',
             'save-btn' => 'アカウントを保存',
             'title' => 'マイアカウント',
+            'theme' => '管理パネルのテーマ',
+            'theme-hint' => 'ご自身の選択は、設定で指定されたストア全体の管理テーマより優先されます。',
+            'theme-store-default' => 'ストアの既定',
             'update-success' => 'アカウントが正常に更新されました',
             'upload-image-info' => 'プロフィール画像をアップロード（110px X 110px、PNGまたはJPG形式）',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => '戻る',
+                'btn' => '画像',
+                'empty' => 'このテーマには置き換えられる画像がありません。ページの画像を取り込むには、テーマを再度アップロードしてください。',
+                'hint' => 'JPG、PNG、WebP、GIF、AVIF（最大 :size MB）',
+                'info' => '「:theme」の画像を置き換えます。新しい画像はすぐにストアに表示され、テーマの新しいバージョンをアップロードしても保持されます。',
+                'replaced' => '置き換え済み',
+                'reset-btn' => '元に戻す',
+                'reset-success' => '画像をテンプレートの元の画像に戻しました。',
+                'title' => 'テーマ画像',
+                'update-success' => '画像を置き換えました。',
+                'upload-btn' => 'アップロード',
+            ],
+
             'index' => [
                 'activate-btn' => '有効化',
                 'activate-success' => ':channel で :theme が有効になりました。',
@@ -3420,6 +3437,63 @@ return [
                     'info' => ':theme を使用するチャネルを選択してください。',
                     'title' => 'テーマを有効化',
                     'warning' => ':channel には :theme 用に作成されたカスタマイズが :count 件あります。保存されたままですが、新しいテーマが有効な間は表示されません。',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => '削除',
+                'delete-confirm' => 'このテーマとそのすべてのファイルを削除しますか？この操作は元に戻せません。',
+                'delete-in-use' => 'このテーマは :channels で有効です。削除する前に、そこで別のテーマを有効にしてください。',
+                'delete-success' => ':theme を削除しました。',
+                'rollback-btn' => 'ロールバック',
+                'rollback-confirm' => 'このテーマを現在のバージョンの前にアップロードしたバージョンに戻しますか？',
+                'rollback-success' => ':theme を前のバージョンに戻しました。',
+                'rollback-unavailable' => 'このテーマには戻せる以前のバージョンがありません。',
+            ],
+
+            'schedules' => [
+                'channel' => 'チャネル',
+                'create-btn' => '切り替えを予約',
+                'create-success' => 'テーマの切り替えを予約しました。',
+                'delete-btn' => '削除',
+                'delete-success' => '予約した切り替えを削除しました。',
+                'empty' => '予約されたテーマの切り替えはありません。',
+                'ends-at' => '終了日時',
+                'finished' => '終了',
+                'info' => '休日用テーマなど、2つの日付の間だけチャネルを別のテーマに切り替えます。終了するとチャネルは元のテーマに戻ります。',
+                'overlap' => 'このチャネルには、その期間の一部にすでにテーマの切り替えが予約されています。',
+                'pending' => '予約済み',
+                'running' => '実行中',
+                'save-btn' => '保存',
+                'starts-at' => '開始日時',
+                'status' => 'ステータス',
+                'theme' => 'テーマ',
+                'title' => '予約されたテーマの切り替え',
+            ],
+
+            'upload' => [
+                'btn' => 'テーマをアップロード',
+                'confirm-btn' => 'アップロード',
+                'file' => 'テーマアーカイブ',
+                'file-hint' => '最大 :size MB の .zip ファイル。同じコードのテーマを再度アップロードすると置き換えられます。',
+                'info' => 'HTML テンプレートの .zip をアップロードします。index.html がホームページになり、ヘッダーとフッターが全ページで既定のものに置き換わります。',
+                'processing' => 'テーマをインストールしています。準備ができるとこの画面が更新されます。',
+                'section-name' => 'セクション :number',
+                'success' => ':theme をアップロードしました。チャネルで有効にすると使用を開始できます。',
+                'title' => 'テーマをアップロード',
+                'warning' => 'テンプレートの JavaScript はストアフロントで実行されます。信頼できる提供元のテーマのみをアップロードしてください。',
+
+                'errors' => [
+                    'code-taken' => 'コード :code はこのストアに組み込まれたテーマのものです。theme.json で別のコードを指定してください。',
+                    'disallowed-file' => 'アーカイブにテーマで使用できない種類のファイルが含まれています: :path',
+                    'failed' => 'テーマをインストールできませんでした。アーカイブを確認して、もう一度お試しください。',
+                    'invalid-archive' => 'このファイルは有効な zip アーカイブではありません。',
+                    'invalid-code' => 'テーマコード「:code」には小文字、数字、ハイフンのみ使用できます。',
+                    'invalid-manifest' => 'theme.json ファイルが有効な JSON ではありません。',
+                    'missing-index' => 'アーカイブのルートに index.html がありません。',
+                    'too-large' => 'アーカイブの展開後のサイズが :size MB を超えています。',
+                    'too-many-files' => 'アーカイブに :count 個を超えるファイルが含まれています。',
+                    'unsafe-path' => 'アーカイブに安全でないパスが含まれています: :path',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'ロゴ画像',
                         'title' => '管理者ロゴ',
                         'title-info' => '管理パネルと管理者宛メールに表示されるロゴとファビコン。',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'テーマ',
+                        'title' => '管理パネルのテーマ',
+                        'title-info' => 'アカウントページで自分のテーマを選んでいない管理者に対して、管理パネルが使用するテーマです。',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'レビュー',
         'roles' => '役割',
         'sales' => '販売',
+        'schedule' => '予約',
         'search-seo' => '検索とSEO',
         'search-synonyms' => '検索の同義語',
         'search-terms' => '検索用語',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => '税金',
         'themes' => 'テーマ',
         'transactions' => '取引',
+        'upload' => 'アップロード',
         'url-rewrites' => 'URL書き換え',
         'users' => 'ユーザー',
         'view' => '表示',

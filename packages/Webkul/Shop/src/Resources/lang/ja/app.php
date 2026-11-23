@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'レビュー',
         'rma' => 'RMA',
         'wishlist' => 'ウィッシュリスト',
+
+        'theme-preview' => [
+            'exit' => 'プレビューを終了',
+            'previewing' => ':theme テーマをプレビューしています。この表示はあなたにのみ見えます。',
+        ],
     ],
 
     'subscription' => [

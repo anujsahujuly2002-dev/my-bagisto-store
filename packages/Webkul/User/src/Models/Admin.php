@@ -35,6 +35,7 @@ class Admin extends Authenticatable implements AdminContract
         'two_factor_backup_codes',
         'two_factor_verified_at',
         'two_factor_last_used_window',
+        'theme',
     ];
 
     /**
@@ -129,6 +130,17 @@ class Admin extends Authenticatable implements AdminContract
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Store a blank admin theme choice as none, so the store-wide theme applies.
+     *
+     * @param  string|null  $value
+     * @return void
+     */
+    public function setThemeAttribute($value)
+    {
+        $this->attributes['theme'] = blank($value) ? null : $value;
     }
 
     /**

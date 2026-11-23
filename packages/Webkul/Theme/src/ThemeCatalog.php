@@ -5,7 +5,11 @@ namespace Webkul\Theme;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Webkul\Core\Repositories\ChannelRepository;
+use Webkul\Theme\Models\Theme;
 use Webkul\Theme\Repositories\SectionRepository;
+use Webkul\Theme\Repositories\ThemeRepository;
+use Webkul\Theme\Upload\ThemeImages;
+use Webkul\Theme\Upload\ThemeInstaller;
 
 class ThemeCatalog
 {
@@ -31,7 +35,10 @@ class ThemeCatalog
      */
     public function __construct(
         protected ChannelRepository $channelRepository,
-        protected SectionRepository $sectionRepository
+        protected SectionRepository $sectionRepository,
+        protected ThemeRepository $themeRepository,
+        protected ThemeInstaller $themeInstaller,
+        protected ThemeImages $themeImages
     ) {}
 
     /**
@@ -45,10 +52,12 @@ class ThemeCatalog
 
         $entries = $this->catalogEntries();
 
+        $uploads = $this->uploadedThemes();
+
         $codes = $installed->keys()->merge($entries->keys())->unique();
 
         return $codes
-            ->map(fn ($code) => $this->build($code, $installed->get($code), $entries->get($code), $channels))
+            ->map(fn ($code) => $this->build($code, $installed->get($code), $entries->get($code), $channels, $uploads->get($code)))
             ->sortBy(fn ($theme) => [$this->weight($theme['status']), $theme['name']])
             ->values();
     }
@@ -111,7 +120,7 @@ class ThemeCatalog
      * Build a single catalog row out of the registered config and the catalog entry, either of
      * which may be missing.
      */
-    protected function build(string $code, ?array $config, ?array $entry, Collection $channels): array
+    protected function build(string $code, ?array $config, ?array $entry, Collection $channels, ?Theme $upload = null): array
     {
         $isInstalled = ! is_null($config);
 
@@ -121,14 +130,16 @@ class ThemeCatalog
             'code' => $code,
             'name' => $entry['name'] ?? $config['name'] ?? $code,
             'author' => $entry['author'] ?? null,
-            'version' => $entry['version'] ?? null,
+            'version' => $entry['version'] ?? $upload?->version,
             'url' => $entry['url'] ?? null,
             'demo_url' => $entry['demo_url'] ?? null,
-            'screenshot' => $this->screenshotUrl($entry['screenshot'] ?? null),
+            'screenshot' => $this->screenshotUrl($entry['screenshot'] ?? null) ?? $this->uploadScreenshot($upload),
             'rating' => $entry['rating'] ?? null,
             'tags' => $entry['tags'] ?? [],
             'description' => $entry['description'] ?? null,
             'is_installed' => $isInstalled,
+            'is_uploaded' => $isInstalled && ! is_null($upload),
+            'can_rollback' => $isInstalled && ! is_null($upload) && $this->themeInstaller->canRollback($upload),
             'active_on' => $activeOn->map(fn ($channel) => [
                 'id' => $channel->id,
                 'name' => $channel->name,
@@ -139,6 +150,35 @@ class ThemeCatalog
                 default => self::STATUS_INSTALLED,
             },
         ];
+    }
+
+    /**
+     * The uploaded storefront themes keyed by code, so the gallery can offer to roll back or delete them.
+     */
+    protected function uploadedThemes(): Collection
+    {
+        return $this->themeRepository
+            ->findWhere([
+                'panel' => Theme::PANEL_SHOP,
+                'source' => Theme::SOURCE_UPLOAD,
+            ])
+            ->keyBy('code');
+    }
+
+    /**
+     * The screenshot of an uploaded theme: the one its archive ships, or else the first image on its page.
+     */
+    protected function uploadScreenshot(?Theme $upload): ?string
+    {
+        if (is_null($upload)) {
+            return null;
+        }
+
+        if (filled($upload->manifest['screenshot'] ?? null)) {
+            return bagisto_theme_storage()->url($upload->assets_path.'/'.$upload->manifest['screenshot']);
+        }
+
+        return $this->themeImages->all($upload, false)[0]['url'] ?? null;
     }
 
     /**

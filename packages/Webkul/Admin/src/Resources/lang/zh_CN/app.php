@@ -206,6 +206,9 @@ return [
             'profile-image' => '个人资料图片',
             'save-btn' => '保存账户',
             'title' => '我的账户',
+            'theme' => '管理面板主题',
+            'theme-hint' => '您自己的选择会覆盖在配置中设置的全店管理主题。',
+            'theme-store-default' => '商店默认',
             'update-success' => '账户更新成功',
             'upload-image-info' => '上传个人头像（110px X 110px），支持 PNG 或 JPG 格式',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => '返回',
+                'btn' => '图片',
+                'empty' => '此主题没有可替换的图片。请重新上传主题以识别其页面中的图片。',
+                'hint' => 'JPG、PNG、WebP、GIF 或 AVIF，最大 :size MB。',
+                'info' => '替换 :theme 的图片。新图片会立即显示在商店中，并在上传主题新版本时保留。',
+                'replaced' => '已替换',
+                'reset-btn' => '重置',
+                'reset-success' => '图片已恢复为模板原图。',
+                'title' => '主题图片',
+                'update-success' => '图片已替换。',
+                'upload-btn' => '上传',
+            ],
+
             'index' => [
                 'activate-btn' => '启用',
                 'activate-success' => ':theme 已在 :channel 上启用。',
@@ -3420,6 +3437,63 @@ return [
                     'info' => '选择要开始使用 :theme 的渠道。',
                     'title' => '启用主题',
                     'warning' => ':channel 有 :count 项为 :theme 创建的自定义内容。它们会保留，但在新主题启用期间不会显示。',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => '删除',
+                'delete-confirm' => '删除此主题及其所有文件？此操作无法撤销。',
+                'delete-in-use' => '此主题正在 :channels 上使用。请先在那里启用其他主题，再删除它。',
+                'delete-success' => ':theme 已删除。',
+                'rollback-btn' => '回滚',
+                'rollback-confirm' => '将此主题回滚到当前版本之前上传的版本？',
+                'rollback-success' => ':theme 已回滚到上一个版本。',
+                'rollback-unavailable' => '此主题没有可回滚的早期版本。',
+            ],
+
+            'schedules' => [
+                'channel' => '渠道',
+                'create-btn' => '计划切换',
+                'create-success' => '主题切换已计划。',
+                'delete-btn' => '删除',
+                'delete-success' => '计划的切换已删除。',
+                'empty' => '没有计划的主题切换。',
+                'ends-at' => '结束时间',
+                'finished' => '已结束',
+                'info' => '在两个日期之间将渠道切换到其他主题，例如节日主题。切换结束后，渠道会恢复到之前的主题。',
+                'overlap' => '此渠道在该时间段的部分时间内已有计划的主题切换。',
+                'pending' => '已计划',
+                'running' => '进行中',
+                'save-btn' => '保存',
+                'starts-at' => '开始时间',
+                'status' => '状态',
+                'theme' => '主题',
+                'title' => '计划的主题切换',
+            ],
+
+            'upload' => [
+                'btn' => '上传主题',
+                'confirm-btn' => '上传',
+                'file' => '主题压缩包',
+                'file-hint' => '不超过 :size MB 的 .zip 文件。再次上传相同代码的主题会将其替换。',
+                'info' => '上传 HTML 模板的 .zip 文件。其 index.html 将成为首页，其页眉和页脚将在每个页面替换默认内容。',
+                'processing' => '正在安装主题。准备就绪后此窗口会自动更新。',
+                'section-name' => '区块 :number',
+                'success' => '已上传 :theme。在渠道上激活它即可开始使用。',
+                'title' => '上传主题',
+                'warning' => '模板的 JavaScript 会在您的店铺中运行。请仅上传来自可信来源的主题。',
+
+                'errors' => [
+                    'code-taken' => '代码 :code 属于本店铺内置的主题。请在 theme.json 中设置其他代码。',
+                    'disallowed-file' => '压缩包中包含主题无法使用的文件类型：:path。',
+                    'failed' => '无法安装主题。请检查压缩包后重试。',
+                    'invalid-archive' => '该文件不是有效的 zip 压缩包。',
+                    'invalid-code' => '主题代码“:code”只能包含小写字母、数字和连字符。',
+                    'invalid-manifest' => 'theme.json 文件不是有效的 JSON。',
+                    'missing-index' => '压缩包根目录中没有 index.html。',
+                    'too-large' => '压缩包解压后超过 :size MB。',
+                    'too-many-files' => '压缩包中的文件超过 :count 个。',
+                    'unsafe-path' => '压缩包中包含不安全的路径：:path。',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => '标志图像',
                         'title' => '管理标志',
                         'title-info' => '在后台面板和发给管理员的邮件中显示的标志与网站图标。',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => '主题',
+                        'title' => '管理面板主题',
+                        'title-info' => '未在账户页面选择自己主题的管理员所使用的管理面板主题。',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => '评论',
         'roles' => '角色',
         'sales' => '销售',
+        'schedule' => '计划',
         'search-seo' => '搜索与SEO',
         'search-synonyms' => '搜索同义词',
         'search-terms' => '搜索词',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => '税费',
         'themes' => '主题',
         'transactions' => '交易',
+        'upload' => '上传',
         'url-rewrites' => 'URL 重写',
         'users' => '用户',
         'view' => '查看',

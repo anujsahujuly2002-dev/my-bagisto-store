@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Profilbild',
             'save-btn' => 'Konto speichern',
             'title' => 'Mein Konto',
+            'theme' => 'Admin-Panel-Theme',
+            'theme-hint' => 'Ihre eigene Auswahl hat Vorrang vor dem in der Konfiguration festgelegten Admin-Theme des Shops.',
+            'theme-store-default' => 'Shop-Standard',
             'update-success' => 'Konto erfolgreich aktualisiert',
             'upload-image-info' => 'Laden Sie ein Profilbild hoch (110px X 110px) im PNG- oder JPG-Format',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Zurück',
+                'btn' => 'Bilder',
+                'empty' => 'Dieses Theme hat keine austauschbaren Bilder. Laden Sie das Theme erneut hoch, um die Bilder seiner Seiten zu übernehmen.',
+                'hint' => 'JPG, PNG, WebP, GIF oder AVIF, bis zu :size MB.',
+                'info' => 'Ersetzen Sie die Bilder von :theme. Ein neues Bild erscheint sofort in Ihrem Shop und bleibt erhalten, wenn Sie eine neue Version des Themes hochladen.',
+                'replaced' => 'Ersetzt',
+                'reset-btn' => 'Zurücksetzen',
+                'reset-success' => 'Das Bild wurde auf das Original der Vorlage zurückgesetzt.',
+                'title' => 'Theme-Bilder',
+                'update-success' => 'Das Bild wurde ersetzt.',
+                'upload-btn' => 'Hochladen',
+            ],
+
             'index' => [
                 'activate-btn' => 'Aktivieren',
                 'activate-success' => ':theme ist jetzt auf :channel aktiv.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Wählen Sie die Kanäle, die :theme verwenden sollen.',
                     'title' => 'Theme aktivieren',
                     'warning' => ':channel hat :count Anpassungen für :theme. Sie bleiben gespeichert, erscheinen aber nicht, solange das neue Theme aktiv ist.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Löschen',
+                'delete-confirm' => 'Dieses Theme und alle seine Dateien löschen? Dies kann nicht rückgängig gemacht werden.',
+                'delete-in-use' => 'Dieses Theme ist auf :channels aktiv. Aktivieren Sie dort zuerst ein anderes Theme, bevor Sie es löschen.',
+                'delete-success' => ':theme wurde gelöscht.',
+                'rollback-btn' => 'Zurücksetzen',
+                'rollback-confirm' => 'Dieses Theme auf die vor der aktuellen hochgeladene Version zurücksetzen?',
+                'rollback-success' => ':theme wurde auf die vorherige Version zurückgesetzt.',
+                'rollback-unavailable' => 'Für dieses Theme gibt es keine frühere Version zum Zurücksetzen.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Kanal',
+                'create-btn' => 'Wechsel planen',
+                'create-success' => 'Der Theme-Wechsel wurde geplant.',
+                'delete-btn' => 'Löschen',
+                'delete-success' => 'Der geplante Wechsel wurde gelöscht.',
+                'empty' => 'Es sind keine Theme-Wechsel geplant.',
+                'ends-at' => 'Endet am',
+                'finished' => 'Beendet',
+                'info' => 'Wechseln Sie einen Kanal zwischen zwei Daten auf ein anderes Theme, etwa ein Feiertags-Theme. Nach Ende des Wechsels kehrt der Kanal zu seinem vorherigen Theme zurück.',
+                'overlap' => 'Für diesen Kanal ist bereits ein Theme-Wechsel in einem Teil dieses Zeitraums geplant.',
+                'pending' => 'Geplant',
+                'running' => 'Läuft',
+                'save-btn' => 'Speichern',
+                'starts-at' => 'Beginnt am',
+                'status' => 'Status',
+                'theme' => 'Theme',
+                'title' => 'Geplante Theme-Wechsel',
+            ],
+
+            'upload' => [
+                'btn' => 'Theme hochladen',
+                'confirm-btn' => 'Hochladen',
+                'file' => 'Theme-Archiv',
+                'file-hint' => 'Eine .zip-Datei mit bis zu :size MB. Ein erneuter Upload mit demselben Code ersetzt das Theme.',
+                'info' => 'Laden Sie eine .zip-Datei einer HTML-Vorlage hoch. Ihre index.html wird zur Startseite, und Kopf- und Fußbereich ersetzen auf jeder Seite die Standardbereiche.',
+                'processing' => 'Das Theme wird installiert. Dieses Fenster aktualisiert sich, sobald es bereit ist.',
+                'section-name' => 'Abschnitt :number',
+                'success' => ':theme wurde hochgeladen. Aktivieren Sie es auf einem Kanal, um es zu verwenden.',
+                'title' => 'Theme hochladen',
+                'warning' => 'Das JavaScript der Vorlage läuft in Ihrem Shop. Laden Sie nur Themes aus vertrauenswürdigen Quellen hoch.',
+
+                'errors' => [
+                    'code-taken' => 'Der Code :code gehört zu einem in diesen Shop integrierten Theme. Legen Sie in theme.json einen anderen Code fest.',
+                    'disallowed-file' => 'Das Archiv enthält einen Dateityp, den ein Theme nicht verwenden kann: :path.',
+                    'failed' => 'Das Theme konnte nicht installiert werden. Prüfen Sie das Archiv und versuchen Sie es erneut.',
+                    'invalid-archive' => 'Die Datei ist kein gültiges Zip-Archiv.',
+                    'invalid-code' => 'Der Theme-Code „:code" darf nur Kleinbuchstaben, Ziffern und Bindestriche enthalten.',
+                    'invalid-manifest' => 'Die Datei theme.json ist kein gültiges JSON.',
+                    'missing-index' => 'Das Archiv enthält keine index.html im Stammverzeichnis.',
+                    'too-large' => 'Das Archiv ist entpackt größer als :size MB.',
+                    'too-many-files' => 'Das Archiv enthält mehr als :count Dateien.',
+                    'unsafe-path' => 'Das Archiv enthält einen unsicheren Pfad: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo-Bild',
                         'title' => 'Admin-Logo',
                         'title-info' => 'Das Logo und Favicon im Admin-Bereich und in E-Mails an den Administrator.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Theme',
+                        'title' => 'Admin-Panel-Theme',
+                        'title-info' => 'Das Theme, das das Admin-Panel für alle Administratoren verwendet, die auf ihrer Kontoseite kein eigenes gewählt haben.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Bewertungen',
         'roles' => 'Rollen',
         'sales' => 'Verkäufe',
+        'schedule' => 'Planen',
         'search-seo' => 'Suche & SEO',
         'search-synonyms' => 'Suchsynonyme',
         'search-terms' => 'Suchbegriffe',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Steuern',
         'themes' => 'Themen',
         'transactions' => 'Transaktionen',
+        'upload' => 'Hochladen',
         'url-rewrites' => 'URL-Rewrites',
         'users' => 'Benutzer',
         'view' => 'Ansehen',

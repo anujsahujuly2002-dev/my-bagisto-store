@@ -27,6 +27,18 @@ it('should render the theme gallery', function () {
 // Catalog Status
 // ============================================================================
 
+it('should leave the themes on offer out of the gallery', function () {
+    $this->loginAsAdmin();
+
+    $offered = app(ThemeCatalog::class)->all()->reject(fn ($theme) => $theme['is_installed'])->first();
+
+    get(route('admin.appearance.themes.index'))
+        ->assertOk()
+        ->assertDontSee(trans('admin::app.appearance.themes.index.buy-themes'))
+        ->assertDontSee(trans('admin::app.appearance.themes.index.buy-btn'))
+        ->assertDontSee($offered['name']);
+});
+
 it('should mark the theme a channel runs as active', function () {
     $channel = core()->getDefaultChannel();
 

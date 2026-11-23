@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Profil Resmi',
             'save-btn' => 'Hesabı Kaydet',
             'title' => 'Hesabım',
+            'theme' => 'Yönetim Paneli Teması',
+            'theme-hint' => 'Kendi seçiminiz, Yapılandırma\'da belirlenen mağaza geneli yönetim temasının yerine geçer.',
+            'theme-store-default' => 'Mağaza Varsayılanı',
             'update-success' => 'Hesap başarıyla güncellendi',
             'upload-image-info' => 'Profil Resmi Yükle (110px X 110px) PNG veya JPG formatında',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Geri',
+                'btn' => 'Görseller',
+                'empty' => 'Bu temanın değiştirilebilecek görseli yok. Sayfalarındaki görselleri almak için temayı yeniden yükleyin.',
+                'hint' => 'JPG, PNG, WebP, GIF veya AVIF, en fazla :size MB.',
+                'info' => ':theme temasının görsellerini değiştirin. Yeni görsel mağazanızda hemen görünür ve temanın yeni bir sürümünü yüklediğinizde korunur.',
+                'replaced' => 'Değiştirildi',
+                'reset-btn' => 'Sıfırla',
+                'reset-success' => 'Görsel, şablonun orijinaline sıfırlandı.',
+                'title' => 'Tema Görselleri',
+                'update-success' => 'Görsel değiştirildi.',
+                'upload-btn' => 'Yükle',
+            ],
+
             'index' => [
                 'activate-btn' => 'Etkinleştir',
                 'activate-success' => ':theme artık :channel üzerinde etkin.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => ':theme temasını kullanmaya başlayacak kanalları seçin.',
                     'title' => 'Temayı Etkinleştir',
                     'warning' => ':channel kanalında :theme için oluşturulmuş :count özelleştirme var. Kayıtlı kalır ancak yeni tema etkinken görünmez.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Sil',
+                'delete-confirm' => 'Bu tema ve tüm dosyaları silinsin mi? Bu işlem geri alınamaz.',
+                'delete-in-use' => 'Bu tema :channels üzerinde etkin. Silmeden önce orada başka bir temayı etkinleştirin.',
+                'delete-success' => ':theme silindi.',
+                'rollback-btn' => 'Geri Al',
+                'rollback-confirm' => 'Bu tema, mevcut sürümden önce yüklenen sürüme geri alınsın mı?',
+                'rollback-success' => ':theme önceki sürümüne geri alındı.',
+                'rollback-unavailable' => 'Bu temanın geri alınabilecek önceki bir sürümü yok.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Kanal',
+                'create-btn' => 'Geçiş Planla',
+                'create-success' => 'Tema geçişi planlandı.',
+                'delete-btn' => 'Sil',
+                'delete-success' => 'Planlanan geçiş silindi.',
+                'empty' => 'Planlanmış tema geçişi yok.',
+                'ends-at' => 'Bitiş',
+                'finished' => 'Tamamlandı',
+                'info' => 'Bir kanalı iki tarih arasında başka bir temaya geçirin, örneğin bir tatil teması. Geçiş bittiğinde kanal önceki temasına döner.',
+                'overlap' => 'Bu kanal için o sürenin bir bölümünde zaten planlanmış bir tema geçişi var.',
+                'pending' => 'Planlandı',
+                'running' => 'Sürüyor',
+                'save-btn' => 'Kaydet',
+                'starts-at' => 'Başlangıç',
+                'status' => 'Durum',
+                'theme' => 'Tema',
+                'title' => 'Planlanmış Tema Geçişleri',
+            ],
+
+            'upload' => [
+                'btn' => 'Tema Yükle',
+                'confirm-btn' => 'Yükle',
+                'file' => 'Tema Arşivi',
+                'file-hint' => 'En fazla :size MB boyutunda bir .zip. Aynı koda sahip bir temayı yeniden yüklemek onu değiştirir.',
+                'info' => 'Bir HTML şablonunun .zip dosyasını yükleyin. index.html dosyası ana sayfa olur; üst bilgisi ve alt bilgisi her sayfada varsayılanların yerini alır.',
+                'processing' => 'Tema yükleniyor. Hazır olduğunda bu pencere güncellenecek.',
+                'section-name' => 'Bölüm :number',
+                'success' => ':theme yüklendi. Kullanmaya başlamak için bir kanalda etkinleştirin.',
+                'title' => 'Tema Yükle',
+                'warning' => 'Şablonun JavaScript kodu mağazanızda çalışır. Yalnızca güvendiğiniz bir kaynaktan tema yükleyin.',
+
+                'errors' => [
+                    'code-taken' => ':code kodu bu mağazada yerleşik bir temaya ait. theme.json içinde farklı bir kod belirleyin.',
+                    'disallowed-file' => 'Arşiv, bir temanın kullanamayacağı bir dosya türü içeriyor: :path.',
+                    'failed' => 'Tema yüklenemedi. Arşivi kontrol edip tekrar deneyin.',
+                    'invalid-archive' => 'Dosya geçerli bir zip arşivi değil.',
+                    'invalid-code' => '":code" tema kodu yalnızca küçük harf, rakam ve tire içerebilir.',
+                    'invalid-manifest' => 'theme.json dosyası geçerli bir JSON değil.',
+                    'missing-index' => 'Arşivin kök dizininde index.html yok.',
+                    'too-large' => 'Arşiv açıldığında :size MB\'tan büyük oluyor.',
+                    'too-many-files' => 'Arşiv :count dosyadan fazlasını içeriyor.',
+                    'unsafe-path' => 'Arşiv güvenli olmayan bir yol içeriyor: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo Resmi',
                         'title' => 'Yönetici Logosu',
                         'title-info' => 'Yönetim panelinde ve yöneticiye gönderilen e-postalarda görünen logo ve favicon.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Tema',
+                        'title' => 'Yönetim Paneli Teması',
+                        'title-info' => 'Hesap sayfasında kendi temasını seçmemiş her yönetici için yönetim panelinin kullandığı tema.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Yorumlar',
         'roles' => 'Roller',
         'sales' => 'Satışlar',
+        'schedule' => 'Planla',
         'search-seo' => 'Arama ve SEO',
         'search-synonyms' => 'Arama Eşanlamlıları',
         'search-terms' => 'Arama Terimleri',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Vergiler',
         'themes' => 'Tema Seçenekleri',
         'transactions' => 'İşlemler',
+        'upload' => 'Yükle',
         'url-rewrites' => 'URL Yeniden Yazma',
         'users' => 'Kullanıcılar',
         'view' => 'Görüntüle',

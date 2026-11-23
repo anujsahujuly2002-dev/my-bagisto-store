@@ -13,6 +13,7 @@ use Webkul\FPC\Listeners\Product;
 use Webkul\FPC\Listeners\Refund;
 use Webkul\FPC\Listeners\Review;
 use Webkul\FPC\Listeners\Section;
+use Webkul\FPC\Listeners\Theme;
 use Webkul\FPC\Listeners\URLRewrite;
 
 class EventServiceProvider extends ServiceProvider
@@ -111,6 +112,18 @@ class EventServiceProvider extends ServiceProvider
 
         'section.delete.before' => [
             [Section::class, 'beforeDelete'],
+        ],
+
+        'appearance.theme.upload.after' => [
+            [Theme::class, 'afterUpdate'],
+        ],
+
+        'appearance.theme.rollback.after' => [
+            [Theme::class, 'afterUpdate'],
+        ],
+
+        'appearance.theme.image.update.after' => [
+            [Theme::class, 'afterUpdate'],
         ],
 
         /**

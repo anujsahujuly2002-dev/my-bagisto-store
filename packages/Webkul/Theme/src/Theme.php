@@ -89,11 +89,13 @@ class Theme
      */
     public function url(string $url)
     {
-        try {
-            $viteUrl = trim($this->vite['package_assets_directory'], '/').'/'.$url;
+        $vite = $this->viteSource()->vite;
 
-            return Vite::useHotFile($this->vite['hot_file'])
-                ->useBuildDirectory($this->vite['build_directory'])
+        try {
+            $viteUrl = trim($vite['package_assets_directory'], '/').'/'.$url;
+
+            return Vite::useHotFile($vite['hot_file'])
+                ->useBuildDirectory($vite['build_directory'])
                 ->asset($viteUrl);
         } catch (\Exception $e) {
             report($e);
@@ -109,8 +111,30 @@ class Theme
      */
     public function setBagistoVite(array $entryPoints)
     {
-        return Vite::useHotFile($this->vite['hot_file'])
-            ->useBuildDirectory($this->vite['build_directory'])
+        $vite = $this->viteSource()->vite;
+
+        return Vite::useHotFile($vite['hot_file'])
+            ->useBuildDirectory($vite['build_directory'])
             ->withEntryPoints($entryPoints);
+    }
+
+    /**
+     * Return the nearest theme in the parent chain with a Vite build, so a theme without one, as an uploaded
+     * template is, renders with its parent's bundle.
+     *
+     * @return Theme
+     */
+    public function viteSource()
+    {
+        $theme = $this;
+
+        while (
+            empty($theme->vite)
+            && $theme->parent
+        ) {
+            $theme = $theme->parent;
+        }
+
+        return $theme;
     }
 }

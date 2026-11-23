@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'අදහස්',
         'rma' => 'RMA',
         'wishlist' => 'කෙටුම් ලැයිස්තුව',
+
+        'theme-preview' => [
+            'exit' => 'පෙරදසුනෙන් ඉවත් වන්න',
+            'previewing' => 'ඔබ :theme තේමාව පෙරදසුන් කරමින් සිටී. එය දැකිය හැක්කේ ඔබට පමණි.',
+        ],
     ],
 
     'subscription' => [

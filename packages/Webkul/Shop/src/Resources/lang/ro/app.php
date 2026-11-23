@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Recenzii',
         'rma' => 'RMA',
         'wishlist' => 'Lista de dorințe',
+
+        'theme-preview' => [
+            'exit' => 'Ieși din previzualizare',
+            'previewing' => 'Previzualizezi tema :theme. Doar tu o poți vedea.',
+        ],
     ],
 
     'subscription' => [

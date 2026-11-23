@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Picha ya Wasifu',
             'save-btn' => 'Hifadhi Akaunti',
             'title' => 'Akaunti Yangu',
+            'theme' => 'Mandhari ya Paneli ya Msimamizi',
+            'theme-hint' => 'Chaguo lako mwenyewe linachukua nafasi ya mandhari ya msimamizi ya duka zima iliyowekwa kwenye Usanidi.',
+            'theme-store-default' => 'Chaguo-msingi la Duka',
             'update-success' => 'Akaunti imesasishwa kwa mafanikio',
             'upload-image-info' => 'Pakia Picha ya Wasifu (110px X 110px) kwa Muundo wa PNG au JPG',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Rudi',
+                'btn' => 'Picha',
+                'empty' => 'Mandhari hii haina picha za kubadilisha. Pakia mandhari tena ili kuchukua picha za kurasa zake.',
+                'hint' => 'JPG, PNG, WebP, GIF au AVIF, hadi :size MB.',
+                'info' => 'Badilisha picha za :theme. Picha mpya inaonekana dukani mara moja na inabaki unapopakia toleo jipya la mandhari.',
+                'replaced' => 'Imebadilishwa',
+                'reset-btn' => 'Weka Upya',
+                'reset-success' => 'Picha imerudishwa kwenye asili ya kiolezo.',
+                'title' => 'Picha za Mandhari',
+                'update-success' => 'Picha imebadilishwa.',
+                'upload-btn' => 'Pakia',
+            ],
+
             'index' => [
                 'activate-btn' => 'Washa',
                 'activate-success' => ':theme sasa inatumika kwenye :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Chagua chaneli zinazopaswa kuanza kutumia :theme.',
                     'title' => 'Washa Mandhari',
                     'warning' => ':channel ina :count marekebisho yaliyotengenezwa kwa :theme. Yanabaki yamehifadhiwa, lakini hayataonekana wakati mandhari mpya inatumika.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Futa',
+                'delete-confirm' => 'Futa mandhari hii na faili zake zote? Hili haliwezi kutenduliwa.',
+                'delete-in-use' => 'Mandhari hii inatumika kwenye :channels. Washa mandhari nyingine huko kabla ya kuifuta.',
+                'delete-success' => ':theme imefutwa.',
+                'rollback-btn' => 'Rudisha',
+                'rollback-confirm' => 'Rudisha mandhari hii kwenye toleo lililopakiwa kabla ya la sasa?',
+                'rollback-success' => ':theme imerudishwa kwenye toleo lake la awali.',
+                'rollback-unavailable' => 'Mandhari hii haina toleo la awali la kurudisha.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Chaneli',
+                'create-btn' => 'Ratibu Ubadilishaji',
+                'create-success' => 'Ubadilishaji wa mandhari umeratibiwa.',
+                'delete-btn' => 'Futa',
+                'delete-success' => 'Ubadilishaji ulioratibiwa umefutwa.',
+                'empty' => 'Hakuna ubadilishaji wa mandhari ulioratibiwa.',
+                'ends-at' => 'Unaisha',
+                'finished' => 'Umekamilika',
+                'info' => 'Badilisha chaneli kwenda mandhari nyingine kati ya tarehe mbili, kama mandhari ya sikukuu. Chaneli hurudi kwenye mandhari yake ya awali ubadilishaji ukiisha.',
+                'overlap' => 'Chaneli hii tayari ina ubadilishaji wa mandhari ulioratibiwa kwa sehemu ya muda huo.',
+                'pending' => 'Umeratibiwa',
+                'running' => 'Unaendelea',
+                'save-btn' => 'Hifadhi',
+                'starts-at' => 'Unaanza',
+                'status' => 'Hali',
+                'theme' => 'Mandhari',
+                'title' => 'Ubadilishaji wa Mandhari Ulioratibiwa',
+            ],
+
+            'upload' => [
+                'btn' => 'Pakia Mandhari',
+                'confirm-btn' => 'Pakia',
+                'file' => 'Kumbukumbu ya Mandhari',
+                'file-hint' => 'Faili la .zip la hadi :size MB. Kupakia tena mandhari yenye msimbo uleule huibadilisha.',
+                'info' => 'Pakia .zip ya kiolezo cha HTML. index.html yake inakuwa ukurasa wa mwanzo, na kichwa na kijachini chake vinachukua nafasi ya vile vya msingi kwenye kila ukurasa.',
+                'processing' => 'Mandhari inasakinishwa. Dirisha hili litasasishwa ikishakuwa tayari.',
+                'section-name' => 'Sehemu :number',
+                'success' => ':theme imepakiwa. Iwashe kwenye chaneli ili uanze kuitumia.',
+                'title' => 'Pakia Mandhari',
+                'warning' => 'JavaScript ya kiolezo inaendeshwa kwenye duka lako. Pakia mandhari kutoka chanzo unachokiamini pekee.',
+
+                'errors' => [
+                    'code-taken' => 'Msimbo :code ni wa mandhari iliyojengwa ndani ya duka hili. Weka msimbo tofauti kwenye theme.json.',
+                    'disallowed-file' => 'Kumbukumbu ina aina ya faili ambayo mandhari haiwezi kutumia: :path.',
+                    'failed' => 'Mandhari haikuweza kusakinishwa. Kagua kumbukumbu na ujaribu tena.',
+                    'invalid-archive' => 'Faili si kumbukumbu halali ya zip.',
+                    'invalid-code' => 'Msimbo wa mandhari ":code" unaweza kuwa na herufi ndogo, nambari na vistari pekee.',
+                    'invalid-manifest' => 'Faili la theme.json si JSON halali.',
+                    'missing-index' => 'Kumbukumbu haina index.html kwenye mzizi wake.',
+                    'too-large' => 'Kumbukumbu inazidi :size MB ikifunguliwa.',
+                    'too-many-files' => 'Kumbukumbu ina zaidi ya faili :count.',
+                    'unsafe-path' => 'Kumbukumbu ina njia isiyo salama: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Picha ya Nembo',
                         'title' => 'Nembo ya Msimamizi',
                         'title-info' => 'Sanidi picha za nembo na aikoni ya tovuti kwa sehemu ya mbele ya tovuti yako kwa chapa bora na utambulisho.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Mandhari',
+                        'title' => 'Mandhari ya Paneli ya Msimamizi',
+                        'title-info' => 'Mandhari ambayo paneli ya msimamizi hutumia kwa kila msimamizi ambaye hajachagua yake kwenye ukurasa wa akaunti.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Maoni',
         'roles' => 'Mawadhifa',
         'sales' => 'Mauzo',
+        'schedule' => 'Ratibu',
         'search-seo' => 'Utafutaji & SEO',
         'search-synonyms' => 'Vishazi Mbadala vya Utafutaji',
         'search-terms' => 'Maneno ya Utafutaji',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Kodi',
         'themes' => 'Mandhari',
         'transactions' => 'Miamala',
+        'upload' => 'Pakia',
         'url-rewrites' => 'Ubadilishaji wa URL',
         'users' => 'Watumiaji',
         'view' => 'Angalia',

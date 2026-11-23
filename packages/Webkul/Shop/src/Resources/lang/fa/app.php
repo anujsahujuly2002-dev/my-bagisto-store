@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'نظرات',
         'rma' => 'RMA',
         'wishlist' => 'لیست علاقه‌مندی‌ها',
+
+        'theme-preview' => [
+            'exit' => 'خروج از پیش‌نمایش',
+            'previewing' => 'در حال پیش‌نمایش قالب :theme هستید. فقط شما آن را می‌بینید.',
+        ],
     ],
 
     'subscription' => [

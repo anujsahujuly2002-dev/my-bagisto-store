@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Maoni',
         'rma' => 'RMA',
         'wishlist' => 'Orodha ya Matamanio',
+
+        'theme-preview' => [
+            'exit' => 'Ondoka kwenye Onyesho la Awali',
+            'previewing' => 'Unaonyeshwa mandhari ya :theme kwa awali. Ni wewe pekee unayeiona.',
+        ],
     ],
 
     'subscription' => [

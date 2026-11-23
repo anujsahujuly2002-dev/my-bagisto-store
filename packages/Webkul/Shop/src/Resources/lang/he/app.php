@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'ביקורות',
         'rma' => 'RMA',
         'wishlist' => 'רשימת משאלות',
+
+        'theme-preview' => [
+            'exit' => 'יציאה מהתצוגה המקדימה',
+            'previewing' => 'אתם צופים בתצוגה מקדימה של ערכת העיצוב :theme. רק אתם רואים אותה.',
+        ],
     ],
 
     'subscription' => [

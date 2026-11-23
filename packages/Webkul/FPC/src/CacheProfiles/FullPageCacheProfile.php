@@ -5,18 +5,20 @@ namespace Webkul\FPC\CacheProfiles;
 use Illuminate\Http\Request;
 use Spatie\ResponseCache\CacheProfiles\CacheAllSuccessfulGetRequests;
 use Throwable;
+use Webkul\Theme\ThemePreview;
 
 class FullPageCacheProfile extends CacheAllSuccessfulGetRequests
 {
     /**
-     * Whether the page cache should run for this request, which Full Page Cache configuration decides,
-     * except for a signed-in customer, whose pages carry their own name, prices and account state.
+     * Whether the page cache runs for this request, as Full Page Cache configuration decides, never for a signed-in
+     * customer, whose pages carry their own account state, nor for an admin previewing a theme no one else sees.
      */
     public function enabled(Request $request): bool
     {
         if (
             ! config('responsecache.enabled')
             || auth()->guard('customer')->check()
+            || app(ThemePreview::class)->isActive()
         ) {
             return false;
         }

@@ -1354,6 +1354,11 @@ return [
         'reviews' => '评论',
         'rma' => 'RMA',
         'wishlist' => '愿望清单',
+
+        'theme-preview' => [
+            'exit' => '退出预览',
+            'previewing' => '您正在预览 :theme 主题。只有您能看到。',
+        ],
     ],
 
     'subscription' => [

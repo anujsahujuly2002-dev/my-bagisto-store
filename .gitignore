@@ -45,3 +45,7 @@ skills-lock.json
 /vendor
 yarn.lock
 yarn-error.log
+
+# Local planning documents, never pushed
+/docs/
+/theme-templates/

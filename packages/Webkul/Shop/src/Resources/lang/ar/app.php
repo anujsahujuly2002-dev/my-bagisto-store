@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'التقييمات',
         'rma' => 'RMA',
         'wishlist' => 'قائمة الرغبات',
+
+        'theme-preview' => [
+            'exit' => 'إنهاء المعاينة',
+            'previewing' => 'أنت تعاين قالب :theme. لا يراه أحد غيرك.',
+        ],
     ],
 
     'subscription' => [

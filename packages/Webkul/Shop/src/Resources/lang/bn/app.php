@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'পর্যালোচনা',
         'rma' => 'RMA',
         'wishlist' => 'ইচ্ছাশূণ্যতা',
+
+        'theme-preview' => [
+            'exit' => 'প্রিভিউ থেকে বের হন',
+            'previewing' => 'আপনি :theme থিমের প্রিভিউ দেখছেন। শুধু আপনিই এটি দেখতে পাচ্ছেন।',
+        ],
     ],
 
     'subscription' => [

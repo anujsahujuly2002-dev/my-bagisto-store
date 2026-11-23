@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Imatge de perfil',
             'save-btn' => 'Desar compte',
             'title' => 'El meu compte',
+            'theme' => 'Tema del panell d\'administració',
+            'theme-hint' => 'La teva elecció substitueix el tema d\'administració de la botiga definit a Configuració.',
+            'theme-store-default' => 'Predeterminat de la botiga',
             'update-success' => 'Compte actualitzat amb èxit',
             'upload-image-info' => 'Carrega una imatge de perfil (110px X 110px) en format PNG o JPG',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Enrere',
+                'btn' => 'Imatges',
+                'empty' => 'Aquest tema no té imatges per substituir. Torna a pujar el tema per incloure les imatges de les seves pàgines.',
+                'hint' => 'JPG, PNG, WebP, GIF o AVIF, fins a :size MB.',
+                'info' => 'Substitueix les imatges de :theme. La nova imatge apareix a la botiga a l\'instant i es conserva quan puges una nova versió del tema.',
+                'replaced' => 'Substituïda',
+                'reset-btn' => 'Restableix',
+                'reset-success' => 'La imatge s\'ha restablert a l\'original de la plantilla.',
+                'title' => 'Imatges del tema',
+                'update-success' => 'S\'ha substituït la imatge.',
+                'upload-btn' => 'Puja',
+            ],
+
             'index' => [
                 'activate-btn' => 'Activa',
                 'activate-success' => ':theme ja està actiu a :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Tria els canals que han de començar a utilitzar :theme.',
                     'title' => 'Activa el tema',
                     'warning' => ':channel té :count personalitzacions creades per a :theme. Es conserven, però no apareixeran mentre el tema nou estigui actiu.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Suprimeix',
+                'delete-confirm' => 'Vols suprimir aquest tema i tots els seus fitxers? Aquesta acció no es pot desfer.',
+                'delete-in-use' => 'Aquest tema està actiu a :channels. Activa-hi un altre tema abans de suprimir-lo.',
+                'delete-success' => 'S\'ha suprimit :theme.',
+                'rollback-btn' => 'Reverteix',
+                'rollback-confirm' => 'Vols revertir aquest tema a la versió pujada abans de l\'actual?',
+                'rollback-success' => 'S\'ha revertit :theme a la seva versió anterior.',
+                'rollback-unavailable' => 'Aquest tema no té cap versió anterior a la qual revertir.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Canal',
+                'create-btn' => 'Programa un canvi',
+                'create-success' => 'S\'ha programat el canvi de tema.',
+                'delete-btn' => 'Suprimeix',
+                'delete-success' => 'S\'ha suprimit el canvi programat.',
+                'empty' => 'No hi ha cap canvi de tema programat.',
+                'ends-at' => 'Acaba el',
+                'finished' => 'Finalitzat',
+                'info' => 'Canvia un canal a un altre tema entre dues dates, com ara un tema de festes. El canal torna al tema anterior quan acaba el canvi.',
+                'overlap' => 'Aquest canal ja té un canvi de tema programat durant part d\'aquest període.',
+                'pending' => 'Programat',
+                'running' => 'En curs',
+                'save-btn' => 'Desa',
+                'starts-at' => 'Comença el',
+                'status' => 'Estat',
+                'theme' => 'Tema',
+                'title' => 'Canvis de tema programats',
+            ],
+
+            'upload' => [
+                'btn' => 'Puja un tema',
+                'confirm-btn' => 'Puja',
+                'file' => 'Arxiu del tema',
+                'file-hint' => 'Un .zip de fins a :size MB. Tornar a pujar un tema amb el mateix codi el substitueix.',
+                'info' => 'Puja un .zip d\'una plantilla HTML. El seu index.html es converteix en la pàgina d\'inici, i la seva capçalera i peu substitueixen els predeterminats a totes les pàgines.',
+                'processing' => 'S\'està instal·lant el tema. Aquesta finestra s\'actualitzarà quan estigui llest.',
+                'section-name' => 'Secció :number',
+                'success' => ':theme s\'ha pujat. Activa\'l en un canal per començar a fer-lo servir.',
+                'title' => 'Puja un tema',
+                'warning' => 'El JavaScript de la plantilla s\'executa a la teva botiga. Puja només temes d\'una font de confiança.',
+
+                'errors' => [
+                    'code-taken' => 'El codi :code pertany a un tema integrat en aquesta botiga. Indica un codi diferent a theme.json.',
+                    'disallowed-file' => 'L\'arxiu conté un tipus de fitxer que un tema no pot fer servir: :path.',
+                    'failed' => 'No s\'ha pogut instal·lar el tema. Revisa l\'arxiu i torna-ho a provar.',
+                    'invalid-archive' => 'El fitxer no és un arxiu zip vàlid.',
+                    'invalid-code' => 'El codi del tema ":code" només pot contenir lletres minúscules, números i guions.',
+                    'invalid-manifest' => 'El fitxer theme.json no és un JSON vàlid.',
+                    'missing-index' => 'L\'arxiu no té cap index.html a l\'arrel.',
+                    'too-large' => 'L\'arxiu descomprimit ocupa més de :size MB.',
+                    'too-many-files' => 'L\'arxiu conté més de :count fitxers.',
+                    'unsafe-path' => 'L\'arxiu conté una ruta no segura: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Imatge de Logotip',
                         'title' => 'Logotip d\'Administrador',
                         'title-info' => 'El logotip i el favicon mostrats al tauler d\'administració i als correus enviats a l\'administrador.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Tema',
+                        'title' => 'Tema del panell d\'administració',
+                        'title-info' => 'El tema que fa servir el panell d\'administració per a qualsevol administrador que no n\'hagi triat un a la seva pàgina de compte.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Ressenyes',
         'roles' => 'Rols',
         'sales' => 'Vendes',
+        'schedule' => 'Programa',
         'search-seo' => 'Cerca i SEO',
         'search-synonyms' => 'Sinònims de Cerca',
         'search-terms' => 'Termes de Cerca',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Impostos',
         'themes' => 'Temes',
         'transactions' => 'Transaccions',
+        'upload' => 'Pujar',
         'url-rewrites' => 'Reescriptures d\'URL',
         'users' => 'Usuaris',
         'view' => 'Veure',

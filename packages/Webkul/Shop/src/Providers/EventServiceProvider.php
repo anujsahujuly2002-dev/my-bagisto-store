@@ -12,6 +12,8 @@ use Webkul\Shop\Listeners\Invoice;
 use Webkul\Shop\Listeners\Order;
 use Webkul\Shop\Listeners\Refund;
 use Webkul\Shop\Listeners\Shipment;
+use Webkul\Shop\Listeners\ThemePreviewBar;
+use Webkul\Shop\Listeners\UploadedTheme;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -140,6 +142,24 @@ class EventServiceProvider extends ServiceProvider
         'sales.refund.save.after' => [
             [Refund::class, 'afterCreated'],
             [CatalogCache::class, 'flush'],
+        ],
+
+        /**
+         * Uploaded theme events, adding a template's own styles and scripts to the layout.
+         */
+        'bagisto.shop.layout.head.after' => [
+            [UploadedTheme::class, 'addStyles'],
+        ],
+
+        'bagisto.shop.layout.vue-app-mount.after' => [
+            [UploadedTheme::class, 'addScripts'],
+        ],
+
+        /**
+         * Theme preview events, marking every page an admin previews a theme on.
+         */
+        'bagisto.shop.layout.body.before' => [
+            [ThemePreviewBar::class, 'add'],
         ],
     ];
 }

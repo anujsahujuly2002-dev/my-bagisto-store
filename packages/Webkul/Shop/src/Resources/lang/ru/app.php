@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Отзывы',
         'rma' => 'RMA',
         'wishlist' => 'Список желаний',
+
+        'theme-preview' => [
+            'exit' => 'Выйти из предпросмотра',
+            'previewing' => 'Вы просматриваете тему :theme. Её видите только вы.',
+        ],
     ],
 
     'subscription' => [

@@ -6,9 +6,11 @@ use Hash;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Webkul\Admin\Http\Controllers\Controller;
 use Webkul\Core\Helpers\MediaFileName;
+use Webkul\Theme\AdminThemeResolver;
 
 class AccountController extends Controller
 {
@@ -40,6 +42,7 @@ class AccountController extends Controller
             'current_password' => 'required|min:6',
             'image.*' => 'nullable|mimes:bmp,jpeg,jpg,png,webp',
             'image_meta.*.file_name' => ['nullable', 'string', 'max:'.MediaFileName::MAX_LENGTH],
+            'theme' => ['nullable', 'string', Rule::in(array_keys(config('themes.admin', [])))],
         ], [], ['image.*' => trans('admin::app.components.media.images.image')]);
 
         $data = request()->only([
@@ -50,6 +53,7 @@ class AccountController extends Controller
             'current_password',
             'image',
             'image_meta',
+            'theme',
         ]);
 
         if (! Hash::check($data['current_password'], $user->password)) {
@@ -60,7 +64,7 @@ class AccountController extends Controller
 
         $isPasswordChanged = false;
 
-        if (! $data['password']) {
+        if (blank($data['password'] ?? null)) {
             unset($data['password']);
         } else {
             $isPasswordChanged = true;
@@ -99,6 +103,8 @@ class AccountController extends Controller
         }
 
         $user->update($data);
+
+        app(AdminThemeResolver::class)->forget();
 
         if ($isPasswordChanged) {
             Event::dispatch('admin.password.update.after', $user);

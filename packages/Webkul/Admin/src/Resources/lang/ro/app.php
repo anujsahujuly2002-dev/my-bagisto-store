@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Profile Image',
             'save-btn' => 'Save Account',
             'title' => 'My Account',
+            'theme' => 'Tema panoului de administrare',
+            'theme-hint' => 'Alegerea dvs. înlocuiește tema de administrare a magazinului setată în Configurare.',
+            'theme-store-default' => 'Implicită magazinului',
             'update-success' => 'Account updated successfully',
             'upload-image-info' => 'Upload a Profile Image (110px X 110px) in PNG or JPG Format',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Înapoi',
+                'btn' => 'Imagini',
+                'empty' => 'Această temă nu are imagini de înlocuit. Încărcați din nou tema pentru a prelua imaginile paginilor ei.',
+                'hint' => 'JPG, PNG, WebP, GIF sau AVIF, până la :size MB.',
+                'info' => 'Înlocuiți imaginile temei :theme. Noua imagine apare imediat în magazin și se păstrează când încărcați o versiune nouă a temei.',
+                'replaced' => 'Înlocuită',
+                'reset-btn' => 'Resetare',
+                'reset-success' => 'Imaginea a fost resetată la originalul șablonului.',
+                'title' => 'Imaginile temei',
+                'update-success' => 'Imaginea a fost înlocuită.',
+                'upload-btn' => 'Încărcare',
+            ],
+
             'index' => [
                 'activate-btn' => 'Activate',
                 'activate-success' => ':theme is now active on :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Choose the channels that should start using :theme.',
                     'title' => 'Activate Theme',
                     'warning' => ':channel has :count customizations built for :theme. They stay saved, but will not appear while the new theme is active.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Ștergere',
+                'delete-confirm' => 'Ștergeți această temă și toate fișierele ei? Acțiunea nu poate fi anulată.',
+                'delete-in-use' => 'Această temă este activă pe :channels. Activați acolo o altă temă înainte de a o șterge.',
+                'delete-success' => ':theme a fost ștearsă.',
+                'rollback-btn' => 'Revenire',
+                'rollback-confirm' => 'Reveniți la versiunea acestei teme încărcată înaintea celei curente?',
+                'rollback-success' => ':theme a revenit la versiunea anterioară.',
+                'rollback-unavailable' => 'Această temă nu are o versiune anterioară la care să reveniți.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Canal',
+                'create-btn' => 'Programează schimbarea',
+                'create-success' => 'Schimbarea temei a fost programată.',
+                'delete-btn' => 'Ștergere',
+                'delete-success' => 'Schimbarea programată a fost ștearsă.',
+                'empty' => 'Nu există schimbări de temă programate.',
+                'ends-at' => 'Se termină la',
+                'finished' => 'Încheiată',
+                'info' => 'Treceți un canal la o altă temă între două date, de exemplu o temă de sărbători. La final, canalul revine la tema anterioară.',
+                'overlap' => 'Acest canal are deja o schimbare de temă programată pentru o parte din acea perioadă.',
+                'pending' => 'Programată',
+                'running' => 'În desfășurare',
+                'save-btn' => 'Salvare',
+                'starts-at' => 'Începe la',
+                'status' => 'Stare',
+                'theme' => 'Temă',
+                'title' => 'Schimbări de temă programate',
+            ],
+
+            'upload' => [
+                'btn' => 'Încarcă temă',
+                'confirm-btn' => 'Încarcă',
+                'file' => 'Arhiva temei',
+                'file-hint' => 'Un .zip de până la :size MB. Încărcarea din nou a unei teme cu același cod o înlocuiește.',
+                'info' => 'Încarcă un .zip al unui șablon HTML. Fișierul său index.html devine pagina principală, iar antetul și subsolul înlocuiesc pe cele implicite pe fiecare pagină.',
+                'processing' => 'Tema se instalează. Această fereastră se actualizează când este gata.',
+                'section-name' => 'Secțiunea :number',
+                'success' => ':theme a fost încărcată. Activează-o pe un canal pentru a începe să o folosești.',
+                'title' => 'Încarcă temă',
+                'warning' => 'JavaScript-ul șablonului rulează în magazinul tău. Încarcă doar teme dintr-o sursă de încredere.',
+
+                'errors' => [
+                    'code-taken' => 'Codul :code aparține unei teme integrate în acest magazin. Setează alt cod în theme.json.',
+                    'disallowed-file' => 'Arhiva conține un tip de fișier pe care o temă nu îl poate folosi: :path.',
+                    'failed' => 'Tema nu a putut fi instalată. Verificați arhiva și încercați din nou.',
+                    'invalid-archive' => 'Fișierul nu este o arhivă zip validă.',
+                    'invalid-code' => 'Codul temei ":code" poate conține doar litere mici, cifre și cratime.',
+                    'invalid-manifest' => 'Fișierul theme.json nu este un JSON valid.',
+                    'missing-index' => 'Arhiva nu are un index.html în rădăcină.',
+                    'too-large' => 'Arhiva dezarhivată depășește :size MB.',
+                    'too-many-files' => 'Arhiva conține mai mult de :count fișiere.',
+                    'unsafe-path' => 'Arhiva conține o cale nesigură: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo Image',
                         'title' => 'Admin Logo',
                         'title-info' => 'Logoul și favicon-ul afișate în panoul de administrare și în e-mailurile trimise administratorului.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Temă',
+                        'title' => 'Tema panoului de administrare',
+                        'title-info' => 'Tema folosită de panoul de administrare pentru fiecare administrator care nu și-a ales una pe pagina contului.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Reviews',
         'roles' => 'Roles',
         'sales' => 'Sales',
+        'schedule' => 'Programare',
         'search-seo' => 'Search & SEO',
         'search-synonyms' => 'Search Synonyms',
         'search-terms' => 'Search Terms',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Taxes',
         'themes' => 'Themes',
         'transactions' => 'Transactions',
+        'upload' => 'Încarcă',
         'url-rewrites' => 'URL Rewrites',
         'users' => 'Users',
         'view' => 'View',

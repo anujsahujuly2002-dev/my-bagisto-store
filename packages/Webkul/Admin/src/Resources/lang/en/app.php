@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Profile Image',
             'save-btn' => 'Save Account',
             'title' => 'My Account',
+            'theme' => 'Admin Panel Theme',
+            'theme-hint' => 'Your own choice overrides the store-wide admin theme set in Configuration.',
+            'theme-store-default' => 'Store Default',
             'update-success' => 'Account updated successfully',
             'upload-image-info' => 'Upload a Profile Image (110px X 110px) in PNG or JPG Format',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Back',
+                'btn' => 'Images',
+                'empty' => 'This theme has no images to replace. Upload the theme again to pick up the images on its pages.',
+                'hint' => 'JPG, PNG, WebP, GIF or AVIF, up to :size MB.',
+                'info' => 'Replace the images of :theme. A new image shows on your storefront straight away and is kept when you upload a new version of the theme.',
+                'replaced' => 'Replaced',
+                'reset-btn' => 'Reset',
+                'reset-success' => 'The image was reset to the template\'s original.',
+                'title' => 'Theme Images',
+                'update-success' => 'The image was replaced.',
+                'upload-btn' => 'Upload',
+            ],
+
             'index' => [
                 'activate-btn' => 'Activate',
                 'activate-success' => ':theme is now active on :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Choose the channels that should start using :theme.',
                     'title' => 'Activate Theme',
                     'warning' => ':channel has :count customizations built for :theme. They stay saved, but will not appear while the new theme is active.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Delete',
+                'delete-confirm' => 'Delete this theme and all its files? This cannot be undone.',
+                'delete-in-use' => 'This theme is active on :channels. Activate another theme there before deleting it.',
+                'delete-success' => ':theme was deleted.',
+                'rollback-btn' => 'Roll Back',
+                'rollback-confirm' => 'Roll this theme back to the version uploaded before the current one?',
+                'rollback-success' => ':theme was rolled back to its previous version.',
+                'rollback-unavailable' => 'This theme has no earlier version to roll back to.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Channel',
+                'create-btn' => 'Schedule Switch',
+                'create-success' => 'The theme switch was scheduled.',
+                'delete-btn' => 'Delete',
+                'delete-success' => 'The scheduled switch was deleted.',
+                'empty' => 'No theme switches are scheduled.',
+                'ends-at' => 'Ends At',
+                'finished' => 'Finished',
+                'info' => 'Switch a channel to another theme between two dates, such as a holiday theme. The channel returns to its previous theme when the switch ends.',
+                'overlap' => 'This channel already has a theme switch scheduled for part of that time.',
+                'pending' => 'Scheduled',
+                'running' => 'Running',
+                'save-btn' => 'Save',
+                'starts-at' => 'Starts At',
+                'status' => 'Status',
+                'theme' => 'Theme',
+                'title' => 'Scheduled Theme Switches',
+            ],
+
+            'upload' => [
+                'btn' => 'Upload Theme',
+                'confirm-btn' => 'Upload',
+                'file' => 'Theme Archive',
+                'file-hint' => 'A .zip of up to :size MB. Uploading a theme with the same code again replaces it.',
+                'info' => 'Upload a .zip of an HTML template. Its index.html becomes the home page, and its header and footer replace the default ones on every page.',
+                'processing' => 'The theme is being installed. This window updates once it is ready.',
+                'section-name' => 'Section :number',
+                'success' => ':theme was uploaded. Activate it on a channel to start using it.',
+                'title' => 'Upload Theme',
+                'warning' => 'The template\'s JavaScript runs on your storefront. Only upload themes from a source you trust.',
+
+                'errors' => [
+                    'code-taken' => 'The :code code belongs to a theme built into this store. Set a different code in theme.json.',
+                    'disallowed-file' => 'The archive contains a file type a theme cannot use: :path.',
+                    'failed' => 'The theme could not be installed. Check the archive and try again.',
+                    'invalid-archive' => 'The file is not a valid zip archive.',
+                    'invalid-code' => 'The theme code ":code" may only use lowercase letters, numbers and dashes.',
+                    'invalid-manifest' => 'The theme.json file is not valid JSON.',
+                    'missing-index' => 'The archive has no index.html at its root.',
+                    'too-large' => 'The archive unpacks to more than :size MB.',
+                    'too-many-files' => 'The archive holds more than :count files.',
+                    'unsafe-path' => 'The archive contains an unsafe path: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo Image',
                         'title' => 'Admin Logo',
                         'title-info' => 'The logo and favicon shown in the admin panel and in emails sent to the admin.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Theme',
+                        'title' => 'Admin Panel Theme',
+                        'title-info' => 'The theme the admin panel uses for every admin who has not chosen their own on their account page.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Reviews',
         'roles' => 'Roles',
         'sales' => 'Sales',
+        'schedule' => 'Schedule',
         'search-seo' => 'Search & SEO',
         'search-synonyms' => 'Search Synonyms',
         'search-terms' => 'Search Terms',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Taxes',
         'themes' => 'Themes',
         'transactions' => 'Transactions',
+        'upload' => 'Upload',
         'url-rewrites' => 'URL Rewrites',
         'users' => 'Users',
         'view' => 'View',

@@ -121,12 +121,18 @@ class ThemeViewFinder extends FileViewFinder
     }
 
     /**
-     * Sets the active theme depending on request context.
+     * Sets the active theme depending on request context, an admin request taking the theme the resolver picks.
      */
     protected function setActiveTheme(bool $isAdmin)
     {
-        if ($isAdmin) {
-            themes()->set(config('themes.admin-default'));
+        if (! $isAdmin) {
+            return;
+        }
+
+        $code = app(AdminThemeResolver::class)->resolve();
+
+        if (themes()->current()?->code !== $code) {
+            themes()->set($code);
         }
     }
 

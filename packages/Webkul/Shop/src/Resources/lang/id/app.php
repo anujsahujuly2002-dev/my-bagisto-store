@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Ulasan',
         'rma' => 'RMA',
         'wishlist' => 'Wishlist',
+
+        'theme-preview' => [
+            'exit' => 'Keluar dari Pratinjau',
+            'previewing' => 'Anda sedang melihat pratinjau tema :theme. Hanya Anda yang dapat melihatnya.',
+        ],
     ],
 
     'subscription' => [

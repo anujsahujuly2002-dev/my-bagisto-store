@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Beoordelingen',
         'rma' => 'RMA',
         'wishlist' => 'Verlanglijst',
+
+        'theme-preview' => [
+            'exit' => 'Voorbeeld sluiten',
+            'previewing' => 'Je bekijkt een voorbeeld van het thema :theme. Alleen jij kunt het zien.',
+        ],
     ],
 
     'subscription' => [

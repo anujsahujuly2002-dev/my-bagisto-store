@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Recenzje',
         'rma' => 'RMA',
         'wishlist' => 'Lista życzeń',
+
+        'theme-preview' => [
+            'exit' => 'Zakończ podgląd',
+            'previewing' => 'Oglądasz podgląd motywu :theme. Widzisz go tylko Ty.',
+        ],
     ],
 
     'subscription' => [

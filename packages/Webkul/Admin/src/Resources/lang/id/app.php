@@ -206,6 +206,9 @@ return [
             'profile-image' => 'Gambar Profil',
             'save-btn' => 'Simpan Akun',
             'title' => 'Akun Saya',
+            'theme' => 'Tema Panel Admin',
+            'theme-hint' => 'Pilihan Anda sendiri menggantikan tema admin seluruh toko yang diatur di Konfigurasi.',
+            'theme-store-default' => 'Bawaan Toko',
             'update-success' => 'Akun berhasil diperbarui',
             'upload-image-info' => 'Unggah Gambar Profil (110px X 110px) dalam Format PNG atau JPG',
         ],
@@ -3396,6 +3399,20 @@ return [
 
     'appearance' => [
         'themes' => [
+            'images' => [
+                'back-btn' => 'Kembali',
+                'btn' => 'Gambar',
+                'empty' => 'Tema ini tidak memiliki gambar untuk diganti. Unggah ulang tema untuk mengambil gambar di halamannya.',
+                'hint' => 'JPG, PNG, WebP, GIF, atau AVIF, hingga :size MB.',
+                'info' => 'Ganti gambar :theme. Gambar baru langsung tampil di toko Anda dan tetap dipakai saat Anda mengunggah versi baru tema.',
+                'replaced' => 'Diganti',
+                'reset-btn' => 'Atur Ulang',
+                'reset-success' => 'Gambar dikembalikan ke aslinya dari templat.',
+                'title' => 'Gambar Tema',
+                'update-success' => 'Gambar telah diganti.',
+                'upload-btn' => 'Unggah',
+            ],
+
             'index' => [
                 'activate-btn' => 'Aktifkan',
                 'activate-success' => ':theme kini aktif di :channel.',
@@ -3420,6 +3437,63 @@ return [
                     'info' => 'Pilih saluran yang akan mulai menggunakan :theme.',
                     'title' => 'Aktifkan Tema',
                     'warning' => ':channel memiliki :count kustomisasi yang dibuat untuk :theme. Semuanya tetap tersimpan, tetapi tidak akan tampil selama tema baru aktif.',
+                ],
+            ],
+
+            'manage' => [
+                'delete-btn' => 'Hapus',
+                'delete-confirm' => 'Hapus tema ini beserta semua filenya? Tindakan ini tidak dapat dibatalkan.',
+                'delete-in-use' => 'Tema ini aktif di :channels. Aktifkan tema lain di sana sebelum menghapusnya.',
+                'delete-success' => ':theme telah dihapus.',
+                'rollback-btn' => 'Kembalikan',
+                'rollback-confirm' => 'Kembalikan tema ini ke versi yang diunggah sebelum versi saat ini?',
+                'rollback-success' => ':theme telah dikembalikan ke versi sebelumnya.',
+                'rollback-unavailable' => 'Tema ini tidak memiliki versi sebelumnya untuk dikembalikan.',
+            ],
+
+            'schedules' => [
+                'channel' => 'Kanal',
+                'create-btn' => 'Jadwalkan Pergantian',
+                'create-success' => 'Pergantian tema telah dijadwalkan.',
+                'delete-btn' => 'Hapus',
+                'delete-success' => 'Pergantian terjadwal telah dihapus.',
+                'empty' => 'Tidak ada pergantian tema yang dijadwalkan.',
+                'ends-at' => 'Berakhir Pada',
+                'finished' => 'Selesai',
+                'info' => 'Ganti tema sebuah kanal di antara dua tanggal, misalnya tema liburan. Kanal kembali ke tema sebelumnya saat pergantian berakhir.',
+                'overlap' => 'Kanal ini sudah memiliki pergantian tema terjadwal pada sebagian waktu tersebut.',
+                'pending' => 'Terjadwal',
+                'running' => 'Berjalan',
+                'save-btn' => 'Simpan',
+                'starts-at' => 'Mulai Pada',
+                'status' => 'Status',
+                'theme' => 'Tema',
+                'title' => 'Pergantian Tema Terjadwal',
+            ],
+
+            'upload' => [
+                'btn' => 'Unggah Tema',
+                'confirm-btn' => 'Unggah',
+                'file' => 'Arsip Tema',
+                'file-hint' => 'File .zip hingga :size MB. Mengunggah ulang tema dengan kode yang sama akan menggantinya.',
+                'info' => 'Unggah .zip dari template HTML. index.html-nya menjadi halaman beranda, dan header serta footer-nya menggantikan bawaan di setiap halaman.',
+                'processing' => 'Tema sedang dipasang. Jendela ini akan diperbarui setelah siap.',
+                'section-name' => 'Bagian :number',
+                'success' => ':theme berhasil diunggah. Aktifkan di sebuah kanal untuk mulai menggunakannya.',
+                'title' => 'Unggah Tema',
+                'warning' => 'JavaScript template berjalan di toko Anda. Hanya unggah tema dari sumber yang Anda percaya.',
+
+                'errors' => [
+                    'code-taken' => 'Kode :code milik tema bawaan toko ini. Tetapkan kode lain di theme.json.',
+                    'disallowed-file' => 'Arsip berisi jenis file yang tidak dapat digunakan tema: :path.',
+                    'failed' => 'Tema tidak dapat dipasang. Periksa arsipnya lalu coba lagi.',
+                    'invalid-archive' => 'File ini bukan arsip zip yang valid.',
+                    'invalid-code' => 'Kode tema ":code" hanya boleh berisi huruf kecil, angka, dan tanda hubung.',
+                    'invalid-manifest' => 'File theme.json bukan JSON yang valid.',
+                    'missing-index' => 'Arsip tidak memiliki index.html di akarnya.',
+                    'too-large' => 'Arsip berukuran lebih dari :size MB setelah diekstrak.',
+                    'too-many-files' => 'Arsip berisi lebih dari :count file.',
+                    'unsafe-path' => 'Arsip berisi path yang tidak aman: :path.',
                 ],
             ],
         ],
@@ -4816,6 +4890,12 @@ return [
                         'logo-image' => 'Logo Image',
                         'title' => 'Admin Logo',
                         'title-info' => 'Logo dan favicon yang tampil di panel admin dan pada email ke admin.',
+                    ],
+
+                    'admin-theme' => [
+                        'code' => 'Tema',
+                        'title' => 'Tema Panel Admin',
+                        'title-info' => 'Tema yang dipakai panel admin untuk setiap admin yang belum memilih temanya sendiri di halaman akun.',
                     ],
 
                     'menu-category' => [
@@ -6438,6 +6518,7 @@ return [
         'reviews' => 'Ulasan',
         'roles' => 'Peran',
         'sales' => 'Penjualan',
+        'schedule' => 'Jadwalkan',
         'search-seo' => 'Pencarian & SEO',
         'search-synonyms' => 'Sinonim Pencarian',
         'search-terms' => 'Istilah Pencarian',
@@ -6450,6 +6531,7 @@ return [
         'taxes' => 'Pajak',
         'themes' => 'Tema',
         'transactions' => 'Transaksi',
+        'upload' => 'Unggah',
         'url-rewrites' => 'Penulisan Ulang URL',
         'users' => 'Pengguna',
         'view' => 'Lihat',

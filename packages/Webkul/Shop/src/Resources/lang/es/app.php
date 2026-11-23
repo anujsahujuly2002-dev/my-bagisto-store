@@ -1354,6 +1354,11 @@ return [
         'reviews' => 'Reseñas',
         'rma' => 'RMA',
         'wishlist' => 'Lista de deseos',
+
+        'theme-preview' => [
+            'exit' => 'Salir de la vista previa',
+            'previewing' => 'Estás viendo una vista previa del tema :theme. Solo tú puedes verla.',
+        ],
     ],
 
     'subscription' => [

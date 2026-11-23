@@ -1316,7 +1316,11 @@ return [
     ], [
         'key' => 'appearance.themes',
         'name' => 'admin::app.acl.themes',
-        'route' => 'admin.appearance.themes.index',
+        'route' => [
+            'admin.appearance.themes.index',
+            'admin.appearance.themes.preview',
+            'admin.appearance.themes.stop_preview',
+        ],
         'sort' => 1,
     ], [
         'key' => 'appearance.themes.activate',
@@ -1326,6 +1330,31 @@ return [
             'admin.appearance.themes.activate',
         ],
         'sort' => 1,
+    ], [
+        'key' => 'appearance.themes.upload',
+        'name' => 'admin::app.acl.upload',
+        'route' => [
+            'admin.appearance.themes.upload',
+            'admin.appearance.themes.upload_status',
+            'admin.appearance.themes.rollback',
+            'admin.appearance.themes.images.index',
+            'admin.appearance.themes.images.update',
+            'admin.appearance.themes.images.delete',
+        ],
+        'sort' => 2,
+    ], [
+        'key' => 'appearance.themes.delete',
+        'name' => 'admin::app.acl.delete',
+        'route' => 'admin.appearance.themes.delete',
+        'sort' => 3,
+    ], [
+        'key' => 'appearance.themes.schedule',
+        'name' => 'admin::app.acl.schedule',
+        'route' => [
+            'admin.appearance.themes.schedules.store',
+            'admin.appearance.themes.schedules.delete',
+        ],
+        'sort' => 4,
     ], [
         'key' => 'appearance.sections',
         'name' => 'admin::app.acl.sections',
