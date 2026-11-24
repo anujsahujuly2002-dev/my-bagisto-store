@@ -112,7 +112,7 @@ class ThemeInstaller
      */
     public function install(string $archivePath, string $originalName)
     {
-        $staging = storage_path('app/theme-uploads/'.Str::uuid());
+        $staging = tenant_storage_path('theme-uploads/'.Str::uuid());
 
         try {
             $files = $this->themeArchive->extract($archivePath, $staging);
@@ -150,11 +150,11 @@ class ThemeInstaller
     }
 
     /**
-     * The local directory an uploaded theme's releases are written under.
+     * The local directory an uploaded theme's releases are written under, in the current store's own folder.
      */
     public function directory(string $code): string
     {
-        return storage_path('app/themes/'.$code);
+        return tenant_storage_path('themes/'.$code);
     }
 
     /**
@@ -306,11 +306,11 @@ class ThemeInstaller
     }
 
     /**
-     * The views path of a release as a theme records it, relative to the application root.
+     * The views path of a release as a theme records it, relative to the store's own folder.
      */
     protected function relativeViewsPath(string $releaseDirectory): string
     {
-        return ltrim(Str::after($releaseDirectory.'/views', base_path()), '/');
+        return ltrim(Str::after($releaseDirectory.'/views', tenant_storage_path()), '/\\');
     }
 
     /**

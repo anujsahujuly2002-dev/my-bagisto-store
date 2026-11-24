@@ -42,6 +42,7 @@ use EcomForYou\SocialLogin\Providers\SocialLoginServiceProvider;
 use EcomForYou\SocialShare\Providers\SocialShareServiceProvider;
 use EcomForYou\Stripe\Providers\StripeServiceProvider;
 use EcomForYou\Tax\Providers\TaxServiceProvider;
+use EcomForYou\Tenancy\Providers\TenancyServiceProvider;
 use EcomForYou\Theme\Providers\ThemeServiceProvider;
 use EcomForYou\User\Providers\UserServiceProvider;
 
@@ -95,6 +96,7 @@ return [
     SocialShareServiceProvider::class,
     StripeServiceProvider::class,
     TaxServiceProvider::class,
+    TenancyServiceProvider::class,
     ThemeServiceProvider::class,
     UserServiceProvider::class,
 ];

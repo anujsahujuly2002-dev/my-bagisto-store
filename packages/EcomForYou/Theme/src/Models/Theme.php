@@ -4,6 +4,7 @@ namespace EcomForYou\Theme\Models;
 
 use EcomForYou\Theme\Contracts\Theme as ThemeContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Theme extends Model implements ThemeContract
 {
@@ -68,9 +69,25 @@ class Theme extends Model implements ThemeContract
             'name' => $this->name,
             'parent' => $this->parent,
             'assets_path' => $this->assets_path,
-            'views_path' => $this->views_path,
+            'views_path' => $this->viewsPathFromBase(),
             'vite' => $this->vite,
             'images' => $this->manifest['images'] ?? null,
         ], fn ($value) => ! is_null($value));
+    }
+
+    /**
+     * The views path relative to the application root, where every reader resolves it. An uploaded theme stores
+     * its path under the store's own folder, so it moves with the store and is never shared between stores.
+     */
+    public function viewsPathFromBase(): ?string
+    {
+        if (
+            $this->source !== self::SOURCE_UPLOAD
+            || blank($this->views_path)
+        ) {
+            return $this->views_path;
+        }
+
+        return ltrim(Str::after(tenant_storage_path($this->views_path), base_path()), '/\\');
     }
 }

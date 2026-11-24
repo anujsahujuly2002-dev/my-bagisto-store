@@ -2,8 +2,11 @@
 
 namespace EcomForYou\Theme\Providers;
 
+use EcomForYou\Tenancy\Events\TenantForgotten;
+use EcomForYou\Tenancy\Events\TenantMadeCurrent;
 use EcomForYou\Theme\AdminThemeResolver;
 use EcomForYou\Theme\Console\Commands\SwitchScheduledThemes;
+use EcomForYou\Theme\Listeners\Tenant as TenantListener;
 use EcomForYou\Theme\Models\SectionProxy;
 use EcomForYou\Theme\Models\ThemeProxy;
 use EcomForYou\Theme\Observers\SectionObserver;
@@ -14,6 +17,7 @@ use EcomForYou\Theme\Upload\UploadedPage;
 use EcomForYou\Theme\ViewRenderEventManager;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class ThemeServiceProvider extends ServiceProvider
@@ -73,16 +77,25 @@ class ThemeServiceProvider extends ServiceProvider
                 ->withoutOverlapping();
         });
 
+        Event::listen(TenantMadeCurrent::class, [TenantListener::class, 'madeCurrent']);
+
+        Event::listen(TenantForgotten::class, [TenantListener::class, 'forgotten']);
+
         Blade::directive('bagistoVite', function ($expression) {
             return "<?php echo themes()->setBagistoVite({$expression})->toHtml(); ?>";
         });
     }
 
     /**
-     * Whether the stored themes can be read, which needs an installed store or a test run with a migrated database.
+     * Whether the single store's themes can be read at boot, which needs an installed store or a test run with a
+     * migrated database. With tenancy on, a store's themes are read only once its tenant is current.
      */
     protected function shouldMergeStoredThemes(): bool
     {
+        if (config('tenancy.enabled')) {
+            return false;
+        }
+
         return $this->app->runningUnitTests()
             || file_exists(storage_path('installed'));
     }

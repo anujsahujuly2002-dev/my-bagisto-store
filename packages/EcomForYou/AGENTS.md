@@ -31,6 +31,7 @@ packages/EcomForYou/
 ├── DataTransfer/           # Imports: products, customers, tax rates (exports come from the DataGrid)
 ├── CMS/                    # CMS pages
 ├── Marketing/              # SEO, URL rewrites, search terms, campaigns
+├── Tenancy/                # Multi-tenancy: landlord tenants and plans, tenant switching, subdomain identification
 ├── Theme/                  # Theme management
 ├── MagicAI/                # AI features (Laravel AI SDK)
 ├── Notification/           # Notifications
@@ -52,7 +53,7 @@ packages/EcomForYou/
 
 ## Modular Package System
 
-All core functionality lives in `packages/EcomForYou/`. Each package is a self-contained Laravel package with its own models, controllers, routes, views, migrations, and service providers. **The packages are autoloaded, not installed.** The root `composer.json` carries one PSR-4 entry per package — `"EcomForYou\\Sales\\": "packages/EcomForYou/Sales/src"` and 41 more — and requires none of them, so package code needs no `composer update`; adding a package means adding its namespace there and running `composer dump-autoload`. The `"type": "path"` repository for `packages/*/*` is what lets a package dropped in there be required by Composer when one has to be; nothing shipped uses it.
+All core functionality lives in `packages/EcomForYou/`. Each package is a self-contained Laravel package with its own models, controllers, routes, views, migrations, and service providers. **The packages are autoloaded, not installed.** The root `composer.json` carries one PSR-4 entry per package — `"EcomForYou\\Sales\\": "packages/EcomForYou/Sales/src"` and 42 more — and requires none of them, so package code needs no `composer update`; adding a package means adding its namespace there and running `composer dump-autoload`. The `"type": "path"` repository for `packages/*/*` is what lets a package dropped in there be required by Composer when one has to be; nothing shipped uses it.
 
 **Dual registration**: each package registers in two places:
 - **`bootstrap/providers.php`** — the main ServiceProvider (routes, views, translations, migrations, events, config)

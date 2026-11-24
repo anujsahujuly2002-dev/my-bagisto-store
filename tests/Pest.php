@@ -24,6 +24,7 @@ use EcomForYou\Shipping\Tests\ShippingTestCase;
 use EcomForYou\Shop\Tests\ShopTestCase;
 use EcomForYou\Stripe\Tests\StripeTestCase;
 use EcomForYou\Tax\Tests\TaxTestCase;
+use EcomForYou\Tenancy\Tests\TenancyTestCase;
 use EcomForYou\Theme\Tests\ThemeTestCase;
 use Illuminate\Support\Facades\Storage;
 use Pest\Repositories\DatasetsRepository;
@@ -65,6 +66,7 @@ uses(ShippingTestCase::class)->in('../packages/EcomForYou/Shipping/tests');
 uses(ShopTestCase::class)->in('../packages/EcomForYou/Shop/tests');
 uses(StripeTestCase::class)->in('../packages/EcomForYou/Stripe/tests');
 uses(TaxTestCase::class)->in('../packages/EcomForYou/Tax/tests');
+uses(TenancyTestCase::class)->in('../packages/EcomForYou/Tenancy/tests');
 uses(ThemeTestCase::class)->in('../packages/EcomForYou/Theme/tests');
 
 /*

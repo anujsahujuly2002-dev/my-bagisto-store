@@ -4,6 +4,7 @@ use App\Http\Middleware\EncryptCookies;
 use EcomForYou\Core\Http\Middleware\PreventSessionRevival;
 use EcomForYou\Core\Http\Middleware\SecureHeaders;
 use EcomForYou\Installer\Http\Middleware\CanInstall;
+use EcomForYou\Tenancy\Http\Middleware\IdentifyTenant;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Cookie\Middleware\EncryptCookies as BaseEncryptCookies;
 use Illuminate\Foundation\Application;
@@ -18,6 +19,13 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        /**
+         * Identify the store from the subdomain before anything else runs, so no other middleware can reach a
+         * store's data first. It reads the raw Host header, before proxies are trusted, so a forwarded host
+         * header cannot pick the store.
+         */
+        $middleware->prepend(IdentifyTenant::class);
+
         /**
          * Remove the default Laravel middleware that prevents requests during maintenance mode. There are three
          * middlewares in the shop that need to be loaded before this middleware. Therefore, we need to remove this

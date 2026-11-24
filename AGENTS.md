@@ -96,7 +96,7 @@ A new key needs all 23 locales in the package's `Resources/lang/`. Verify with `
 Standard Laravel, with everything of substance under `packages/EcomForYou/`. The paths worth knowing:
 
 ```
-packages/EcomForYou/        # ★ All 42 packages — see packages/EcomForYou/AGENTS.md
+packages/EcomForYou/        # ★ All 43 packages — see packages/EcomForYou/AGENTS.md
 app/                    # Thin shell: middleware, providers. Almost nothing lives here
 bootstrap/providers.php # Every service provider registration
 config/concord.php      # Concord model/proxy registrations — the second half of package wiring

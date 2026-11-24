@@ -57,6 +57,7 @@ return [
         EcomForYou\SocialLogin\Providers\ModuleServiceProvider::class,
         EcomForYou\Stripe\Providers\ModuleServiceProvider::class,
         EcomForYou\Tax\Providers\ModuleServiceProvider::class,
+        EcomForYou\Tenancy\Providers\ModuleServiceProvider::class,
         EcomForYou\Theme\Providers\ModuleServiceProvider::class,
         EcomForYou\User\Providers\ModuleServiceProvider::class,
     ],

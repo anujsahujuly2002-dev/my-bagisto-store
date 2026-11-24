@@ -11,12 +11,19 @@ use Illuminate\Support\Str;
 class CanInstall
 {
     /**
-     * Handles Requests for Installer middleware.
+     * Send an uninstalled store to the installer and keep an installed one out of it. With tenancy on, stores
+     * are installed by provisioning and served only while active, so the installer is closed on every host.
      *
-     * @return void
+     * @return mixed
      */
     public function handle(Request $request, Closure $next)
     {
+        if (config('tenancy.enabled')) {
+            abort_if($this->isInstallerRequest($request), 404);
+
+            return $next($request);
+        }
+
         if ($this->isAlreadyInstalled()) {
             if ($this->isInstallerRequest($request)) {
                 if (! $request->ajax()) {
@@ -35,7 +42,7 @@ class CanInstall
     }
 
     /**
-     * Application Already Installed.
+     * Whether the single store is installed, recording it once the database shows it is.
      *
      * @return bool
      */

@@ -32,11 +32,11 @@ class ThemeUploads
     public const CACHE_PREFIX = 'theme.upload.';
 
     /**
-     * The directory archives wait in until the queue installs them.
+     * The directory archives wait in until the queue installs them, in the current store's own folder.
      */
     public function directory(): string
     {
-        return storage_path('app/theme-uploads/pending');
+        return tenant_storage_path('theme-uploads/pending');
     }
 
     /**

@@ -169,3 +169,20 @@ if (! function_exists('array_permutation')) {
         return $results;
     }
 }
+
+if (! function_exists('tenant_storage_path')) {
+    /**
+     * The path of a store's local files that cannot go through a disk, under the current store's own folder.
+     * The single store keeps them under `storage/app`; with tenancy on, each tenant has a folder of its own.
+     */
+    function tenant_storage_path(string $path = ''): string
+    {
+        $root = app()->bound('path.tenant_storage')
+            ? app('path.tenant_storage')
+            : storage_path('app');
+
+        return $path === ''
+            ? $root
+            : $root.DIRECTORY_SEPARATOR.ltrim($path, '/\\');
+    }
+}

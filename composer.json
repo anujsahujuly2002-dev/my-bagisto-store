@@ -115,6 +115,7 @@
             "EcomForYou\\SocialShare\\": "packages/EcomForYou/SocialShare/src",
             "EcomForYou\\Stripe\\": "packages/EcomForYou/Stripe/src",
             "EcomForYou\\Tax\\": "packages/EcomForYou/Tax/src",
+            "EcomForYou\\Tenancy\\": "packages/EcomForYou/Tenancy/src",
             "EcomForYou\\Theme\\": "packages/EcomForYou/Theme/src",
             "EcomForYou\\User\\": "packages/EcomForYou/User/src"
         }
@@ -146,6 +147,7 @@
             "EcomForYou\\Shop\\Tests\\": "packages/EcomForYou/Shop/tests",
             "EcomForYou\\Stripe\\Tests\\": "packages/EcomForYou/Stripe/tests",
             "EcomForYou\\Tax\\Tests\\": "packages/EcomForYou/Tax/tests",
+            "EcomForYou\\Tenancy\\Tests\\": "packages/EcomForYou/Tenancy/tests",
             "EcomForYou\\Theme\\Tests\\": "packages/EcomForYou/Theme/tests"
         }
     },

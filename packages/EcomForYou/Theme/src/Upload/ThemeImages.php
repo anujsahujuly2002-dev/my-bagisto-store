@@ -47,7 +47,7 @@ class ThemeImages
             $theme->code,
             $theme->name,
             $theme->assets_path,
-            $theme->views_path,
+            $theme->viewsPathFromBase(),
         ));
 
         $overrides = $theme->manifest['images'] ?? [];

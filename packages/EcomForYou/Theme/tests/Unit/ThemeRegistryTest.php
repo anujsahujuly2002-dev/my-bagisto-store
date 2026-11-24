@@ -19,7 +19,7 @@ function registerTheme(array $attributes = []): Theme
         'version' => '1.0.0',
         'parent' => 'default',
         'assets_path' => 'storage/app/public/themes/uploaded',
-        'views_path' => 'storage/app/themes/uploaded/views',
+        'views_path' => 'themes/uploaded/views',
         'source' => Theme::SOURCE_UPLOAD,
         'status' => true,
     ], $attributes));
@@ -40,6 +40,29 @@ it('should register a stored storefront theme alongside the configured ones', fu
         'assets_path' => 'storage/app/public/themes/uploaded',
         'views_path' => 'storage/app/themes/uploaded/views',
     ])->and(config('themes.shop.default'))->not->toBeNull();
+});
+
+it('should register a theme that was not uploaded with its views path as stored', function () {
+    registerTheme(['source' => 'catalog', 'views_path' => 'resources/themes/uploaded/views']);
+
+    app(ThemeRegistry::class)->merge();
+
+    expect(config('themes.shop.uploaded.views_path'))->toBe('resources/themes/uploaded/views');
+});
+
+it('should put back the configured themes alone when restored', function () {
+    registerTheme();
+
+    $registry = app(ThemeRegistry::class);
+
+    $registry->merge();
+
+    expect(config('themes.shop.uploaded'))->not->toBeNull();
+
+    $registry->restore();
+
+    expect(config('themes.shop.uploaded'))->toBeNull()
+        ->and(config('themes.shop.default'))->not->toBeNull();
 });
 
 it('should register a stored admin theme under the admin panel only', function () {

@@ -51,6 +51,20 @@ class ThemeRegistry
     }
 
     /**
+     * Put back each panel's themes as `config/themes.php` registers them, dropping every stored one.
+     */
+    public function restore(): void
+    {
+        if (is_null($this->configured)) {
+            return;
+        }
+
+        foreach (self::PANELS as $panel) {
+            Config::set('themes.'.$panel, $this->configured[$panel]);
+        }
+    }
+
+    /**
      * Whether `config/themes.php` registers a theme of this code for the panel, whatever the database holds.
      */
     public function isConfigured(string $code, string $panel = Theme::PANEL_SHOP): bool

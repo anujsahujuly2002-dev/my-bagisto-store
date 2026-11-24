@@ -146,6 +146,11 @@
             <directory suffix="Test.php">packages/EcomForYou/Tax/tests/Unit</directory>
         </testsuite>
 
+        <!-- Tenancy package testsuites. -->
+        <testsuite name="Tenancy Feature Test">
+            <directory suffix="Test.php">packages/EcomForYou/Tenancy/tests/Feature</directory>
+        </testsuite>
+
         <!-- Theme package testsuites. -->
         <testsuite name="Theme Unit Test">
             <directory suffix="Test.php">packages/EcomForYou/Theme/tests/Unit</directory>
