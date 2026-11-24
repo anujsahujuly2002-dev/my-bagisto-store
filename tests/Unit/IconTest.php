@@ -1,9 +1,9 @@
 <?php
 
 dataset('icon packages', [
-    'Admin' => 'packages/Webkul/Admin',
-    'Shop' => 'packages/Webkul/Shop',
-    'Installer' => 'packages/Webkul/Installer',
+    'Admin' => 'packages/EcomForYou/Admin',
+    'Shop' => 'packages/EcomForYou/Shop',
+    'Installer' => 'packages/EcomForYou/Installer',
 ]);
 
 /**

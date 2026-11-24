@@ -1,0 +1,24 @@
+{
+    "name": "bagisto/laravel-paypal",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Paypal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Paypal\\Providers\\PaypalServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

@@ -57,7 +57,7 @@ log "Running the Bagisto installer..."
 php artisan bagisto:install --no-interaction
 
 log "Seeding demo products..."
-php artisan db:seed --class="Webkul\\Installer\\Database\\Seeders\\ProductTableSeeder"
+php artisan db:seed --class="EcomForYou\\Installer\\Database\\Seeders\\ProductTableSeeder"
 
 log "Building the search indexes..."
 php artisan indexer:index --mode=full

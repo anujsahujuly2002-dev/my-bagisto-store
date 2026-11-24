@@ -1,0 +1,17 @@
+{
+    "name": "ecomforyou/omnibus",
+    "description": "Omnibus Package",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Omnibus\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Omnibus\\Providers\\OmnibusServiceProvider"
+            ]
+        }
+    }
+}

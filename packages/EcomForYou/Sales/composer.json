@@ -1,0 +1,24 @@
+{
+    "name": "bagisto/laravel-sales",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Sales\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Sales\\Providers\\SalesServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

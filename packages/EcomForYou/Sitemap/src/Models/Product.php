@@ -1,0 +1,28 @@
+<?php
+
+namespace EcomForYou\Sitemap\Models;
+
+use EcomForYou\Product\Models\Product as BaseProduct;
+use Illuminate\Support\Carbon;
+use Spatie\Sitemap\Contracts\Sitemapable;
+use Spatie\Sitemap\Tags\Url;
+
+class Product extends BaseProduct implements Sitemapable
+{
+    /**
+     * To get the sitemap tag for the product.
+     */
+    public function toSitemapTag(): Url|string|array
+    {
+        if (
+            ! $this->url_key
+            || ! $this->status
+            || ! $this->visible_individually
+        ) {
+            return [];
+        }
+
+        return Url::create(route('shop.product_or_category.index', $this->url_key))
+            ->setLastModificationDate(Carbon::create($this->updated_at));
+    }
+}

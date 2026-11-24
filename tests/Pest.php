@@ -1,32 +1,32 @@
 <?php
 
+use EcomForYou\Admin\Tests\AdminTestCase;
+use EcomForYou\Category\Tests\CategoryTestCase;
+use EcomForYou\Checkout\Tests\CheckoutTestCase;
+use EcomForYou\Core\Tests\CoreTestCase;
+use EcomForYou\Customer\Tests\CustomerTestCase;
+use EcomForYou\DataGrid\Tests\DataGridTestCase;
+use EcomForYou\EUWithdrawal\Tests\EUWithdrawalTestCase;
+use EcomForYou\FPC\Tests\FPCTestCase;
+use EcomForYou\Installer\Tests\InstallerTestCase;
+use EcomForYou\Marketing\Tests\MarketingTestCase;
+use EcomForYou\Omnibus\Tests\OmnibusTestCase;
+use EcomForYou\PayGlocal\Tests\PayGlocalTestCase;
+use EcomForYou\Payment\Tests\PaymentTestCase;
+use EcomForYou\Paypal\Tests\PaypalTestCase;
+use EcomForYou\PayU\Tests\PayUTestCase;
+use EcomForYou\PhonePe\Tests\PhonePeTestCase;
+use EcomForYou\Product\Tests\ProductTestCase;
+use EcomForYou\Razorpay\Tests\RazorpayTestCase;
+use EcomForYou\Rule\Tests\RuleTestCase;
+use EcomForYou\Sales\Tests\SalesTestCase;
+use EcomForYou\Shipping\Tests\ShippingTestCase;
+use EcomForYou\Shop\Tests\ShopTestCase;
+use EcomForYou\Stripe\Tests\StripeTestCase;
+use EcomForYou\Tax\Tests\TaxTestCase;
+use EcomForYou\Theme\Tests\ThemeTestCase;
 use Illuminate\Support\Facades\Storage;
 use Pest\Repositories\DatasetsRepository;
-use Webkul\Admin\Tests\AdminTestCase;
-use Webkul\Category\Tests\CategoryTestCase;
-use Webkul\Checkout\Tests\CheckoutTestCase;
-use Webkul\Core\Tests\CoreTestCase;
-use Webkul\Customer\Tests\CustomerTestCase;
-use Webkul\DataGrid\Tests\DataGridTestCase;
-use Webkul\EUWithdrawal\Tests\EUWithdrawalTestCase;
-use Webkul\FPC\Tests\FPCTestCase;
-use Webkul\Installer\Tests\InstallerTestCase;
-use Webkul\Marketing\Tests\MarketingTestCase;
-use Webkul\Omnibus\Tests\OmnibusTestCase;
-use Webkul\PayGlocal\Tests\PayGlocalTestCase;
-use Webkul\Payment\Tests\PaymentTestCase;
-use Webkul\Paypal\Tests\PaypalTestCase;
-use Webkul\PayU\Tests\PayUTestCase;
-use Webkul\PhonePe\Tests\PhonePeTestCase;
-use Webkul\Product\Tests\ProductTestCase;
-use Webkul\Razorpay\Tests\RazorpayTestCase;
-use Webkul\Rule\Tests\RuleTestCase;
-use Webkul\Sales\Tests\SalesTestCase;
-use Webkul\Shipping\Tests\ShippingTestCase;
-use Webkul\Shop\Tests\ShopTestCase;
-use Webkul\Stripe\Tests\StripeTestCase;
-use Webkul\Tax\Tests\TaxTestCase;
-use Webkul\Theme\Tests\ThemeTestCase;
 
 ini_set('memory_limit', '1024M');
 
@@ -41,31 +41,31 @@ ini_set('memory_limit', '1024M');
 |
 */
 
-uses(AdminTestCase::class)->in('../packages/Webkul/Admin/tests');
-uses(CategoryTestCase::class)->in('../packages/Webkul/Category/tests');
-uses(CheckoutTestCase::class)->in('../packages/Webkul/Checkout/tests');
-uses(CoreTestCase::class)->in('../packages/Webkul/Core/tests');
-uses(CustomerTestCase::class)->in('../packages/Webkul/Customer/tests');
-uses(DataGridTestCase::class)->in('../packages/Webkul/DataGrid/tests');
-uses(EUWithdrawalTestCase::class)->in('../packages/Webkul/EUWithdrawal/tests');
-uses(FPCTestCase::class)->in('../packages/Webkul/FPC/tests');
-uses(InstallerTestCase::class)->in('../packages/Webkul/Installer/tests');
-uses(OmnibusTestCase::class)->in('../packages/Webkul/Omnibus/tests');
-uses(PayGlocalTestCase::class)->in('../packages/Webkul/PayGlocal/tests');
-uses(PaymentTestCase::class)->in('../packages/Webkul/Payment/tests');
-uses(PaypalTestCase::class)->in('../packages/Webkul/Paypal/tests');
-uses(PayUTestCase::class)->in('../packages/Webkul/PayU/tests');
-uses(PhonePeTestCase::class)->in('../packages/Webkul/PhonePe/tests');
-uses(ProductTestCase::class)->in('../packages/Webkul/Product/tests');
-uses(RazorpayTestCase::class)->in('../packages/Webkul/Razorpay/tests');
-uses(RuleTestCase::class)->in('../packages/Webkul/Rule/tests');
-uses(MarketingTestCase::class)->in('../packages/Webkul/Marketing/tests');
-uses(SalesTestCase::class)->in('../packages/Webkul/Sales/tests');
-uses(ShippingTestCase::class)->in('../packages/Webkul/Shipping/tests');
-uses(ShopTestCase::class)->in('../packages/Webkul/Shop/tests');
-uses(StripeTestCase::class)->in('../packages/Webkul/Stripe/tests');
-uses(TaxTestCase::class)->in('../packages/Webkul/Tax/tests');
-uses(ThemeTestCase::class)->in('../packages/Webkul/Theme/tests');
+uses(AdminTestCase::class)->in('../packages/EcomForYou/Admin/tests');
+uses(CategoryTestCase::class)->in('../packages/EcomForYou/Category/tests');
+uses(CheckoutTestCase::class)->in('../packages/EcomForYou/Checkout/tests');
+uses(CoreTestCase::class)->in('../packages/EcomForYou/Core/tests');
+uses(CustomerTestCase::class)->in('../packages/EcomForYou/Customer/tests');
+uses(DataGridTestCase::class)->in('../packages/EcomForYou/DataGrid/tests');
+uses(EUWithdrawalTestCase::class)->in('../packages/EcomForYou/EUWithdrawal/tests');
+uses(FPCTestCase::class)->in('../packages/EcomForYou/FPC/tests');
+uses(InstallerTestCase::class)->in('../packages/EcomForYou/Installer/tests');
+uses(OmnibusTestCase::class)->in('../packages/EcomForYou/Omnibus/tests');
+uses(PayGlocalTestCase::class)->in('../packages/EcomForYou/PayGlocal/tests');
+uses(PaymentTestCase::class)->in('../packages/EcomForYou/Payment/tests');
+uses(PaypalTestCase::class)->in('../packages/EcomForYou/Paypal/tests');
+uses(PayUTestCase::class)->in('../packages/EcomForYou/PayU/tests');
+uses(PhonePeTestCase::class)->in('../packages/EcomForYou/PhonePe/tests');
+uses(ProductTestCase::class)->in('../packages/EcomForYou/Product/tests');
+uses(RazorpayTestCase::class)->in('../packages/EcomForYou/Razorpay/tests');
+uses(RuleTestCase::class)->in('../packages/EcomForYou/Rule/tests');
+uses(MarketingTestCase::class)->in('../packages/EcomForYou/Marketing/tests');
+uses(SalesTestCase::class)->in('../packages/EcomForYou/Sales/tests');
+uses(ShippingTestCase::class)->in('../packages/EcomForYou/Shipping/tests');
+uses(ShopTestCase::class)->in('../packages/EcomForYou/Shop/tests');
+uses(StripeTestCase::class)->in('../packages/EcomForYou/Stripe/tests');
+uses(TaxTestCase::class)->in('../packages/EcomForYou/Tax/tests');
+uses(ThemeTestCase::class)->in('../packages/EcomForYou/Theme/tests');
 
 /*
 |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ uses(ThemeTestCase::class)->in('../packages/Webkul/Theme/tests');
 |
 */
 
-uses()->beforeEach(fn () => Storage::fake())->in('../packages/Webkul/Admin/tests/Feature/Appearance');
+uses()->beforeEach(fn () => Storage::fake())->in('../packages/EcomForYou/Admin/tests/Feature/Appearance');
 
 /*
 |--------------------------------------------------------------------------

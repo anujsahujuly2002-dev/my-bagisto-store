@@ -1,6 +1,6 @@
 <?php
 
-use Webkul\Theme\Enums\SectionTypeEnum;
+use EcomForYou\Theme\Enums\SectionTypeEnum;
 
 return [
 
@@ -60,7 +60,7 @@ return [
                 | The section types the Appearance editor offers for this theme, in the
                 | order its Add Section tiles show them. List a core type as its
                 | SectionTypeEnum case, and a theme's own type as its class, which must
-                | extend Webkul\Theme\Sections\SectionType.
+                | extend EcomForYou\Theme\Sections\SectionType.
                 |
                 | Leave this key out to offer every core section type in enum order.
                 |
@@ -102,8 +102,8 @@ return [
                     |
                     | Every name left out falls back to the core template of that name.
                     |
-                    | e.g. 'small' => \Webkul\Fashion\ImageTemplates\Small::class,
-                    |      'product_card' => \Webkul\Fashion\ImageTemplates\ProductCard::class,
+                    | e.g. 'small' => \EcomForYou\Fashion\ImageTemplates\Small::class,
+                    |      'product_card' => \EcomForYou\Fashion\ImageTemplates\ProductCard::class,
                     |
                     */
 

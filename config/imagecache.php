@@ -1,8 +1,8 @@
 <?php
 
-use Webkul\Shop\CacheFilters\Large;
-use Webkul\Shop\CacheFilters\Medium;
-use Webkul\Shop\CacheFilters\Small;
+use EcomForYou\Shop\CacheFilters\Large;
+use EcomForYou\Shop\CacheFilters\Medium;
+use EcomForYou\Shop\CacheFilters\Small;
 
 return [
     /*
@@ -58,7 +58,7 @@ return [
     | The values of this array will define which filter class will be
     | applied, by its fully qualified name. An entry the image cache cannot
     | apply is reported, and small, medium and large then fall back to the
-    | templates in Webkul\ImageCache\Templates.
+    | templates in EcomForYou\ImageCache\Templates.
     |
     */
 

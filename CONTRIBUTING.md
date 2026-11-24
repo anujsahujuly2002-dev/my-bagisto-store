@@ -36,14 +36,14 @@ If you propose a new feature, implement at least enough of it to show the shape 
 
 ## Compiled assets
 
-Do not commit compiled files. Frontend sources live in `packages/Webkul/<Package>/src/Resources/assets/`, and the build output goes to `public/themes/*/*/build/`.
+Do not commit compiled files. Frontend sources live in `packages/EcomForYou/<Package>/src/Resources/assets/`, and the build output goes to `public/themes/*/*/build/`.
 
 Compiled bundles are large, cannot realistically be reviewed, and would be an easy way to slip malicious code into Bagisto. Maintainers generate and commit them.
 
 Build from within the package you changed, never from the repository root:
 
 ```bash
-cd packages/Webkul/Admin && npm install && npm run build   # or Shop, or Installer
+cd packages/EcomForYou/Admin && npm install && npm run build   # or Shop, or Installer
 ```
 
 ## Code style and conventions

@@ -50,12 +50,12 @@ vendor/bin/pest                                         # Run all tests
 vendor/bin/pest --parallel                              # One process per CPU core; what CI runs
 vendor/bin/pest --testsuite="Admin Feature Test"        # Run one suite; phpunit.xml has the names
 vendor/bin/pest --testsuite="Unit Test"                 # Cross-package checks; needs no database
-vendor/bin/pest packages/Webkul/Admin/tests/Feature     # Run a directory
+vendor/bin/pest packages/EcomForYou/Admin/tests/Feature     # Run a directory
 vendor/bin/pest --filter="test name"                    # Run a single test
 php artisan test --parallel --recreate-databases        # Rebuild the worker databases
 ```
 
-Pest 5 on PHPUnit 13; a package's tests live in `packages/Webkul/<Package>/tests/`. A `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
+Pest 5 on PHPUnit 13; a package's tests live in `packages/EcomForYou/<Package>/tests/`. A `<testsuite>` pointing at a path that does not exist makes PHPUnit error, so write the tests first.
 
 **The stale seeder.** Each worker's database is migrated every run, so a new migration needs nothing from you. A changed **seeder** does: `db:seed` fires only on the run that creates the database, so every worker stays on the old baseline and the failures read as broken code. Rebuild with the artisan command above — `vendor/bin/pest --recreate-databases` accepts the flag and silently does nothing, because Pest sets it in `$_ENV` and Laravel reads `$_SERVER`.
 
@@ -64,7 +64,7 @@ A test that prompts hangs a parallel run forever: pass `--no-interaction` to any
 ### End-to-End Tests (Playwright)
 
 ```bash
-cd packages/Webkul/Admin         # or Shop, or Installer
+cd packages/EcomForYou/Admin         # or Shop, or Installer
 npm install
 npm run install:browsers         # playwright install --with-deps chromium
 npm run test:e2e                 # flags after --, e.g. -- --grep "@en" or -- --shard=1/10
@@ -78,11 +78,11 @@ Admin and Shop need a running server and a seeded database; Installer runs again
 ### Frontend
 
 ```bash
-cd packages/Webkul/Admin && npm install && npm run build      # Admin production build
-cd packages/Webkul/Shop && npm install && npm run build       # Shop production build
-cd packages/Webkul/Installer && npm install && npm run build  # Installer production build
-cd packages/Webkul/Admin && npm run dev                       # Admin dev server with HMR
-cd packages/Webkul/Shop && npm run dev                        # Shop dev server with HMR
+cd packages/EcomForYou/Admin && npm install && npm run build      # Admin production build
+cd packages/EcomForYou/Shop && npm install && npm run build       # Shop production build
+cd packages/EcomForYou/Installer && npm install && npm run build  # Installer production build
+cd packages/EcomForYou/Admin && npm run dev                       # Admin dev server with HMR
+cd packages/EcomForYou/Shop && npm run dev                        # Shop dev server with HMR
 ```
 
 ### Translations
@@ -93,10 +93,10 @@ A new key needs all 23 locales in the package's `Resources/lang/`. Verify with `
 
 ## Repository Map
 
-Standard Laravel, with everything of substance under `packages/Webkul/`. The paths worth knowing:
+Standard Laravel, with everything of substance under `packages/EcomForYou/`. The paths worth knowing:
 
 ```
-packages/Webkul/        # ★ All 42 packages — see packages/Webkul/AGENTS.md
+packages/EcomForYou/        # ★ All 42 packages — see packages/EcomForYou/AGENTS.md
 app/                    # Thin shell: middleware, providers. Almost nothing lives here
 bootstrap/providers.php # Every service provider registration
 config/concord.php      # Concord model/proxy registrations — the second half of package wiring
@@ -110,12 +110,12 @@ docker/production/      # Production images: {nginx,apache,litespeed} x {mysql,m
 ## Architecture
 
 - **Contract, Model, Proxy**: every data entity has a Contract (interface), a Model and a Proxy (e.g. `ProductProxy`, `CategoryProxy`), which lets a model be substituted without modifying core code. Always reference proxies when type-hinting across packages.
-- **Repository Pattern**: all database access goes through repositories extending `Webkul\Core\Eloquent\Repository` (Prettus L5). A repository's `model()` returns the Contract class, not the Model. Never query models directly in a controller, listener, job or service — the one sanctioned exception is a DataGrid's `prepareQueryBuilder()`.
+- **Repository Pattern**: all database access goes through repositories extending `EcomForYou\Core\Eloquent\Repository` (Prettus L5). A repository's `model()` returns the Contract class, not the Model. Never query models directly in a controller, listener, job or service — the one sanctioned exception is a DataGrid's `prepareQueryBuilder()`.
 - **Event-Driven Extensibility**: the framework fires dot-delimited events (`catalog.product.update.after`) at key lifecycle points, in before/after pairs. Extend behaviour through listeners rather than editing another package.
 - **Routes**: Admin routes run under the `web` and `admin` middleware with the `config('app.admin_url')` prefix. Shop routes run under `web` and the `shop` group, which applies the theme, locale and currency middleware.
 - **23 Locales**: ar, bn, ca, de, en, es, fa, fr, he, hi_IN, id, it, ja, nl, pl, pt_BR, ro, ru, sin, sw, tr, uk, zh_CN.
 
-Package structure, anatomy, naming, the extension points and how to add a package live in [`packages/Webkul/AGENTS.md`](packages/Webkul/AGENTS.md), which agents read when working in there.
+Package structure, anatomy, naming, the extension points and how to add a package live in [`packages/EcomForYou/AGENTS.md`](packages/EcomForYou/AGENTS.md), which agents read when working in there.
 
 ## Code Style
 
@@ -147,7 +147,7 @@ Every push and pull request runs `pint --test`, `vendor/bin/pest --parallel` on 
 
 ## Production Docker Images
 
-Built from `docker/production/` across web server x bundled database and published as `webkul/bagisto:<version>-<server>-<database>`. Engine-specific code sits behind a fixed driver contract in `docker/production/shared/db/<engine>/`, so adding an engine means adding a directory. [`docker/production/README.md`](docker/production/README.md) is the reference.
+Built from `docker/production/` across web server x bundled database and published as `ecomforyou/ecomforyou:<version>-<server>-<database>`. Engine-specific code sits behind a fixed driver contract in `docker/production/shared/db/<engine>/`, so adding an engine means adding a directory. [`docker/production/README.md`](docker/production/README.md) is the reference.
 
 ## Boundaries
 
@@ -159,7 +159,7 @@ Two kinds of limit: paths a change never touches, and rails that hold whatever t
 - `public/themes/*/*/build/` — Vite output; regenerate it with `npm run build`, never hand-edit it
 - `storage/` — runtime caches, logs, compiled views
 - `*.hot` files — Vite HMR markers
-- `packages/Webkul/*/src/Resources/assets/` — only edit if working on frontend; always run `npm run build` from the respective package directory after
+- `packages/EcomForYou/*/src/Resources/assets/` — only edit if working on frontend; always run `npm run build` from the respective package directory after
 
 ### Safety rails
 

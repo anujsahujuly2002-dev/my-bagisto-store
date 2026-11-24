@@ -18,7 +18,7 @@ The image is published across two independent choices — the **web server** and
 | **mariadb** | MariaDB 10.11 | `-mariadb` |
 | **postgres** | PostgreSQL 16 | `-postgres` |
 
-The full name carries both, e.g. `webkul/bagisto:2.5.0-nginx-postgres`. Because MySQL on nginx is the conventional pick, it also answers to the shorter names that existed before the multi-database images did — `:2.5.0-nginx`, `:2.5.0` and `:latest` all resolve to it, so nothing that already pulls Bagisto has to change.
+The full name carries both, e.g. `ecomforyou/ecomforyou:2.5.0-nginx-postgres`. Because MySQL on nginx is the conventional pick, it also answers to the shorter names that existed before the multi-database images did — `:2.5.0-nginx`, `:2.5.0` and `:latest` all resolve to it, so nothing that already pulls Bagisto has to change.
 
 ---
 
@@ -142,22 +142,22 @@ For local builds, run `docker build` from `docker/production/`, selecting a vari
 ### Pull from Docker Hub
 
 ```bash
-docker pull webkul/bagisto:latest                       # nginx + MySQL
+docker pull ecomforyou/ecomforyou:latest                       # nginx + MySQL
 # a different web server, still MySQL:
-docker pull webkul/bagisto:latest-apache
-docker pull webkul/bagisto:latest-litespeed
+docker pull ecomforyou/ecomforyou:latest-apache
+docker pull ecomforyou/ecomforyou:latest-litespeed
 # MariaDB or PostgreSQL instead of MySQL:
-docker pull webkul/bagisto:latest-nginx-mariadb
-docker pull webkul/bagisto:latest-nginx-postgres
-docker pull webkul/bagisto:latest-apache-postgres
+docker pull ecomforyou/ecomforyou:latest-nginx-mariadb
+docker pull ecomforyou/ecomforyou:latest-nginx-postgres
+docker pull ecomforyou/ecomforyou:latest-apache-postgres
 # or pin an exact version, server and database:
-docker pull webkul/bagisto:2.5.0-nginx-postgres
+docker pull ecomforyou/ecomforyou:2.5.0-nginx-postgres
 ```
 
 ### Run on port 80
 
 ```bash
-docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 ecomforyou/ecomforyou:latest
 ```
 
 Open `http://localhost` — your store is live.
@@ -165,7 +165,7 @@ Open `http://localhost` — your store is live.
 ### Run on a different host port
 
 ```bash
-docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 webkul/bagisto:latest
+docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 ecomforyou/ecomforyou:latest
 ```
 
 Then visit `http://localhost:8080`.
@@ -255,24 +255,24 @@ The rule behind the aliases: a `-mysql` image also answers to the server-only na
 So a stable `v2.5.0` release on the default branch produces:
 
 ```
-webkul/bagisto:2.5.0
-webkul/bagisto:2.5.0-nginx
-webkul/bagisto:2.5.0-nginx-mysql
-webkul/bagisto:2.5.0-nginx-mariadb
-webkul/bagisto:2.5.0-nginx-postgres
-webkul/bagisto:2.5.0-apache
-webkul/bagisto:2.5.0-apache-mysql
-webkul/bagisto:2.5.0-apache-mariadb
-webkul/bagisto:2.5.0-apache-postgres
-webkul/bagisto:2.5.0-litespeed
-webkul/bagisto:2.5.0-litespeed-mysql
-webkul/bagisto:2.5.0-litespeed-mariadb
-webkul/bagisto:2.5.0-litespeed-postgres
+ecomforyou/ecomforyou:2.5.0
+ecomforyou/ecomforyou:2.5.0-nginx
+ecomforyou/ecomforyou:2.5.0-nginx-mysql
+ecomforyou/ecomforyou:2.5.0-nginx-mariadb
+ecomforyou/ecomforyou:2.5.0-nginx-postgres
+ecomforyou/ecomforyou:2.5.0-apache
+ecomforyou/ecomforyou:2.5.0-apache-mysql
+ecomforyou/ecomforyou:2.5.0-apache-mariadb
+ecomforyou/ecomforyou:2.5.0-apache-postgres
+ecomforyou/ecomforyou:2.5.0-litespeed
+ecomforyou/ecomforyou:2.5.0-litespeed-mysql
+ecomforyou/ecomforyou:2.5.0-litespeed-mariadb
+ecomforyou/ecomforyou:2.5.0-litespeed-postgres
 ```
 
-plus the same set under `latest` (`webkul/bagisto:latest-nginx-mysql`, `webkul/bagisto:latest-nginx`, `webkul/bagisto:latest`, and so on).
+plus the same set under `latest` (`ecomforyou/ecomforyou:latest-nginx-mysql`, `ecomforyou/ecomforyou:latest-nginx`, `ecomforyou/ecomforyou:latest`, and so on).
 
-`docker pull webkul/bagisto:latest` (or `:2.5.0`) gives you the **nginx + MySQL** variant.
+`docker pull ecomforyou/ecomforyou:latest` (or `:2.5.0`) gives you the **nginx + MySQL** variant.
 
 ### `v`-prefix convention
 
@@ -346,7 +346,7 @@ GitHub repo → **Settings** → **Secrets and variables** → **Actions** → a
 
 | Secret | Value |
 |---|---|
-| `DOCKERHUB_USERNAME` | Docker Hub user/org with push access to `webkul/bagisto` |
+| `DOCKERHUB_USERNAME` | Docker Hub user/org with push access to `ecomforyou/ecomforyou` |
 | `DOCKERHUB_TOKEN` | Docker Hub access token with **Read & Write** scope (generate at https://hub.docker.com/settings/security) |
 
 That's it. The next `git push origin v<version>` builds and pushes the image.
@@ -469,15 +469,15 @@ That's the entire release. The GitHub Actions workflow at `.github/workflows/doc
 
 1. **Resolve** — validates the tag matches `vX.Y.Z` (or `vX.Y.Z-suffix` for pre-releases), derives the Docker tag, and decides whether the `:latest` aliases move by comparing the build commit against the default branch.
 2. **Build** — matrix-builds every server × database combination, each from its own `docker/production/<server>/Dockerfile` (`nginx`, `apache`, `litespeed`) with `DB_ENGINE` set to `mysql`, `mariadb` or `postgres` and `BAGISTO_VERSION=v2.5.0`, for `linux/amd64` and `linux/arm64`. Each combination is pushed untagged, by digest, and its buildx layers are cached in the GitHub Actions cache.
-3. **Publish** — creates every tag from those digests in a fixed order: the version tags first (e.g. `webkul/bagisto:2.5.0-nginx-mariadb`, and the bare `webkul/bagisto:2.5.0` for nginx + MySQL), then, because the tagged commit is on the default branch line, the `:latest` aliases, ending with `webkul/bagisto:latest`.
+3. **Publish** — creates every tag from those digests in a fixed order: the version tags first (e.g. `ecomforyou/ecomforyou:2.5.0-nginx-mariadb`, and the bare `ecomforyou/ecomforyou:2.5.0` for nginx + MySQL), then, because the tagged commit is on the default branch line, the `:latest` aliases, ending with `ecomforyou/ecomforyou:latest`.
 
 Track progress in the repo's **Actions** tab. Build duration is typically **30–60 minutes** because the arm64 leg runs under QEMU emulation and Bagisto is fully installed (migrations, seeders, indexers) during the build.
 
 After the run finishes:
 
-- Tags of earlier releases (for example `webkul/bagisto:2.4.12`) still exist and still work (tags are immutable once pushed).
-- `webkul/bagisto:2.5.0` points to the new build (both archs).
-- `webkul/bagisto:latest` now points to `2.5.0` (since the tag is on the default branch line).
+- Tags of earlier releases (for example `ecomforyou/ecomforyou:2.4.12`) still exist and still work (tags are immutable once pushed).
+- `ecomforyou/ecomforyou:2.5.0` points to the new build (both archs).
+- `ecomforyou/ecomforyou:latest` now points to `2.5.0` (since the tag is on the default branch line).
 
 ### Pre-release / RC tags
 
@@ -486,7 +486,7 @@ Tags with a suffix do **not** update `latest`:
 ```bash
 git tag v2.5.1-rc1
 git push origin v2.5.1-rc1
-# → webkul/bagisto:2.5.1-rc1   (latest is untouched)
+# → ecomforyou/ecomforyou:2.5.1-rc1   (latest is untouched)
 ```
 
 ### Manual re-run via workflow_dispatch
@@ -510,19 +510,19 @@ If CI is down or you're publishing to a private registry, follow [§6 — Manual
 ### Basic run
 
 ```bash
-docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 ecomforyou/ecomforyou:latest
 ```
 
 ### Different host port
 
 ```bash
-docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 webkul/bagisto:latest
+docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 ecomforyou/ecomforyou:latest
 ```
 
 ### In the foreground (stream logs directly)
 
 ```bash
-docker run --name bagisto -p 80:80 webkul/bagisto:latest
+docker run --name bagisto -p 80:80 ecomforyou/ecomforyou:latest
 ```
 
 ### With environment overrides
@@ -532,7 +532,7 @@ docker run -d --name bagisto -p 80:80 \
   -e APP_URL=http://my-store.local \
   -e APP_TIMEZONE=Asia/Kolkata \
   -e APP_CURRENCY=INR \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 ### With persistent volumes (recommended)
@@ -541,7 +541,7 @@ docker run -d --name bagisto -p 80:80 \
 docker run -d --name bagisto -p 80:80 \
   -v bagisto-mysql:/var/lib/mysql \
   -v bagisto-storage:/var/www/bagisto/storage \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 ---
@@ -586,7 +586,7 @@ docker run -d --name bagisto -p 80:80 \
   -v bagisto-mysql:/var/lib/mysql \
   -v bagisto-storage:/var/www/bagisto/storage \
   -v bagisto-logs:/var/log/bagisto \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 | Volume | Container path | What it persists |
@@ -604,7 +604,7 @@ A new named volume is filled from the image on first use, so it starts with the 
 docker run -d --name bagisto -p 80:80 \
   -v /path/on/host/mysql-data:/var/lib/mysql \
   -v /path/on/host/bagisto-storage:/var/www/bagisto/storage \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 > **Warning**: unlike a named volume, a bind mount is not filled from the image. An empty host directory hides the database and storage baked into the image, and nothing initialises them at runtime, so the store will not start. Copy the contents out of the image into the host directories first, or use named volumes.
@@ -612,7 +612,7 @@ docker run -d --name bagisto -p 80:80 \
 ### No volumes
 
 ```bash
-docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 ecomforyou/ecomforyou:latest
 ```
 
 Everything lives inside the container's writable layer. Data survives `docker stop` + `docker start`, but is **lost on `docker rm`**. Suitable for demos, testing, and quick evaluations only.
@@ -632,7 +632,7 @@ docker run -d --name bagisto -p 80:80 \
   -e DB_USERNAME=bagisto_user \
   -e DB_PASSWORD=your_secure_password \
   -e APP_URL=https://your-domain.com \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 When `DB_HOST` is set to anything other than `127.0.0.1` or `localhost`:
@@ -842,7 +842,7 @@ docker exec -it -e PGPASSWORD=bagisto bagisto psql -h 127.0.0.1 -U bagisto bagis
 
 ## 15. Upgrading Bagisto Version
 
-The Bagisto source is baked into the image at build time. New official versions are published to Docker Hub automatically when the corresponding `v*` Git tag is pushed to `bagisto/bagisto` — just `docker pull webkul/bagisto:2.5.0` (or `:latest`) to get the new image.
+The Bagisto source is baked into the image at build time. New official versions are published to Docker Hub automatically when the corresponding `v*` Git tag is pushed to `bagisto/bagisto` — just `docker pull ecomforyou/ecomforyou:2.5.0` (or `:latest`) to get the new image.
 
 For custom or local rebuilds:
 
@@ -885,7 +885,7 @@ docker exec -u www-data bagisto php /var/www/bagisto/artisan migrate --force
 **Fix** — map to a different host port:
 
 ```bash
-docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 webkul/bagisto:latest
+docker run -d --name bagisto -p 8080:80 -e APP_URL=http://localhost:8080 ecomforyou/ecomforyou:latest
 ```
 
 Or find what's holding port 80:
@@ -915,7 +915,7 @@ A `docker build` that stops with `ERROR: MySQL did not start within 60 seconds.`
 ```bash
 docker stop bagisto && docker rm bagisto
 docker volume rm bagisto-mysql
-docker run -d --name bagisto -p 80:80 -v bagisto-mysql:/var/lib/mysql webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 -v bagisto-mysql:/var/lib/mysql ecomforyou/ecomforyou:latest
 ```
 
 ### Permissions errors on `storage/` or `bootstrap/cache/`
@@ -944,7 +944,7 @@ docker run -d --name bagisto -p 80:80 \
   -e DB_DATABASE=bagisto \
   -e DB_USERNAME=root \
   -e DB_PASSWORD=root \
-  webkul/bagisto:latest
+  ecomforyou/ecomforyou:latest
 ```
 
 ### Nginx / PHP-FPM / MySQL not running
@@ -1050,7 +1050,7 @@ Alpine would save ~72 MB on the base — about **2%** of the total image. That's
 The goal is a Docker Hub-style "appliance" experience:
 
 ```bash
-docker run -p 80:80 webkul/bagisto:latest
+docker run -p 80:80 ecomforyou/ecomforyou:latest
 # Open browser → Bagisto is running
 ```
 

@@ -84,7 +84,7 @@ You can browse through the Free [Live Demo](https://demo.bagisto.com/)
 A single command gives you a fully installed store — migrations, seed data and search indexes are all baked into the image, so there is no first-run setup.
 
 ```bash
-docker run -d --name bagisto -p 80:80 webkul/bagisto:latest
+docker run -d --name bagisto -p 80:80 ecomforyou/ecomforyou:latest
 ```
 
 Images are published for each web server and each database, so you can match whatever you already run:
@@ -95,7 +95,7 @@ Images are published for each web server and each database, so you can match wha
 | **Apache** | `:latest-apache` · `:latest-apache-mysql` | `:latest-apache-mariadb` | `:latest-apache-postgres` |
 | **OpenLiteSpeed** | `:latest-litespeed` · `:latest-litespeed-mysql` | `:latest-litespeed-mariadb` | `:latest-litespeed-postgres` |
 
-Pin a release by swapping `latest` for the version, e.g. `webkul/bagisto:2.5.0-nginx-postgres`. Setting `DB_HOST` to an external server skips the bundled database entirely. Full details in [`docker/production/README.md`](docker/production/README.md).
+Pin a release by swapping `latest` for the version, e.g. `ecomforyou/ecomforyou:2.5.0-nginx-postgres`. Setting `DB_HOST` to an external server skips the bundled database entirely. Full details in [`docker/production/README.md`](docker/production/README.md).
 
 ## ☁️ Bagisto Cloud Hosting
 
@@ -114,10 +114,6 @@ You can also deploy Bagisto quickly using our pre-configured Amazon Machine Imag
 👉 [**Launch Bagisto on AWS**](https://aws.amazon.com/marketplace/pp/prodview-r3xv62axcqkpa)
 
 This AMI allows you to get started with Bagisto on a cloud environment without manual setup. Ideal for scalable production or testing environments.
-
-# Accelerate Your Online Store Launch with the Bagisto Starter Pack!
-
-Empower your e-commerce journey with the [Bagisto Starter Pack](https://store.webkul.com/bagisto-starter-pack.html), streamlining setup and integration for a seamless online store launch. Get ready to unlock success in the digital marketplace!
 
 # Open Source B2B eCommerce Platform
 

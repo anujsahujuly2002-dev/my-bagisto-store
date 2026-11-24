@@ -1,0 +1,24 @@
+{
+    "name": "bagisto/laravel-inventory",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Inventory\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Inventory\\Providers\\InventoryServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

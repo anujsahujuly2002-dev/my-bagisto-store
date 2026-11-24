@@ -1,7 +1,7 @@
 <?php
 
+use EcomForYou\Core\Purifier\Definitions\ExtendedHtml5Definition;
 use Stevebauman\Purify\Cache\CacheDefinitionCache;
-use Webkul\Core\Purifier\Definitions\ExtendedHtml5Definition;
 
 return [
 

@@ -1,15 +1,15 @@
 <?php
 
-use Webkul\Core\Helpers\SupportedLocales;
+use EcomForYou\Core\Helpers\SupportedLocales;
 
 /**
  * The Vite builds that register client-side validation messages, each with its own plugin, so a
  * locale added to `SupportedLocales` has to reach all three.
  */
 const FRONTEND_VALIDATION_PLUGINS = [
-    'Admin' => 'packages/Webkul/Admin/src/Resources/assets/js/plugins/vee-validate.js',
-    'Shop' => 'packages/Webkul/Shop/src/Resources/assets/js/plugins/vee-validate.js',
-    'Installer' => 'packages/Webkul/Installer/src/Resources/assets/js/plugins/vee-validate.js',
+    'Admin' => 'packages/EcomForYou/Admin/src/Resources/assets/js/plugins/vee-validate.js',
+    'Shop' => 'packages/EcomForYou/Shop/src/Resources/assets/js/plugins/vee-validate.js',
+    'Installer' => 'packages/EcomForYou/Installer/src/Resources/assets/js/plugins/vee-validate.js',
 ];
 
 /**

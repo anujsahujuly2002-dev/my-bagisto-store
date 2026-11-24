@@ -1,0 +1,25 @@
+{
+    "name": "bagisto/laravel-social-login",
+    "description": "Shipping Package for Shipping Method",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "rahulshukla-ecomforyou"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\SocialLogin\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\SocialLogin\\Providers\\SocialLoginServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}

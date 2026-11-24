@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/laravel-product",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Product\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Product\\Providers\\ProductServiceProvider"
+            ],
+            "aliases": {
+                "Bouncer": "EcomForYou\\Product\\Facades\\Bouncer"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}

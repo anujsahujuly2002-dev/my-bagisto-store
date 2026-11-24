@@ -8,7 +8,7 @@ use League\Fractal\Serializer\DataArraySerializer;
 |--------------------------------------------------------------------------
 |
 | Settings for the l5-repository package every Bagisto repository is built
-| on. Bagisto extends it in `Webkul\Core\Eloquent\Repository`, so the cache
+| on. Bagisto extends it in `EcomForYou\Core\Eloquent\Repository`, so the cache
 | options below are read through that class rather than used directly.
 |
 */
@@ -97,7 +97,7 @@ return [
         |--------------------------------------------------------------------------
         |
         | What happens to a repository's cached reads once it writes. Bagisto
-        | handles this in `Webkul\Core\Listeners\CleanCacheRepository`, which moves
+        | handles this in `EcomForYou\Core\Listeners\CleanCacheRepository`, which moves
         | the repository on to a new cache generation. Every key carries the
         | generation it was written under, so the old ones simply stop being
         | reachable and expire on their own.
@@ -183,27 +183,27 @@ return [
         |
         */
         'repositories' => [
-            'Webkul\Core\Repositories\CoreConfigRepository' => [
+            'EcomForYou\Core\Repositories\CoreConfigRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\ChannelRepository' => [
+            'EcomForYou\Core\Repositories\ChannelRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CountryRepository' => [
+            'EcomForYou\Core\Repositories\CountryRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CountryStateRepository' => [
+            'EcomForYou\Core\Repositories\CountryStateRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\CurrencyRepository' => [
+            'EcomForYou\Core\Repositories\CurrencyRepository' => [
                 'enabled' => true,
             ],
 
-            'Webkul\Core\Repositories\LocaleRepository' => [
+            'EcomForYou\Core\Repositories\LocaleRepository' => [
                 'enabled' => true,
             ],
         ],

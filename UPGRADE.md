@@ -61,8 +61,8 @@ composer install
 php artisan migrate --force
 
 # Rebuild the Admin and Shop bundles, each from its own package directory
-(cd packages/Webkul/Admin && npm install && npm run build)
-(cd packages/Webkul/Shop && npm install && npm run build)
+(cd packages/EcomForYou/Admin && npm install && npm run build)
+(cd packages/EcomForYou/Shop && npm install && npm run build)
 
 # Clear every cached config, route, view and compiled service, and the page cache
 php artisan optimize:clear
@@ -108,7 +108,7 @@ The migration adds `audience`, `data` and a nullable `notifiable` recipient to `
 What this changes for custom code:
 
 - **An existing notification's `type` changes from `order` to `order.placed`.** A query filtering on `type = 'order'` matches nothing after the upgrade; filter on `order_id` being set instead.
-- **`Webkul\Notification\Events\CreateOrderNotification`, `UpdateOrderNotification` and the `Webkul\Notification\Listeners\Order` listener are gone.** The Admin package broadcasts `Webkul\Admin\Events\NotificationCreated` as `notification-created` on the `admin.notifications` channel with an empty payload, so an Echo listener on `.create-notification` or `.update-notification` listens for `.notification-created` and fetches the feed. The Notification package itself fires `notification.create.before` and `notification.create.after`.
+- **`EcomForYou\Notification\Events\CreateOrderNotification`, `UpdateOrderNotification` and the `EcomForYou\Notification\Listeners\Order` listener are gone.** The Admin package broadcasts `EcomForYou\Admin\Events\NotificationCreated` as `notification-created` on the `admin.notifications` channel with an empty payload, so an Echo listener on `.create-notification` or `.update-notification` listens for `.notification-created` and fetches the feed. The Notification package itself fires `notification.create.before` and `notification.create.after`.
 - **The earlier routes are deprecated and still answer in their earlier shape**, listing placed orders only: `admin.notification.get_notification` (`get-notifications`), `admin.notification.viewed_notification` (`viewed-notifications/{orderId}`) and the `read-all-notifications` path, now named `admin.notification.read_all_notifications`. Their replacements are `admin.notification.list`, `admin.notification.open`, which takes the notification's id, `admin.notification.mark_read` and `admin.notification.mark_unread`. `admin.notification.read_all` now points at `notifications/read-all` and answers with `unread` and `message` in place of `search_results`, `total_unread` and `success_message`, so a bell override posting to it reads the new keys.
 - **`NotificationRepository::getParamsData()` and `getAll()` are deprecated** and list placed orders as before, their `read` filter now meaning read by any admin. Their replacements are `paginateFor()`, `unreadCountsFor()`, `findFor()`, `markRead()`, `markUnread()` and `markAllRead()`, each taking the reader model it acts for and, where it lists, the audience. The repository's constructor is unchanged.
 - **`Notification::order()` is deprecated.** Read the order's id from the notification's `data`.
@@ -136,7 +136,7 @@ return [
 ];
 ```
 
-The class extends `Webkul\Notification\Types\AbstractType`: `data()` builds what is kept from the subject, `shouldNotify()` lets it pass on some of the events it listens to, `shouldMarkReadForCauser()` decides whether the admin whose own action raised it sees it already read, `title()`, `message()`, `url()`, `icon()` and `tone()` render it in the language of the user reading it, and `recipients()` addresses it to particular users rather than the whole audience. Without `events`, raise it by name with `notifier()->notify('marketing.campaign-sent', $campaign)`. The Notification package's `Config/notification-groups.php` and `Config/notification-types.php` document every key, and the Admin package registers the built-in types the same way.
+The class extends `EcomForYou\Notification\Types\AbstractType`: `data()` builds what is kept from the subject, `shouldNotify()` lets it pass on some of the events it listens to, `shouldMarkReadForCauser()` decides whether the admin whose own action raised it sees it already read, `title()`, `message()`, `url()`, `icon()` and `tone()` render it in the language of the user reading it, and `recipients()` addresses it to particular users rather than the whole audience. Without `events`, raise it by name with `notifier()->notify('marketing.campaign-sent', $campaign)`. The Notification package's `Config/notification-groups.php` and `Config/notification-types.php` document every key, and the Admin package registers the built-in types the same way.
 
 A type raised from `events` is notified after the transaction the event fired in commits, and a failure is reported rather than thrown, so a notification cannot roll back the order or refund that raised it. `notifier()->notify()` called directly notifies at once and throws to its caller.
 
@@ -179,8 +179,8 @@ What this changes for custom code:
 
 - **Two storefront endpoints are new.** `shop.api.customers.addresses.allowed_countries` (`api/customer/addresses/allowed-countries`) and `shop.api.customers.addresses.allowed_states` (`api/customer/addresses/allowed-states`) answer in the shape of `shop.api.core.countries` and `shop.api.core.states`, narrowed to the limit. The two existing endpoints are unchanged and still list every country.
 - **A theme overriding the checkout address form or the cart's shipping estimate** still calls the unlimited endpoints, so it lists countries the server will refuse. Point it at the two new routes.
-- **A theme overriding the account address create or edit view** lists `core()->countries()` and `core()->groupedStatesByCountries()`. Use `\Webkul\Customer\Facades\AddressSettings::allowedCountries()` and `allowedGroupedStates()` in their place.
-- **A custom form request validating a storefront address** adds `new \Webkul\Customer\Rules\AllowedCountry` to its country rule to enforce the limit. An admin one passes the customer's channel code, `new AllowedCountry($channelCode)`, as `AddressRequest` and `CartAddressRequest` do; every `AddressSettings` reader takes the same optional channel code.
+- **A theme overriding the account address create or edit view** lists `core()->countries()` and `core()->groupedStatesByCountries()`. Use `\EcomForYou\Customer\Facades\AddressSettings::allowedCountries()` and `allowedGroupedStates()` in their place.
+- **A custom form request validating a storefront address** adds `new \EcomForYou\Customer\Rules\AllowedCountry` to its country rule to enforce the limit. An admin one passes the customer's channel code, `new AllowedCountry($channelCode)`, as `AddressRequest` and `CartAddressRequest` do; every `AddressSettings` reader takes the same optional channel code.
 
 ---
 
@@ -188,12 +188,12 @@ What this changes for custom code:
 
 **Impact Probability: Low**
 
-`core()->isCountryRequired()`, `core()->isStateRequired()` and `core()->isPostCodeRequired()` read settings that belong to the customer's address, so they now live on `Webkul\Customer\AddressSettings`, reached through the `Webkul\Customer\Facades\AddressSettings` facade, beside the new allowed-country readers.
+`core()->isCountryRequired()`, `core()->isStateRequired()` and `core()->isPostCodeRequired()` read settings that belong to the customer's address, so they now live on `EcomForYou\Customer\AddressSettings`, reached through the `EcomForYou\Customer\Facades\AddressSettings` facade, beside the new allowed-country readers.
 
 What this changes for custom code:
 
 - **The three `core()` methods still work** and answer the same, but are deprecated. Call `AddressSettings::isCountryRequired()`, `AddressSettings::isStateRequired()` and `AddressSettings::isPostCodeRequired()` instead.
-- **A class overriding one of the three on a bound `Core` subclass** is no longer consulted by core's own views and form requests, which read the facade. Bind a subclass of `Webkul\Customer\AddressSettings` instead.
+- **A class overriding one of the three on a bound `Core` subclass** is no longer consulted by core's own views and form requests, which read the facade. Bind a subclass of `EcomForYou\Customer\AddressSettings` instead.
 
 ---
 
@@ -316,9 +316,9 @@ composer install
 php artisan migrate --force
 
 # Rebuild the Admin, Shop and Installer bundles, each from its own package directory
-(cd packages/Webkul/Admin && npm install && npm run build)
-(cd packages/Webkul/Shop && npm install && npm run build)
-(cd packages/Webkul/Installer && npm install && npm run build)
+(cd packages/EcomForYou/Admin && npm install && npm run build)
+(cd packages/EcomForYou/Shop && npm install && npm run build)
+(cd packages/EcomForYou/Installer && npm install && npm run build)
 
 # Clear every cached config, route, view and compiled service, and the page cache
 php artisan optimize:clear
@@ -380,7 +380,7 @@ What this changes for custom code:
 
 Most admin and storefront forms accepted a text value of any length, while the columns behind them hold 255 characters. A longer value was cut short without a word on MySQL outside strict mode, and failed the save with a database error on PostgreSQL and strict MySQL. The requests now carry the column's limit, so a value that cannot fit is refused with a validation error on its field and nothing is written.
 
-The limits cover the codes, names, titles, url keys, emails, phone numbers and similar fields of the catalog, customer, sales, marketing, CMS, settings and RMA forms, the admin account, the storefront's registration, profile and address forms, and the customer, tax rate and product importers, which report an over-long cell as a row error. Street lines are stored in one column, so the new `Webkul\Core\Rules\AddressLines` rule refuses an address whose lines, joined with `PHP_EOL` as they are stored, run past 255 characters; the admin and storefront address forms and both checkout address requests use it.
+The limits cover the codes, names, titles, url keys, emails, phone numbers and similar fields of the catalog, customer, sales, marketing, CMS, settings and RMA forms, the admin account, the storefront's registration, profile and address forms, and the customer, tax rate and product importers, which report an over-long cell as a row error. Street lines are stored in one column, so the new `EcomForYou\Core\Rules\AddressLines` rule refuses an address whose lines, joined with `PHP_EOL` as they are stored, run past 255 characters; the admin and storefront address forms and both checkout address requests use it.
 
 What this changes for custom code:
 
@@ -398,9 +398,9 @@ The catalogue treats `ABC-1` and `abc-1` as one SKU, but the product importer co
 
 Three more kinds of row are now handled rather than imported as given or failing the import:
 
-- **A url key that is not a slug**, such as one holding a space, a slash or a dot, fails `Webkul\Core\Rules\Slug` with a row error. It used to be imported, leaving a product the storefront could not route to.
+- **A url key that is not a slug**, such as one holding a space, a slash or a dot, fails `EcomForYou\Core\Rules\Slug` with a row error. It used to be imported, leaving a product the storefront could not route to.
 - **A row naming an attribute family that does not exist** is reported as such. `Importer::ERROR_SUPER_ATTRIBUTE_CODE_NOT_FOUND` held `attribute_family_code_not_found`, the value of `ERROR_INVALID_ATTRIBUTE_FAMILY_CODE`, so one message replaced the other and an unknown family crashed validation; it now holds `super_attribute_code_not_found`.
-- **A step that fails partway is rolled back.** `Webkul\DataTransfer\Helpers\Import::start()`, `link()` and `index()` commit only once the step completes. They used to commit in a `finally` block, so a step that failed with a PHP error kept whatever it had written before failing.
+- **A step that fails partway is rolled back.** `EcomForYou\DataTransfer\Helpers\Import::start()`, `link()` and `index()` commit only once the step completes. They used to commit in a `finally` block, so a step that failed with a PHP error kept whatever it had written before failing.
 
 What this changes for custom code:
 
@@ -445,7 +445,7 @@ What this changes for custom code:
 - **Review attachments accept a fixed list of types.** The storefront review API took any `image/*` or `video/*`; it now takes BMP, JPEG, PNG, WebP, GIF, SVG, MP4, WebM and QuickTime, so a HEIC or AVIF photo or an Ogg video is refused with a validation error.
 - **The admin image and video pickers take `accepted-types` and `max-size`, and the storefront picker `max-size`.** Each is optional and defaults to what the component accepted before — `image/*` for admin images, the product video formats for videos and no size limit — so an existing call keeps working.
 - **`admin::app.components.media.videos.allowed-types` is gone.** The videos panel builds its hint from the accepted extensions, so a view that printed the key now shows it raw.
-- **`Webkul\Product\ProductVideo` declares its types.** `getVideos(?Product $product): array` replaces the untyped `getVideos($product)`, so a subclass bound in its place has to match. `ProductVideo::FORMATS` maps each accepted extension to its MIME type, read through `getAllowedExtensions()` and `getAllowedMimeTypes()`, which return collections.
+- **`EcomForYou\Product\ProductVideo` declares its types.** `getVideos(?Product $product): array` replaces the untyped `getVideos($product)`, so a subclass bound in its place has to match. `ProductVideo::FORMATS` maps each accepted extension to its MIME type, read through `getAllowedExtensions()` and `getAllowedMimeTypes()`, which return collections.
 
 ---
 
@@ -488,7 +488,7 @@ A role granted only some permissions may see one of these actions appear or disa
 
 **Impact Probability: Low**
 
-An SVG the sanitizer cannot parse used to be written to disk as an empty file while the upload reported success, leaving a blank image behind. `Webkul\Core\Traits\Sanitizer` now reports whether it could read the file: `sanitizeSVG()` returns `true` once the file is sanitized in place, and `false` after deleting a file it could not parse, keeping the parser's complaints in `$svgSanitizeIssues`.
+An SVG the sanitizer cannot parse used to be written to disk as an empty file while the upload reported success, leaving a blank image behind. `EcomForYou\Core\Traits\Sanitizer` now reports whether it could read the file: `sanitizeSVG()` returns `true` once the file is sanitized in place, and `false` after deleting a file it could not parse, keeping the parser's complaints in `$svgSanitizeIssues`.
 
 Every caller refuses the upload rather than keeping the file. Saving a configuration field, a locale logo, a product attribute image or file, or a review attachment now fails with the validation message `core::app.errors.invalid-svg`, and the TinyMCE media endpoint answers with an error. Code that drove any of these and expected an empty file to be stored now receives a validation error instead.
 
@@ -496,7 +496,7 @@ What this changes for custom code:
 
 - **`Sanitizer::sanitizeSVG()` returns `bool`.** A class that overrides it has to declare the return type, and a caller that wants the old behaviour has to ignore the value deliberately.
 - **Review attachments are recorded as a batch.** `ProductReviewAttachmentRepository::upload()` stores every file first and records them only once all of them are readable, so one unreadable file leaves neither rows nor files behind.
-- **`ProductReviewRepository` takes `ProductReviewAttachmentRepository` in its constructor**, so resolve it through the container rather than building it by hand. Its new `createWithAttachments()` writes the review and its attachments in one transaction, and `Webkul\Shop\Http\Controllers\API\ReviewController` calls that instead of creating the review and uploading the attachments itself — the controller no longer injects `ProductReviewAttachmentRepository`.
+- **`ProductReviewRepository` takes `ProductReviewAttachmentRepository` in its constructor**, so resolve it through the container rather than building it by hand. Its new `createWithAttachments()` writes the review and its attachments in one transaction, and `EcomForYou\Shop\Http\Controllers\API\ReviewController` calls that instead of creating the review and uploading the attachments itself — the controller no longer injects `ProductReviewAttachmentRepository`.
 - **Configuration saves, locale saves and product updates run in a transaction**, so a refused file rolls the rest of the save back.
 
 ---
@@ -555,11 +555,11 @@ $reviews = $this->productReviewRepository->getCustomerReviews(
 
 **Impact Probability: Low**
 
-Invoicing an order from the admin with *Create Transaction* ticked used to be carried out by `Webkul\Admin\Listeners\Invoice`, which read the request inside the listener. That listener fires for every invoice, including the ones a payment gateway raises with no request behind it, so the check now sits in `Webkul\Admin\Http\Controllers\Sales\InvoiceController::store()` — the one place the form posts to — and the invoice and its transaction are written in a single database transaction.
+Invoicing an order from the admin with *Create Transaction* ticked used to be carried out by `EcomForYou\Admin\Listeners\Invoice`, which read the request inside the listener. That listener fires for every invoice, including the ones a payment gateway raises with no request behind it, so the check now sits in `EcomForYou\Admin\Http\Controllers\Sales\InvoiceController::store()` — the one place the form posts to — and the invoice and its transaction are written in a single database transaction.
 
 What this changes for custom code:
 
-- **`Webkul\Admin\Listeners\Invoice::createTransaction()` is gone**, together with the `OrderTransactionRepository` the listener took in its constructor. The listener now only sends the admin notification. `OrderTransactionRepository::createForInvoice()` builds the same row from the invoice.
+- **`EcomForYou\Admin\Listeners\Invoice::createTransaction()` is gone**, together with the `OrderTransactionRepository` the listener took in its constructor. The listener now only sends the admin notification. `OrderTransactionRepository::createForInvoice()` builds the same row from the invoice.
 - **`InvoiceController` takes `OrderTransactionRepository` in its constructor**, so resolve it through the container rather than building it by hand.
 - **The invoice carried by `sales.invoice.save.after` no longer has a `can_create_transaction` attribute.** It was never a column, and setting it left the model unsaveable, so saving the invoice again in the same request failed. A listener that read it should read `request()->boolean('can_create_transaction')` itself.
 
@@ -666,15 +666,15 @@ This changes nothing for an installation that is not built from those images. `.
 
 **Impact Probability: Low**
 
-A PayPal Standard order used to be created only when the buyer came back to the store, so a buyer who paid and closed the tab left the money at PayPal, the cart active and no order — and every one of PayPal's retries failed with a 500. `Webkul\Paypal\Helpers\Ipn` now places the order from the cart named in the notification's `invoice` field when there is none, the way the Stripe, PayU, PhonePe and PayGlocal webhooks already did, under a cache lock so the buyer's return and PayPal's retries cannot produce two orders.
+A PayPal Standard order used to be created only when the buyer came back to the store, so a buyer who paid and closed the tab left the money at PayPal, the cart active and no order — and every one of PayPal's retries failed with a 500. `EcomForYou\Paypal\Helpers\Ipn` now places the order from the cart named in the notification's `invoice` field when there is none, the way the Stripe, PayU, PhonePe and PayGlocal webhooks already did, under a cache lock so the buyer's return and PayPal's retries cannot produce two orders.
 
-**Check the configured PayPal account before upgrading.** The notification is now accepted only when its `receiver_email` or `business` matches **Configuration → Sales → Payment Methods → PayPal Standard → Business Account**, and only when `mc_currency` matches the currency the order was raised in. A store whose configured address is not the one receiving the money — the shipped default is `test@webkul.com` — had its notifications processed before and will have them refused now.
+**Check the configured PayPal account before upgrading.** The notification is now accepted only when its `receiver_email` or `business` matches **Configuration → Sales → Payment Methods → PayPal Standard → Business Account**, and only when `mc_currency` matches the currency the order was raised in. A store whose configured address is not the one receiving the money — the shipped default is `test@example.com` — had its notifications processed before and will have them refused now.
 
 What this changes for custom code:
 
-- **`Ipn::processIpn()` takes an `array` and returns a `Webkul\Paypal\Enums\IpnStatus`** rather than returning nothing and rethrowing. `StandardController::ipn()` answers with that status's value as JSON, and with a 500 only when PayPal should send the notification again.
+- **`Ipn::processIpn()` takes an `array` and returns a `EcomForYou\Paypal\Enums\IpnStatus`** rather than returning nothing and rethrowing. `StandardController::ipn()` answers with that status's value as JSON, and with a 500 only when PayPal should send the notification again.
 - **`Ipn` takes `CartRepository`** as its second constructor argument, so resolve it through the container rather than building it by hand.
-- **`payment_status` is read as a `Webkul\Paypal\Enums\PaypalPaymentStatus`**, and the protocol strings the helper compares against are constants on `Ipn` — `VALIDATION_COMMAND`, `VERIFIED_RESPONSE`, `RECURRING_TRANSACTION_TYPE` and `DEFAULT_PAYMENT_TYPE`.
+- **`payment_status` is read as a `EcomForYou\Paypal\Enums\PaypalPaymentStatus`**, and the protocol strings the helper compares against are constants on `Ipn` — `VALIDATION_COMMAND`, `VERIFIED_RESPONSE`, `RECURRING_TRANSACTION_TYPE` and `DEFAULT_PAYMENT_TYPE`.
 - **`paypal/standard/ipn` runs in the `web` middleware group**, with request forgery prevention removed on the route, which is how every other gateway's webhook is registered. The route name is unchanged.
 
 ---
@@ -683,7 +683,7 @@ What this changes for custom code:
 
 **Impact Probability: Medium**
 
-`Webkul\Checkout\Cart` had grown to carry a complete tax engine and the whole cart-address pipeline alongside its own job of holding a cart. Both have moved into collaborators — `Webkul\Checkout\Helpers\CartTax` and `Webkul\Checkout\Helpers\CartAddress` — and `Cart` now delegates to them. Every public method of the facade is unchanged and still does what it did, so storefront and admin code that goes through `Cart::` is unaffected.
+`EcomForYou\Checkout\Cart` had grown to carry a complete tax engine and the whole cart-address pipeline alongside its own job of holding a cart. Both have moved into collaborators — `EcomForYou\Checkout\Helpers\CartTax` and `EcomForYou\Checkout\Helpers\CartAddress` — and `Cart` now delegates to them. Every public method of the facade is unchanged and still does what it did, so storefront and admin code that goes through `Cart::` is unaffected.
 
 What this changes for custom code:
 
@@ -727,7 +727,7 @@ What this changes for custom code:
 
 **Impact Probability: Medium**
 
-Every cart event is now dispatched from `Webkul\Checkout\Cart`; the new helpers dispatch nothing. Two cart mutations that announced nothing now do, and two existing pairs fire on more paths than before.
+Every cart event is now dispatched from `EcomForYou\Checkout\Cart`; the new helpers dispatch nothing. Two cart mutations that announced nothing now do, and two existing pairs fire on more paths than before.
 
 What this changes for custom code:
 
@@ -782,8 +782,8 @@ What this changes for custom code:
 
 What this changes for custom code:
 
-- **`Webkul\Checkout\Repositories\CartPaymentRepository`** is new, and the write now goes through it — so a Concord model swap for `CartPayment` is honoured.
-- **`Webkul\Checkout\Models\CartPayment` declares `$fillable`** (`method`, `method_title`, `cart_id`). The model was previously fully guarded, so a repository `create()` would have thrown a `MassAssignmentException`.
+- **`EcomForYou\Checkout\Repositories\CartPaymentRepository`** is new, and the write now goes through it — so a Concord model swap for `CartPayment` is honoured.
+- **`EcomForYou\Checkout\Models\CartPayment` declares `$fillable`** (`method`, `method_title`, `cart_id`). The model was previously fully guarded, so a repository `create()` would have thrown a `MassAssignmentException`.
 - **The delete and the insert run in one transaction**, and a request with no `payment.method` returns `false` instead of throwing after the delete had already committed.
 
 ---
@@ -876,7 +876,7 @@ Both readers now go through one guard, which accepts strictly less than `initCar
 
 What this changes for custom code:
 
-- **`Webkul\Checkout\Cart::sessionCart()` and `sessionCartId()`** are new `protected` methods. A subclass that overrode the session read by other means should move onto them.
+- **`EcomForYou\Checkout\Cart::sessionCart()` and `sessionCartId()`** are new `protected` methods. A subclass that overrode the session read by other means should move onto them.
 - **A key holding anything other than the object the cart writes is discarded** rather than dereferenced. Reading `->id` off, say, an integer previously threw an `ErrorException` from inside the constructor — before any of the class's own `session()->forget('cart')` lines could run — so the visitor got a 500 on every storefront page until the cookie was cleared. No core writer produces that shape; only third-party code did.
 - **`mergeCart()` returns without merging** when the key fails the guard, instead of adopting or merging the cart it names.
 
@@ -906,15 +906,15 @@ Buy Now now checks out on its own isolated cart yet mirrors the bought product i
 
 What this changes for custom code:
 
-- **`Webkul\Checkout\Cart::createBuyNowCart(ProductContract $product, array $data)`** is new. It creates a cart marked `is_buy_now` and left inactive, adds the one product to it, mirrors that same product into the shopper's basket, remembers the buy-now cart against the session and returns it. The storefront's Buy Now add calls it in place of the ordinary add.
-- **`Webkul\Checkout\Cart::useBuyNowCart(int $cartId)`** is new. It points the facade at a buy-now cart the visitor owns for the current request only, without writing the `cart` session key, so the checkout and the gateway act on that cart while the session's basket pointer stays put. It returns `false` for a cart that is not a buy-now cart this visitor owns.
-- **`Webkul\Checkout\Http\Middleware\ResolveBuyNowCart`** is new. It reads a `buy_now` cart id from the request and calls `useBuyNowCart()` before the request reads the cart. It is registered in the **`shop` middleware group** and aliased as **`cart.buy_now`** by `CheckoutServiceProvider`. **Every payment gateway's route group now carries `cart.buy_now`**, so the forward leg to the gateway acts on the buy-now cart; a non-Shop entry point applies the alias to its own routes.
+- **`EcomForYou\Checkout\Cart::createBuyNowCart(ProductContract $product, array $data)`** is new. It creates a cart marked `is_buy_now` and left inactive, adds the one product to it, mirrors that same product into the shopper's basket, remembers the buy-now cart against the session and returns it. The storefront's Buy Now add calls it in place of the ordinary add.
+- **`EcomForYou\Checkout\Cart::useBuyNowCart(int $cartId)`** is new. It points the facade at a buy-now cart the visitor owns for the current request only, without writing the `cart` session key, so the checkout and the gateway act on that cart while the session's basket pointer stays put. It returns `false` for a cart that is not a buy-now cart this visitor owns.
+- **`EcomForYou\Checkout\Http\Middleware\ResolveBuyNowCart`** is new. It reads a `buy_now` cart id from the request and calls `useBuyNowCart()` before the request reads the cart. It is registered in the **`shop` middleware group** and aliased as **`cart.buy_now`** by `CheckoutServiceProvider`. **Every payment gateway's route group now carries `cart.buy_now`**, so the forward leg to the gateway acts on the buy-now cart; a non-Shop entry point applies the alias to its own routes.
 - **The checkout carries the cart in a `buy_now` query parameter, as an encrypted token rather than the raw id.** `Cart::buyNowToken()` encrypts the id (via `Crypt`, keyed on `APP_KEY`) and `Cart::parseBuyNowToken()` reads it back, returning null for a missing or tampered value. `OnepageController::storeOrder()` appends the token to a gateway redirect URL for a buy-now cart (`withBuyNow()`), the checkout page carries it on every request, and the `cart.buy_now` middleware decodes it. So the sequential id is never exposed and the token cannot be forged; ownership is still checked on top of it.
 - **A migration adds a nullable `is_buy_now` boolean to `cart`**, defaulting to 0, and the `Cart` model casts it to boolean. `Cart::BUY_NOW_CARTS_KEY` (`buy_now_cart_ids`) is the session key holding the buy-now cart ids a guest session has started, so a guest's ownership is recognised before they sign in.
 - **A buy-now cart begun by a guest who then signs in is handed to that customer.** `mergeCart()` adopts the session's buy-now carts to the customer (`adoptBuyNowCarts()`) alongside the usual basket adoption, so a Buy Now started before signing in can still be checked out afterwards. A buy-now cart belongs to the guest session that created it or to the customer whose id it carries, and one visitor can never drive another's.
 - **`deActivateCart()` now drops the `cart` session key only when that key names the cart being deactivated.** Placing a buy-now order deactivates the buy-now cart, and this keeps that from dropping the shopper's basket pointer. The other callers run after an order exists and are unaffected.
 - **`setCart()` never points the `cart` session key at a buy-now cart.** A gateway that resolves a guest's buy-now cart by its own reference and places the order can no longer orphan the basket pointer through the session.
-- **A completed buy now is taken back out of the basket.** `Webkul\Checkout\Cart::removeBuyNowItemsFromBasket()` is new, and a listener on `checkout.order.save.after` (registered in the Checkout `EventServiceProvider`) calls it for every order: when the order's cart is a buy-now cart, the bought quantity is subtracted from the basket the Buy Now mirrored into, so a finished Buy Now leaves the basket as it was while an unfinished one stays in it. The basket is found by the customer's id for a signed-in shopper and by the session for a guest. The one case it cannot reach is a guest who pays through a redirect gateway and never returns, so only the webhook places the order: with no session, that guest's mirrored item lingers in the basket until they remove it.
+- **A completed buy now is taken back out of the basket.** `EcomForYou\Checkout\Cart::removeBuyNowItemsFromBasket()` is new, and a listener on `checkout.order.save.after` (registered in the Checkout `EventServiceProvider`) calls it for every order: when the order's cart is a buy-now cart, the bought quantity is subtracted from the basket the Buy Now mirrored into, so a finished Buy Now leaves the basket as it was while an unfinished one stays in it. The basket is found by the customer's id for a signed-in shopper and by the session for a guest. The one case it cannot reach is a guest who pays through a redirect gateway and never returns, so only the webhook places the order: with no session, that guest's mirrored item lingers in the basket until they remove it.
 - **A gateway places a buy-now order even though its cart is inactive.** Stripe, PayPal, PayU, PayGlocal and PhonePe refused a cart that was not active before turning a paid checkout into an order; that check now also admits a buy-now cart (`! is_active && ! is_buy_now`), so an online payment for a Buy Now becomes an order while a genuinely abandoned cart is still refused. Duplicate orders are still held off by the existing per-cart lock and the order-already-placed lookup, not by that check. Razorpay has no such check and reaches its buy-now cart through the `cart.buy_now` middleware; it and PayPal Standard carry the `buy_now` token onto their return URL, their return leg having no other handle on the cart.
 - **A replayed buy now order is not placed twice.** `OnepageController::storeOrder()` now returns the order a buy-now cart already has rather than creating a second one, the way the gateways do. A buy-now cart stays reachable by its token even after it is deactivated, so a resubmitted Cash on Delivery buy now would otherwise order twice; an ordinary cart is unaffected, since it goes inactive and is no longer resolved at all. The checkout page guards the same way — `OnepageController@index` sends a shopper whose buy-now cart already has an order to that order's success page rather than a fresh checkout, so pressing Back after a Buy Now does not reopen a working checkout for the purchased product.
 
@@ -926,7 +926,7 @@ A Buy Now the shopper cancels or abandons leaves the bought product in the baske
 
 **Impact Probability: Low**
 
-The **Allow Guest Checkout** setting, and the rule that a downloadable product needs an account, were enforced only by the checkout page, so a guest who called the checkout API directly could save an address and place an order with guest checkout turned off. `Webkul\Checkout\Cart::requiresSignInToCheckout()` is new and states the rule once — guest checkout off, no cart, a downloadable product, or a product whose **Guest Checkout** attribute is off — and the checkout page, the address and order steps of `Webkul\Shop\Http\Controllers\API\OnepageController`, the PayPal Smart Button and the redirect leg of every bundled gateway all use it.
+The **Allow Guest Checkout** setting, and the rule that a downloadable product needs an account, were enforced only by the checkout page, so a guest who called the checkout API directly could save an address and place an order with guest checkout turned off. `EcomForYou\Checkout\Cart::requiresSignInToCheckout()` is new and states the rule once — guest checkout off, no cart, a downloadable product, or a product whose **Guest Checkout** attribute is off — and the checkout page, the address and order steps of `EcomForYou\Shop\Http\Controllers\API\OnepageController`, the PayPal Smart Button and the redirect leg of every bundled gateway all use it.
 
 What this changes for custom code:
 
@@ -956,7 +956,7 @@ What this changes for custom code:
 
 - **`TemplateRegistry::isAdminRequest()` is gone.** A subclass that called it calls the helper instead; one that overrode it to change which requests use only the core image templates overrides `currentTheme()`.
 - **A route that nests the admin segment further down its path is a storefront request**, such as `/api/admin/...`, where the theme loader and the view finder used to treat it as an admin one. Register a route that needs the admin theme under the admin URL itself.
-- **`Webkul\Core\Http\Middleware\PreventRequestsDuringMaintenance` no longer adds `{admin_url}*` to `$except`**, and no longer overrides the constructor. It returns `{admin_url}` and `{admin_url}/*` from `getExcludedPaths()`, which `php artisan down` also writes into the down file, so the page `down --render` serves before the application boots lets the admin panel through as well. A subclass that read the pattern from `$except` reads `getExcludedPaths()` instead, and one that overrides that method calls the parent, or the admin panel answers 503 during maintenance. With `APP_ADMIN_URL` empty, maintenance mode used to let every request through; it now holds back the storefront and the panel alike, so list the admin's address under the channel's allowed IPs.
+- **`EcomForYou\Core\Http\Middleware\PreventRequestsDuringMaintenance` no longer adds `{admin_url}*` to `$except`**, and no longer overrides the constructor. It returns `{admin_url}` and `{admin_url}/*` from `getExcludedPaths()`, which `php artisan down` also writes into the down file, so the page `down --render` serves before the application boots lets the admin panel through as well. A subclass that read the pattern from `$except` reads `getExcludedPaths()` instead, and one that overrides that method calls the parent, or the admin panel answers 503 during maintenance. With `APP_ADMIN_URL` empty, maintenance mode used to let every request through; it now holds back the storefront and the panel alike, so list the admin's address under the channel's allowed IPs.
 - **A product whose url key falls under the admin URL cannot be shown**, such as one imported as `admin/office-chair`: its storefront link answers not found, since every path there belongs to the admin panel. The importer now refuses such a key, since a slash is not part of a slug, but one imported earlier is still there, so look for one in `product_flat.url_key` and change it. Run `php artisan responsecache:clear` after upgrading too, or the page cache keeps serving what it stored for those paths until it expires.
 
 ```php
@@ -983,22 +983,22 @@ The error handler also keeps an HTTP exception's headers now, which it dropped w
 
 **Impact Probability: Low**
 
-A template in `config/imagecache.php` that the image cache could not apply — a class that no longer exists or has no `applyFilter()` method, a closure, a number — was skipped without a word, so `cache/{template}/{path}` served the full-size original, cached for the image lifetime like any resized copy. Those entries are now checked the way a theme's always were: each is reported, at most once an hour, and skipped. `small`, `medium` and `large` then fall back to the package's own classes in `Webkul\ImageCache\Templates`, which also stand in for any of the three the file leaves out, and any other name answers not found.
+A template in `config/imagecache.php` that the image cache could not apply — a class that no longer exists or has no `applyFilter()` method, a closure, a number — was skipped without a word, so `cache/{template}/{path}` served the full-size original, cached for the image lifetime like any resized copy. Those entries are now checked the way a theme's always were: each is reported, at most once an hour, and skipped. `small`, `medium` and `large` then fall back to the package's own classes in `EcomForYou\ImageCache\Templates`, which also stand in for any of the three the file leaves out, and any other name answers not found.
 
 | Entry in `config/imagecache.php` | Before | Now |
 |---|---|---|
-| `'small' => App\Gone::class`, a class that no longer exists | the full-size original, nothing logged | reported, and 100 × 100 from `Webkul\ImageCache\Templates\Small` |
-| `'small' => fn ($image) => $image->cover(120, 120)` | the full-size original, nothing logged | reported, and 100 × 100 from `Webkul\ImageCache\Templates\Small` |
+| `'small' => App\Gone::class`, a class that no longer exists | the full-size original, nothing logged | reported, and 100 × 100 from `EcomForYou\ImageCache\Templates\Small` |
+| `'small' => fn ($image) => $image->cover(120, 120)` | the full-size original, nothing logged | reported, and 100 × 100 from `EcomForYou\ImageCache\Templates\Small` |
 | `'thumb' => App\Gone::class` | the full-size original, nothing logged | reported, and not found |
-| no `medium` entry | not found | 300 × 300 from `Webkul\ImageCache\Templates\Medium` |
+| no `medium` entry | not found | 300 × 300 from `EcomForYou\ImageCache\Templates\Medium` |
 
 Template classes, core and theme alike, are now built by the container rather than with `new`, so a filter's constructor may type-hint what it needs, and binding a template class to a subclass replaces it.
 
 What this changes for custom code:
 
 - **An object in `imagecache.templates` is no longer applied.** Register its class name instead. A configuration holding an object or a closure cannot be cached by `php artisan config:cache` in any case.
-- **The fallback is not the storefront's sizing.** The package's classes crop to 100 × 100, 300 × 300 and 600 × 600, while `Webkul\Shop\CacheFilters`, which the shipped `config/imagecache.php` names, size product, category, swatch and carousel images each their own way. Fix the entry the log names rather than leaving the fallback in place.
-- **A constructor the container cannot satisfy**, such as `__construct(int $width)`, is reported through `Webkul\ImageCache\Exceptions\UnprocessableImage` naming that parameter, and its images answer not found. Give the parameter a default, or bind it with `$this->app->when(YourTemplate::class)->needs('$width')->give(...)`.
+- **The fallback is not the storefront's sizing.** The package's classes crop to 100 × 100, 300 × 300 and 600 × 600, while `EcomForYou\Shop\CacheFilters`, which the shipped `config/imagecache.php` names, size product, category, swatch and carousel images each their own way. Fix the entry the log names rather than leaving the fallback in place.
+- **A constructor the container cannot satisfy**, such as `__construct(int $width)`, is reported through `EcomForYou\ImageCache\Exceptions\UnprocessableImage` naming that parameter, and its images answer not found. Give the parameter a default, or bind it with `$this->app->when(YourTemplate::class)->needs('$width')->give(...)`.
 - **`TemplateRegistry::core()` returns the checked templates**, with the package's own filled in, rather than the raw `imagecache.templates` array, and the protected `isValid()` takes a nullable theme code, which is null for a core entry.
 - **`TemplateRegistry` is resolved once per request or job** and checks each template entry once, again only when its configuration changes, rather than for every image url a page builds, so an override of `isValid()` runs once per entry. Bind a subclass with `$this->app->scoped(TemplateRegistry::class, YourRegistry::class)` to keep that; one bound with `bind()` checks the templates again each time it is resolved.
 - **A template name in `config/imagecache.php` may hold only letters, digits, `-` and `_`**, as a theme's always had to, now that `@` separates a theme in the url, as in `small@fashion`. An entry such as `'large@2x'` or `'thumb.v2'`, which worked before, is now reported and answers not found, so rename it.
@@ -1009,7 +1009,7 @@ What this changes for custom code:
 
 **Impact Probability: Low**
 
-The image cache read the default disk through `Storage::get()`, which swallows a failed read unless the disk sets `throw`, so a remote disk with bad credentials or an unreachable endpoint answered every image not found and logged nothing. It now reads through the disk's driver, and when a read fails it asks the disk whether the file exists. A file that is simply missing stays a silent 404. A file the disk holds but cannot read, or a disk that cannot answer, is reported as `Webkul\ImageCache\Exceptions\UnreadableImage`, at most once an hour per disk and operation.
+The image cache read the default disk through `Storage::get()`, which swallows a failed read unless the disk sets `throw`, so a remote disk with bad credentials or an unreachable endpoint answered every image not found and logged nothing. It now reads through the disk's driver, and when a read fails it asks the disk whether the file exists. A file that is simply missing stays a silent 404. A file the disk holds but cannot read, or a disk that cannot answer, is reported as `EcomForYou\ImageCache\Exceptions\UnreadableImage`, at most once an hour per disk and operation.
 
 What this changes for custom code:
 
@@ -1043,7 +1043,7 @@ The storefront image search kept every upload in `product-search/` on the defaul
 What this changes for custom code:
 
 - **Run Laravel's scheduler**, `php artisan schedule:run` every minute from cron, or the uploads are never pruned; the images in `docker/production/` run it already. Run `php artisan search-images:prune` yourself to prune them by hand.
-- **Code that read uploads from `product-search/`** reads them from `Webkul\Product\Repositories\SearchRepository::SEARCH_IMAGES_DIRECTORY` and the day's subfolder instead.
+- **Code that read uploads from `product-search/`** reads them from `EcomForYou\Product\Repositories\SearchRepository::SEARCH_IMAGES_DIRECTORY` and the day's subfolder instead.
 
 ---
 
@@ -1124,9 +1124,9 @@ composer install
 php artisan migrate --force
 
 # Rebuild the Admin, Shop and Installer bundles, each from its own package directory
-(cd packages/Webkul/Admin && rm -rf node_modules package-lock.json && npm install && npm run build)
-(cd packages/Webkul/Shop && rm -rf node_modules package-lock.json && npm install && npm run build)
-(cd packages/Webkul/Installer && rm -rf node_modules package-lock.json && npm install && npm run build)
+(cd packages/EcomForYou/Admin && rm -rf node_modules package-lock.json && npm install && npm run build)
+(cd packages/EcomForYou/Shop && rm -rf node_modules package-lock.json && npm install && npm run build)
+(cd packages/EcomForYou/Installer && rm -rf node_modules package-lock.json && npm install && npm run build)
 
 # Clear every cached config, route, view and compiled service
 php artisan optimize:clear
@@ -1214,7 +1214,7 @@ PHP 8.4 deprecates an implicitly nullable parameter — a typed parameter defaul
 Laravel 13 renamed a handful of things Bagisto's skeleton files use. Laravel keeps the old spelling working for every one of them — as a config fallback, a deprecated method or a subclass — so these are tidying rather than a break. They are listed so a file you maintain yourself can be brought in line.
 
 > [!WARNING]
-> Bagisto's own SMTP transport, `Webkul\Core\Mail\Transport\DynamicMailTransport`, still reads `mail.mailers.smtp.encryption`, which the new `config/mail.php` no longer defines. If you take the new file and your encryption came only from `MAIL_ENCRYPTION`, set it at `Configuration → Emails → SMTP`, or the mailer connects without TLS.
+> Bagisto's own SMTP transport, `EcomForYou\Core\Mail\Transport\DynamicMailTransport`, still reads `mail.mailers.smtp.encryption`, which the new `config/mail.php` no longer defines. If you take the new file and your encryption came only from `MAIL_ENCRYPTION`, set it at `Configuration → Emails → SMTP`, or the mailer connects without TLS.
 
 | Where | Old | New |
 |---|---|---|
@@ -1243,7 +1243,7 @@ Options Laravel 13 added are now present rather than implied: the `deferred`, `b
 | `config/responsecache.php` | Restructured for responsecache v8 — see the key map below | **Full Page Cache breaks.** Bagisto falls back to `responsecache.cache.lifetime_in_seconds` when no lifetime is saved at `Configuration → Cache Management`, and that key does not exist in the old shape, so cached responses are given a lifetime of zero |
 | `config/image.php` → `config/images.php` | The driver setting moved to the file the framework reads, and the key changed | **Image processing falls back to `gd`** whatever `config/image.php` says; nothing reads that file any more |
 | `bootstrap/providers.php` | `OmnibusServiceProvider` added | The Omnibus package does not load |
-| `config/concord.php` | `Webkul\Omnibus\Providers\ModuleServiceProvider` added | The Omnibus model is not registered |
+| `config/concord.php` | `EcomForYou\Omnibus\Providers\ModuleServiceProvider` added | The Omnibus model is not registered |
 | `config/cache.php` | `default` moved from `file` to `database`; `storage` and `failover` stores added; `serializable_classes` set | Nothing — your `.env` value still wins. See the note below before copying Laravel 13's own version of this file |
 | `config/filesystems.php` | `r2` disk added, `report` keys added, `serve` commented out on the `private` disk | The Cloudflare R2 driver has no disk to configure, and the `private` disk keeps serving its files through temporary URLs |
 | `config/logging.php`, `config/mail.php`, `config/services.php`, `config/queue.php`, `config/session.php`, `config/database.php`, `config/sanctum.php` | The Laravel 13 renames and additions listed above | Nothing — the old names still resolve, apart from the SMTP encryption noted above |
@@ -1272,7 +1272,7 @@ v8 also adds `debug.cache_status_header_name`, `debug.cache_key_header_name` and
 
 #### A note on `config/cache.php`
 
-Bagisto sets `serializable_classes` to `true`. Laravel 13's own skeleton ships it as `false`, which blocks every object during unserialization. Bagisto's repository layer — the `CacheableRepository` trait on `Webkul\Core\Eloquent\Repository`, which roughly a hundred repositories extend — caches Eloquent models and collections, and `false` would hand them back as `__PHP_Incomplete_Class`. Omitting the key entirely behaves as it always did, so an untouched v2.4 `config/cache.php` is safe; the danger is copying Laravel 13's version in wholesale.
+Bagisto sets `serializable_classes` to `true`. Laravel 13's own skeleton ships it as `false`, which blocks every object during unserialization. Bagisto's repository layer — the `CacheableRepository` trait on `EcomForYou\Core\Eloquent\Repository`, which roughly a hundred repositories extend — caches Eloquent models and collections, and `false` would hand them back as `__PHP_Incomplete_Class`. Omitting the key entirely behaves as it always did, so an untouched v2.4 `config/cache.php` is safe; the danger is copying Laravel 13's version in wholesale.
 
 The shipped default for `CACHE_STORE` also moved from `file` to `database`, and a new root migration creates the `cache` and `cache_locks` tables `php artisan migrate` needs for it. An existing `.env` almost certainly pins `CACHE_STORE` already, in which case nothing changes.
 
@@ -1282,7 +1282,7 @@ The shipped default for `CACHE_STORE` also moved from `file` to `database`, and 
 
 It also gained `BROADCAST_CONNECTION` and the `REVERB_*` and `PUSHER_*` blocks those connections read. `BROADCAST_CONNECTION` ships as `null`, which leaves broadcasting off and keeps the admin panel from loading any websocket client; setting it to `reverb` or `pusher` is what turns the live order notifications in the admin notification bell on.
 
-**Enable it together with a queue worker.** `QUEUE_CONNECTION` ships as `sync`, which broadcasts inline inside the request that placed the order. `Webkul\Notification\Listeners\Order` logs a broadcaster failure instead of letting it propagate, so an unreachable websocket server cannot fail a checkout — but a server that hangs rather than refusing the connection still holds the shopper's request open. In production point `QUEUE_CONNECTION` at `database` or `redis` and run a worker for the queue the notification events declare:
+**Enable it together with a queue worker.** `QUEUE_CONNECTION` ships as `sync`, which broadcasts inline inside the request that placed the order. `EcomForYou\Notification\Listeners\Order` logs a broadcaster failure instead of letting it propagate, so an unreachable websocket server cannot fail a checkout — but a server that hangs rather than refusing the connection still holds the shopper's request open. In production point `QUEUE_CONNECTION` at `database` or `redis` and run a worker for the queue the notification events declare:
 
 ```bash
 php artisan queue:work --queue=broadcastable
@@ -1316,7 +1316,7 @@ The search settings moved too, and are covered in the search section below.
 
 **Impact Probability: Medium**
 
-The storefront breadcrumb trails no longer live in the application. `routes/breadcrumbs.php` was deleted and its trails now ship inside the package that owns them, at `packages/Webkul/Shop/src/Routes/breadcrumbs.php`, registered by `ShopServiceProvider`. Every trail keeps its name, so a view calling `<x-shop::breadcrumbs name="orders" />` needs no change.
+The storefront breadcrumb trails no longer live in the application. `routes/breadcrumbs.php` was deleted and its trails now ship inside the package that owns them, at `packages/EcomForYou/Shop/src/Routes/breadcrumbs.php`, registered by `ShopServiceProvider`. Every trail keeps its name, so a view calling `<x-shop::breadcrumbs name="orders" />` needs no change.
 
 **Delete your `routes/breadcrumbs.php`.** `config/breadcrumbs.php` still points `files` at it, and the package loads its own trails regardless — so a file left in place registers the same names twice and `Diglactic\Breadcrumbs\Manager::for()` throws `DuplicateBreadcrumbException` on the storefront pages that render a breadcrumb:
 
@@ -1452,7 +1452,7 @@ A view that built its own URLs from the stored value will now build them from a 
 +      srcset="{{ $resolved['srcset']['large'] }} 1280w, ...">
 ```
 
-`bagisto_theme_storage()` returns `Webkul\Theme\ThemeStorage`, which resolves a stored path against whichever disk the store is on:
+`bagisto_theme_storage()` returns `EcomForYou\Theme\ThemeStorage`, which resolves a stored path against whichever disk the store is on:
 
 | Method | Returns |
 |---|---|
@@ -1507,7 +1507,7 @@ To repair a store that already has it, move each file to the section that refere
 ```php
 // php artisan tinker
 use Illuminate\Support\Facades\Storage;
-use Webkul\Theme\Models\Section;
+use EcomForYou\Theme\Models\Section;
 
 foreach (Section::with('translations')->get() as $section) {
     $home = 'themes/'.$section->theme_code.'/sections/'.$section->id;
@@ -1569,13 +1569,13 @@ Laravel 13 ships its own image component, so Bagisto no longer maintains a wrapp
 
 #### Removed Image Classes
 
-These were part of `webkul/imagecache` and were unreachable from the application — nothing resolved or instantiated them. They modelled Intervention's API (`brightness()`, `gamma()`, `colorize()`, `pixelate()`, `pad()`), which Laravel's component does not provide, so they were removed rather than rewritten:
+These were part of `ecomforyou/imagecache` and were unreachable from the application — nothing resolved or instantiated them. They modelled Intervention's API (`brightness()`, `gamma()`, `colorize()`, `pixelate()`, `pad()`), which Laravel's component does not provide, so they were removed rather than rewritten:
 
 | Removed | Replacement |
 |---------|-------------|
-| `Webkul\ImageCache\ImageCache` | None. Use `Illuminate\Image\ImageManager` (`image_manager()` or the `Image` facade). |
-| `Webkul\ImageCache\CachedImage` | `Illuminate\Image\Image` |
-| `Webkul\ImageCache\HashableClosure` | None. |
+| `EcomForYou\ImageCache\ImageCache` | None. Use `Illuminate\Image\ImageManager` (`image_manager()` or the `Image` facade). |
+| `EcomForYou\ImageCache\CachedImage` | `Illuminate\Image\Image` |
+| `EcomForYou\ImageCache\HashableClosure` | None. |
 
 If your package referenced any of them, move to Laravel's component.
 
@@ -1642,7 +1642,7 @@ Amazon S3 and Cloudflare R2 can now be chosen at `Configuration → File Managem
 
 Three things are worth knowing before you opt in:
 
-- The chosen driver is applied at boot by `Webkul\Core\Filesystem\StorageConfigurator`, which sets `filesystems.default`. **Once a driver is recorded, it wins over `FILESYSTEM_DISK`.** With nothing recorded — the state every upgraded store is in — the environment is left alone.
+- The chosen driver is applied at boot by `EcomForYou\Core\Filesystem\StorageConfigurator`, which sets `filesystems.default`. **Once a driver is recorded, it wins over `FILESYSTEM_DISK`.** With nothing recorded — the state every upgraded store is in — the environment is left alone.
 - Nothing copies existing files. Switching the disk changes where *new* uploads go; the media already under `storage/app/public` has to be moved across yourself, or the store will serve broken images.
 - Sized images keep going through the `cache/{template}/{path}` route on S3 and R2, which reads the file through the disk. That covers product images, category logos and banners, swatches, and every theme template `image_urls()` builds, where 2.4 linked each size to the stored file on a remote disk.
 
@@ -1654,19 +1654,19 @@ If you maintain your own `config/filesystems.php`, add the `r2` disk from this r
 
 **Impact Probability: Low**
 
-A new first-party package, `Webkul\Omnibus`, records per-channel lowest-price snapshots for EU Omnibus Directive compliance. It is **off by default** (`catalog.products.omnibus.is_enabled`, falling back to `OMNIBUS_ENABLED`), so an upgraded store behaves exactly as before until it is switched on.
+A new first-party package, `EcomForYou\Omnibus`, records per-channel lowest-price snapshots for EU Omnibus Directive compliance. It is **off by default** (`catalog.products.omnibus.is_enabled`, falling back to `OMNIBUS_ENABLED`), so an upgraded store behaves exactly as before until it is switched on.
 
 Being a new package, it needs the three registrations any Bagisto package needs. If you have not customised these files, taking them from the release is enough:
 
 ```diff
   // composer.json
-+ "Webkul\\Omnibus\\": "packages/Webkul/Omnibus/src",
++ "EcomForYou\\Omnibus\\": "packages/EcomForYou/Omnibus/src",
 
   // bootstrap/providers.php
 + OmnibusServiceProvider::class,
 
   // config/concord.php
-+ Webkul\Omnibus\Providers\ModuleServiceProvider::class,
++ EcomForYou\Omnibus\Providers\ModuleServiceProvider::class,
 ```
 
 Run `composer dump-autoload` if you edited `composer.json` by hand. `php artisan migrate` creates the `product_omnibus_prices` table.
@@ -1721,10 +1721,10 @@ The following classes have been **deleted**:
 
 | Removed | Replacement |
 |---------|-------------|
-| `Webkul\Product\Repositories\ElasticSearchRepository` | `Webkul\Product\Services\Search\Engines\ElasticSearchEngine` |
-| `Webkul\Product\Jobs\ElasticSearch\UpdateCreateIndex` | `Webkul\Product\Jobs\Search\IndexProducts` |
-| `Webkul\Product\Jobs\ElasticSearch\DeleteIndex` | `Webkul\Product\Jobs\Search\DeleteProducts` |
-| `Webkul\Product\Helpers\Product` | See "Renamed Methods" below |
+| `EcomForYou\Product\Repositories\ElasticSearchRepository` | `EcomForYou\Product\Services\Search\Engines\ElasticSearchEngine` |
+| `EcomForYou\Product\Jobs\ElasticSearch\UpdateCreateIndex` | `EcomForYou\Product\Jobs\Search\IndexProducts` |
+| `EcomForYou\Product\Jobs\ElasticSearch\DeleteIndex` | `EcomForYou\Product\Jobs\Search\DeleteProducts` |
+| `EcomForYou\Product\Helpers\Product` | See "Renamed Methods" below |
 
 If your custom code imports any of these classes, update the imports to their replacements.
 
@@ -1740,18 +1740,18 @@ If your custom code imports any of these classes, update the imports to their re
 |-----|-----|
 | `Product::formatElasticSearchIndexName(channel, locale)` | `ElasticSearchEngine::formatIndexName(channel, locale)` |
 
-The `Webkul\Product\Helpers\Product` class has been deleted. Its only method moved to `ElasticSearchEngine`, unchanged, so index names are the same and no reindex is required for the rename alone:
+The `EcomForYou\Product\Helpers\Product` class has been deleted. Its only method moved to `ElasticSearchEngine`, unchanged, so index names are the same and no reindex is required for the rename alone:
 
 ```diff
-- use Webkul\Product\Helpers\Product;
+- use EcomForYou\Product\Helpers\Product;
 - Product::formatElasticSearchIndexName($channelCode, $localeCode);
-+ use Webkul\Product\Services\Search\Engines\ElasticSearchEngine;
++ use EcomForYou\Product\Services\Search\Engines\ElasticSearchEngine;
 + ElasticSearchEngine::formatIndexName($channelCode, $localeCode);
 ```
 
 #### New Enums
 
-Four enums in `Webkul\Product\Enums` replace the hardcoded search-related strings:
+Four enums in `EcomForYou\Product\Enums` replace the hardcoded search-related strings:
 
 **`SearchEngineEnum`** — search driver values:
 - `SearchEngineEnum::DATABASE` (`'database'`)
@@ -1769,9 +1769,9 @@ Four enums in `Webkul\Product\Enums` replace the hardcoded search-related string
 
 Three contracts define the engine abstraction:
 
-- `Webkul\Product\Contracts\SearchEngine` — search operations (`search`, `getSuggestions`, `getMaxPrice`, `findBySlug`)
-- `Webkul\Product\Contracts\SearchIndexer` — indexing operations (`indexBatch`, `deleteBatch`, `reindexFull`)
-- `Webkul\Product\Contracts\SearchEngineConnection` — optional, for an engine reached over a network (`configure`, `probe`, `describesRecorded`). An engine that needs nothing to reach, such as the database, simply does not implement it.
+- `EcomForYou\Product\Contracts\SearchEngine` — search operations (`search`, `getSuggestions`, `getMaxPrice`, `findBySlug`)
+- `EcomForYou\Product\Contracts\SearchIndexer` — indexing operations (`indexBatch`, `deleteBatch`, `reindexFull`)
+- `EcomForYou\Product\Contracts\SearchEngineConnection` — optional, for an engine reached over a network (`configure`, `probe`, `describesRecorded`). An engine that needs nothing to reach, such as the database, simply does not implement it.
 
 #### New Services
 
@@ -1798,7 +1798,7 @@ Three contracts define the engine abstraction:
    -     $searchEngine = core()->getConfigData('catalog.products.search.storefront_mode');
    - }
    - $this->productRepository->setSearchEngine($searchEngine ?? 'database');
-   + use Webkul\Product\Enums\SearchContextEnum;
+   + use EcomForYou\Product\Enums\SearchContextEnum;
    + $this->productRepository->setSearchContext(SearchContextEnum::STOREFRONT);
    ```
 
@@ -1812,17 +1812,17 @@ Three contracts define the engine abstraction:
    -     $searchEngine = 'elastic';
    - }
    - $this->productRepository->setSearchEngine($searchEngine ?? 'database');
-   + use Webkul\Product\Enums\SearchContextEnum;
+   + use EcomForYou\Product\Enums\SearchContextEnum;
    + $this->productRepository->setSearchContext(SearchContextEnum::ADMIN);
    ```
 
 2. **Update job dispatches:**
 
    ```diff
-   - use Webkul\Product\Jobs\ElasticSearch\UpdateCreateIndex;
-   - use Webkul\Product\Jobs\ElasticSearch\DeleteIndex;
-   + use Webkul\Product\Jobs\Search\IndexProducts;
-   + use Webkul\Product\Jobs\Search\DeleteProducts;
+   - use EcomForYou\Product\Jobs\ElasticSearch\UpdateCreateIndex;
+   - use EcomForYou\Product\Jobs\ElasticSearch\DeleteIndex;
+   + use EcomForYou\Product\Jobs\Search\IndexProducts;
+   + use EcomForYou\Product\Jobs\Search\DeleteProducts;
 
    - UpdateCreateIndex::dispatch($productIds);
    + IndexProducts::dispatch($productIds);
@@ -1836,8 +1836,8 @@ Three contracts define the engine abstraction:
 3. **Update `ElasticSearchRepository` usage:**
 
    ```diff
-   - use Webkul\Product\Repositories\ElasticSearchRepository;
-   + use Webkul\Product\Services\Search\Engines\ElasticSearchEngine;
+   - use EcomForYou\Product\Repositories\ElasticSearchRepository;
+   + use EcomForYou\Product\Services\Search\Engines\ElasticSearchEngine;
    ```
 
    If you were calling `ElasticSearchRepository` methods directly, resolve the engine through the manager instead of naming the class, so the store's own configuration decides which one you get:
@@ -1860,9 +1860,9 @@ Three contracts define the engine abstraction:
 5. **Update `Product::formatElasticSearchIndexName()` calls:**
 
    ```diff
-   - use Webkul\Product\Helpers\Product;
+   - use EcomForYou\Product\Helpers\Product;
    - $index = Product::formatElasticSearchIndexName($channelCode, $localeCode);
-   + use Webkul\Product\Services\Search\Engines\ElasticSearchEngine;
+   + use EcomForYou\Product\Services\Search\Engines\ElasticSearchEngine;
    + $index = ElasticSearchEngine::formatIndexName($channelCode, $localeCode);
    ```
 
@@ -1875,9 +1875,9 @@ Three contracts define the engine abstraction:
    -     core()->getConfigData('catalog.products.search.engine') != 'elastic'
    -     || core()->getConfigData('catalog.products.search.admin_mode') != 'elastic'
    - ) {
-   + use Webkul\Product\Enums\SearchContextEnum;
-   + use Webkul\Product\Enums\SearchEngineEnum;
-   + use Webkul\Product\Services\Search\SearchEngineManager;
+   + use EcomForYou\Product\Enums\SearchContextEnum;
+   + use EcomForYou\Product\Enums\SearchEngineEnum;
+   + use EcomForYou\Product\Services\Search\SearchEngineManager;
    +
    + $manager = app(SearchEngineManager::class);
    +
@@ -1887,14 +1887,14 @@ Three contracts define the engine abstraction:
      }
    ```
 
-   The query itself is unchanged. `Webkul\Core\Facades\ElasticSearch` is still the supported way to issue a raw Elasticsearch query, and the core `ProductDataGrid` still uses it — only the decision of *whether* to reach for it moved behind the manager.
+   The query itself is unchanged. `EcomForYou\Core\Facades\ElasticSearch` is still the supported way to issue a raw Elasticsearch query, and the core `ProductDataGrid` still uses it — only the decision of *whether* to reach for it moved behind the manager.
 
 7. **Reading configuration through the manager:**
 
    ```php
-   use Webkul\Product\Enums\SearchContextEnum;
-   use Webkul\Product\Enums\SearchEngineEnum;
-   use Webkul\Product\Services\Search\SearchEngineManager;
+   use EcomForYou\Product\Enums\SearchContextEnum;
+   use EcomForYou\Product\Enums\SearchEngineEnum;
+   use EcomForYou\Product\Services\Search\SearchEngineManager;
 
    $manager = app(SearchEngineManager::class);
 
@@ -1946,7 +1946,7 @@ Changing the index prefix here has the same effect as changing `ELASTICSEARCH_IN
 
 To add a new search engine (e.g., Algolia):
 
-1. Implement `Webkul\Product\Contracts\SearchEngine`:
+1. Implement `EcomForYou\Product\Contracts\SearchEngine`:
 
    ```php
    class AlgoliaEngine implements SearchEngine
@@ -1958,7 +1958,7 @@ To add a new search engine (e.g., Algolia):
    }
    ```
 
-2. Implement `Webkul\Product\Contracts\SearchIndexer`:
+2. Implement `EcomForYou\Product\Contracts\SearchIndexer`:
 
    ```php
    class AlgoliaIndexer implements SearchIndexer
@@ -1984,7 +1984,7 @@ To add a new search engine (e.g., Algolia):
 
    The `SearchEngineManager` resolves your engine once the stored engine matches the enum case and `search_engines.general.settings.enabled` is on.
 
-5. If your engine is reached over a network, implement `Webkul\Product\Contracts\SearchEngineConnection` and bind it as well. This is what gives it settings in the admin and a working Test Connection button; an engine without one is treated as always available.
+5. If your engine is reached over a network, implement `EcomForYou\Product\Contracts\SearchEngineConnection` and bind it as well. This is what gives it settings in the admin and a working Test Connection button; an engine without one is treated as always available.
 
    ```php
    class AlgoliaConnection implements SearchEngineConnection
@@ -2033,12 +2033,12 @@ The following files have been **deleted** from each of the three frontend packag
 
 | Removed | Reason |
 |---------|--------|
-| `packages/Webkul/Admin/tailwind.config.js` | v4 uses CSS-first configuration (`@theme`, `@utility`, `@custom-variant` in `app.css`). |
-| `packages/Webkul/Shop/tailwind.config.js` | Same as above. |
-| `packages/Webkul/Installer/tailwind.config.js` | Same as above. |
-| `packages/Webkul/Admin/postcss.config.cjs` | `@tailwindcss/vite` replaces the PostCSS pipeline; no PostCSS config is needed. |
-| `packages/Webkul/Shop/postcss.config.cjs` | Same as above. |
-| `packages/Webkul/Installer/postcss.config.cjs` | Same as above. |
+| `packages/EcomForYou/Admin/tailwind.config.js` | v4 uses CSS-first configuration (`@theme`, `@utility`, `@custom-variant` in `app.css`). |
+| `packages/EcomForYou/Shop/tailwind.config.js` | Same as above. |
+| `packages/EcomForYou/Installer/tailwind.config.js` | Same as above. |
+| `packages/EcomForYou/Admin/postcss.config.cjs` | `@tailwindcss/vite` replaces the PostCSS pipeline; no PostCSS config is needed. |
+| `packages/EcomForYou/Shop/postcss.config.cjs` | Same as above. |
+| `packages/EcomForYou/Installer/postcss.config.cjs` | Same as above. |
 
 If your custom package copied any of these files, delete them and follow the CSS-first pattern described below.
 
@@ -2087,7 +2087,7 @@ Each `vite.config.js` now registers the Tailwind Vite plugin (the Installer's co
 
 #### `app.css` Configuration Migration
 
-The `@tailwind` directives are replaced with a single `@import`, and every option that previously lived in `tailwind.config.js` (breakpoints, colors, fonts, container, dark mode, content paths) is moved into CSS. Example for `packages/Webkul/Admin/src/Resources/assets/css/app.css`:
+The `@tailwind` directives are replaced with a single `@import`, and every option that previously lived in `tailwind.config.js` (breakpoints, colors, fonts, container, dark mode, content paths) is moved into CSS. Example for `packages/EcomForYou/Admin/src/Resources/assets/css/app.css`:
 
 ```diff
 - @tailwind base;
@@ -2339,7 +2339,7 @@ A migration deletes the stored rows. A store that had set its own dimensions or 
 
 **Impact Probability: Low**
 
-Two methods on `Webkul\Core\Core` — the helper reached through `core()` — were the only snake_case names among some sixty camelCase ones:
+Two methods on `EcomForYou\Core\Core` — the helper reached through `core()` — were the only snake_case names among some sixty camelCase ones:
 
 | Before | After |
 |---|---|
@@ -2354,7 +2354,7 @@ Both are widely reachable, so a module or a theme that calls either — `country
 
 **Impact Probability: Low**
 
-Two public helpers on `Webkul\Core\Repositories\CoreConfigRepository` were named after how they worked rather than what they produced:
+Two public helpers on `EcomForYou\Core\Repositories\CoreConfigRepository` were named after how they worked rather than what they produced:
 
 | Before | After |
 |---|---|
@@ -2369,9 +2369,9 @@ Both are internal to saving a configuration form — nothing in Bagisto calls th
 
 **Impact Probability: Low**
 
-`Webkul\CatalogRule\Jobs\UpdateCreateCatalogRuleIndex` and `DeleteCatalogRuleIndex` no longer carry a `protected const BATCH_SIZE`. Both jobs now hand their product ids to `Webkul\Product\Helpers\Indexers\Price::reindexProducts()`, which batches the reindex itself with the indexer's own `BATCH_SIZE` and loads every relation the type indexers read up front. A subclass of either job that referenced `self::BATCH_SIZE` should call `reindexProducts()` instead of paging through the product repository itself.
+`EcomForYou\CatalogRule\Jobs\UpdateCreateCatalogRuleIndex` and `DeleteCatalogRuleIndex` no longer carry a `protected const BATCH_SIZE`. Both jobs now hand their product ids to `EcomForYou\Product\Helpers\Indexers\Price::reindexProducts()`, which batches the reindex itself with the indexer's own `BATCH_SIZE` and loads every relation the type indexers read up front. A subclass of either job that referenced `self::BATCH_SIZE` should call `reindexProducts()` instead of paging through the product repository itself.
 
-The full page cache's price listener now drops every cached page when a reindex touches more than `Webkul\FPC\Listeners\Price::PER_PRODUCT_FORGET_LIMIT` products, rather than resolving each product's pages one by one, so a catalog rule that matches most of the catalogue no longer walks it inside the save request.
+The full page cache's price listener now drops every cached page when a reindex touches more than `EcomForYou\FPC\Listeners\Price::PER_PRODUCT_FORGET_LIMIT` products, rather than resolving each product's pages one by one, so a catalog rule that matches most of the catalogue no longer walks it inside the save request.
 
 ---
 
@@ -2379,6 +2379,6 @@ The full page cache's price listener now drops every cached page when a reindex 
 
 **Impact Probability: Low**
 
-The model enums under `Webkul\MagicAI\Enums\Models` now list each provider's current models and drop the ones the provider has retired or no longer offers, among them GPT-5.2, Claude Sonnet 4, Gemini 2.5, Imagen, `deepseek-chat` and the Groq-hosted LLaMA models. A migration moves a storefront feature (image search, review translation, checkout message) that was saved on a dropped model onto the replacement its provider recommends, so no manual database work is needed.
+The model enums under `EcomForYou\MagicAI\Enums\Models` now list each provider's current models and drop the ones the provider has retired or no longer offers, among them GPT-5.2, Claude Sonnet 4, Gemini 2.5, Imagen, `deepseek-chat` and the Groq-hosted LLaMA models. A migration moves a storefront feature (image search, review translation, checkout message) that was saved on a dropped model onto the replacement its provider recommends, so no manual database work is needed.
 
 Custom code that references a removed enum case, such as `OpenAiModel::GPT52` or `GeminiModel::Imagen4`, must switch to a current case, and a model id passed to `MagicAI::generateContent()` or `MagicAI::generateImage()` must be one the enums still offer, or the request falls back to the SDK's default provider without the key stored in the admin.

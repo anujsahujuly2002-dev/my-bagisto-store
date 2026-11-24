@@ -1,9 +1,9 @@
 <?php
 
+use EcomForYou\MagicAI\AiProvider;
+use EcomForYou\MagicAI\Enums\Contracts\AiModelContract;
+use EcomForYou\MagicAI\MagicAI;
 use Laravel\Ai\Enums\Lab;
-use Webkul\MagicAI\AiProvider;
-use Webkul\MagicAI\Enums\Contracts\AiModelContract;
-use Webkul\MagicAI\MagicAI;
 
 /**
  * The value of every provider offering at least one model of the given kind.

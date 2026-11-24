@@ -1,0 +1,28 @@
+<?php
+
+use EcomForYou\PayGlocal\Http\Controllers\PayGlocalController;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Route;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+
+Route::controller(PayGlocalController::class)
+    ->middleware(['web', 'cart.buy_now'])
+    ->prefix('payglocal')
+    ->group(function () {
+        Route::get('redirect', 'redirect')->name('payglocal.redirect');
+
+        Route::post('callback', 'callback')
+            ->withoutMiddleware([
+                StartSession::class,
+                ShareErrorsFromSession::class,
+                PreventRequestForgery::class,
+            ])
+            ->name('payglocal.callback');
+
+        Route::get('success', 'success')->name('payglocal.success');
+
+        Route::post('webhook', 'webhook')
+            ->withoutMiddleware(PreventRequestForgery::class)
+            ->name('payglocal.webhook');
+    });

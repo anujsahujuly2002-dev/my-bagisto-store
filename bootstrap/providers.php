@@ -1,49 +1,49 @@
 <?php
 
 use App\Providers\AppServiceProvider;
-use Webkul\Admin\Providers\AdminServiceProvider;
-use Webkul\Attribute\Providers\AttributeServiceProvider;
-use Webkul\BookingProduct\Providers\BookingProductServiceProvider;
-use Webkul\CartRule\Providers\CartRuleServiceProvider;
-use Webkul\CatalogRule\Providers\CatalogRuleServiceProvider;
-use Webkul\Category\Providers\CategoryServiceProvider;
-use Webkul\Checkout\Providers\CheckoutServiceProvider;
-use Webkul\CMS\Providers\CMSServiceProvider;
-use Webkul\Core\Providers\CoreServiceProvider;
-use Webkul\Core\Providers\EnvValidatorServiceProvider;
-use Webkul\Customer\Providers\CustomerServiceProvider;
-use Webkul\DataGrid\Providers\DataGridServiceProvider;
-use Webkul\DataTransfer\Providers\DataTransferServiceProvider;
-use Webkul\DebugBar\Providers\DebugBarServiceProvider;
-use Webkul\EUWithdrawal\Providers\EUWithdrawalServiceProvider;
-use Webkul\FPC\Providers\FPCServiceProvider;
-use Webkul\GDPR\Providers\GDPRServiceProvider;
-use Webkul\ImageCache\Providers\ImageCacheServiceProvider;
-use Webkul\Installer\Providers\InstallerServiceProvider;
-use Webkul\Inventory\Providers\InventoryServiceProvider;
-use Webkul\MagicAI\Providers\MagicAIServiceProvider;
-use Webkul\Marketing\Providers\MarketingServiceProvider;
-use Webkul\Notification\Providers\NotificationServiceProvider;
-use Webkul\Omnibus\Providers\OmnibusServiceProvider;
-use Webkul\PayGlocal\Providers\PayGlocalServiceProvider;
-use Webkul\Payment\Providers\PaymentServiceProvider;
-use Webkul\Paypal\Providers\PaypalServiceProvider;
-use Webkul\PayU\Providers\PayUServiceProvider;
-use Webkul\PhonePe\Providers\PhonePeServiceProvider;
-use Webkul\Product\Providers\ProductServiceProvider;
-use Webkul\Razorpay\Providers\RazorpayServiceProvider;
-use Webkul\RMA\Providers\RMAServiceProvider;
-use Webkul\Rule\Providers\RuleServiceProvider;
-use Webkul\Sales\Providers\SalesServiceProvider;
-use Webkul\Shipping\Providers\ShippingServiceProvider;
-use Webkul\Shop\Providers\ShopServiceProvider;
-use Webkul\Sitemap\Providers\SitemapServiceProvider;
-use Webkul\SocialLogin\Providers\SocialLoginServiceProvider;
-use Webkul\SocialShare\Providers\SocialShareServiceProvider;
-use Webkul\Stripe\Providers\StripeServiceProvider;
-use Webkul\Tax\Providers\TaxServiceProvider;
-use Webkul\Theme\Providers\ThemeServiceProvider;
-use Webkul\User\Providers\UserServiceProvider;
+use EcomForYou\Admin\Providers\AdminServiceProvider;
+use EcomForYou\Attribute\Providers\AttributeServiceProvider;
+use EcomForYou\BookingProduct\Providers\BookingProductServiceProvider;
+use EcomForYou\CartRule\Providers\CartRuleServiceProvider;
+use EcomForYou\CatalogRule\Providers\CatalogRuleServiceProvider;
+use EcomForYou\Category\Providers\CategoryServiceProvider;
+use EcomForYou\Checkout\Providers\CheckoutServiceProvider;
+use EcomForYou\CMS\Providers\CMSServiceProvider;
+use EcomForYou\Core\Providers\CoreServiceProvider;
+use EcomForYou\Core\Providers\EnvValidatorServiceProvider;
+use EcomForYou\Customer\Providers\CustomerServiceProvider;
+use EcomForYou\DataGrid\Providers\DataGridServiceProvider;
+use EcomForYou\DataTransfer\Providers\DataTransferServiceProvider;
+use EcomForYou\DebugBar\Providers\DebugBarServiceProvider;
+use EcomForYou\EUWithdrawal\Providers\EUWithdrawalServiceProvider;
+use EcomForYou\FPC\Providers\FPCServiceProvider;
+use EcomForYou\GDPR\Providers\GDPRServiceProvider;
+use EcomForYou\ImageCache\Providers\ImageCacheServiceProvider;
+use EcomForYou\Installer\Providers\InstallerServiceProvider;
+use EcomForYou\Inventory\Providers\InventoryServiceProvider;
+use EcomForYou\MagicAI\Providers\MagicAIServiceProvider;
+use EcomForYou\Marketing\Providers\MarketingServiceProvider;
+use EcomForYou\Notification\Providers\NotificationServiceProvider;
+use EcomForYou\Omnibus\Providers\OmnibusServiceProvider;
+use EcomForYou\PayGlocal\Providers\PayGlocalServiceProvider;
+use EcomForYou\Payment\Providers\PaymentServiceProvider;
+use EcomForYou\Paypal\Providers\PaypalServiceProvider;
+use EcomForYou\PayU\Providers\PayUServiceProvider;
+use EcomForYou\PhonePe\Providers\PhonePeServiceProvider;
+use EcomForYou\Product\Providers\ProductServiceProvider;
+use EcomForYou\Razorpay\Providers\RazorpayServiceProvider;
+use EcomForYou\RMA\Providers\RMAServiceProvider;
+use EcomForYou\Rule\Providers\RuleServiceProvider;
+use EcomForYou\Sales\Providers\SalesServiceProvider;
+use EcomForYou\Shipping\Providers\ShippingServiceProvider;
+use EcomForYou\Shop\Providers\ShopServiceProvider;
+use EcomForYou\Sitemap\Providers\SitemapServiceProvider;
+use EcomForYou\SocialLogin\Providers\SocialLoginServiceProvider;
+use EcomForYou\SocialShare\Providers\SocialShareServiceProvider;
+use EcomForYou\Stripe\Providers\StripeServiceProvider;
+use EcomForYou\Tax\Providers\TaxServiceProvider;
+use EcomForYou\Theme\Providers\ThemeServiceProvider;
+use EcomForYou\User\Providers\UserServiceProvider;
 
 return [
     /**
@@ -52,7 +52,7 @@ return [
     AppServiceProvider::class,
 
     /**
-     * Webkul's service providers.
+     * EcomForYou's service providers.
      */
     OmnibusServiceProvider::class,
     AdminServiceProvider::class,

@@ -1,11 +1,11 @@
 <?php
 
+use EcomForYou\FPC\CacheProfiles\FullPageCacheProfile;
+use EcomForYou\FPC\Hasher\DefaultHasher;
+use EcomForYou\FPC\Replacers\FlashMessagesReplacer;
+use EcomForYou\FPC\Replacers\MiniCartReplacer;
 use Spatie\ResponseCache\Replacers\CsrfTokenReplacer;
 use Spatie\ResponseCache\Serializers\JsonSerializer;
-use Webkul\FPC\CacheProfiles\FullPageCacheProfile;
-use Webkul\FPC\Hasher\DefaultHasher;
-use Webkul\FPC\Replacers\FlashMessagesReplacer;
-use Webkul\FPC\Replacers\MiniCartReplacer;
 
 return [
     /*

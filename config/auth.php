@@ -1,7 +1,7 @@
 <?php
 
-use Webkul\Customer\Models\Customer;
-use Webkul\User\Models\Admin;
+use EcomForYou\Customer\Models\Customer;
+use EcomForYou\User\Models\Admin;
 
 return [
 

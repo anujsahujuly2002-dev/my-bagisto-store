@@ -1,0 +1,34 @@
+<?php
+
+namespace EcomForYou\BookingProduct\Models;
+
+use EcomForYou\BookingProduct\Contracts\BookingProductRentalSlot as BookingProductRentalSlotContract;
+use Illuminate\Database\Eloquent\Model;
+
+class BookingProductRentalSlot extends Model implements BookingProductRentalSlotContract
+{
+    /**
+     * Indicates if the model should be timestamped.
+     */
+    public $timestamps = false;
+
+    /**
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'same_slot_all_days' => 'boolean',
+        'slots' => 'array',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     */
+    protected $fillable = [
+        'renting_type',
+        'daily_price',
+        'hourly_price',
+        'same_slot_all_days',
+        'slots',
+        'booking_product_id',
+    ];
+}

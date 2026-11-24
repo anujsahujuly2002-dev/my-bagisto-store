@@ -1,0 +1,26 @@
+{
+    "name": "bagisto/laravel-payment",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Payment\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Payment\\Providers\\PaymentServiceProvider"
+            ],
+            "aliases": {
+                "Bouncer": "EcomForYou\\Payment\\Facades\\Bouncer"
+            }
+        }
+    },
+    "minimum-stability": "dev"
+}

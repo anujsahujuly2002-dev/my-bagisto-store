@@ -1,14 +1,14 @@
 <?php
 
-use Webkul\Admin\Http\Controllers\NotificationController;
-use Webkul\Core\Console\Commands\ExchangeRateUpdate;
-use Webkul\Core\Core;
-use Webkul\Notification\Models\Notification;
-use Webkul\Notification\Repositories\NotificationRepository;
-use Webkul\Shop\Http\Controllers\API\AddressController;
-use Webkul\Shop\Http\Controllers\API\CartController;
-use Webkul\Shop\Http\Controllers\API\CoreController;
-use Webkul\Shop\Http\Requests\Customer\AddressRequest;
+use EcomForYou\Admin\Http\Controllers\NotificationController;
+use EcomForYou\Core\Console\Commands\ExchangeRateUpdate;
+use EcomForYou\Core\Core;
+use EcomForYou\Notification\Models\Notification;
+use EcomForYou\Notification\Repositories\NotificationRepository;
+use EcomForYou\Shop\Http\Controllers\API\AddressController;
+use EcomForYou\Shop\Http\Controllers\API\CartController;
+use EcomForYou\Shop\Http\Controllers\API\CoreController;
+use EcomForYou\Shop\Http\Requests\Customer\AddressRequest;
 
 dataset('methods a v2.5.1 module may override without a return type', [
     [AddressRequest::class, 'authorize'],

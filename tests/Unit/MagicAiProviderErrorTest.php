@@ -1,9 +1,9 @@
 <?php
 
+use EcomForYou\MagicAI\ProviderError;
 use GuzzleHttp\Psr7\Response as PsrResponse;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
-use Webkul\MagicAI\ProviderError;
 
 /**
  * The exception the SDK throws when a provider refuses a request with the given body.

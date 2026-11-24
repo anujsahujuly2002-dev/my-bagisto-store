@@ -1,0 +1,25 @@
+{
+    "name": "bagisto/laravel-rule",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jitendra Singh"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "EcomForYou\\Rule\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EcomForYou\\Rule\\Providers\\RuleServiceProvider"
+            ],
+            "aliases": {}
+        }
+    },
+    "minimum-stability": "dev"
+}
