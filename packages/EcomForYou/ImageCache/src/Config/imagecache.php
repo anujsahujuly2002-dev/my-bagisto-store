@@ -33,16 +33,16 @@ return [
     |
     | The configured filesystem disk is read first, so a store on object storage
     | is served the same way a local one is. These paths are searched after it,
-    | which covers a file published beside the application.
+    | then the public disk's root while it is local, then the public directory,
+    | which covers a file published beside the application. The public disk's
+    | root follows the current store, so leave shared storage folders out of
+    | this list: under tenancy they hold every store's files.
     |
     | Define as many directories as you like.
     |
     */
 
-    'paths' => [
-        storage_path('app/public'),
-        public_path('storage'),
-    ],
+    'paths' => [],
 
     /*
     |--------------------------------------------------------------------------

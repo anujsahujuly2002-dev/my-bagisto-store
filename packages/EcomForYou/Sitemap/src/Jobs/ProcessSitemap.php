@@ -4,6 +4,7 @@ namespace EcomForYou\Sitemap\Jobs;
 
 use EcomForYou\Core\Contracts\Channel;
 use EcomForYou\Sitemap\Contracts\Sitemap as SitemapContract;
+use EcomForYou\Sitemap\Helpers\SitemapFileUrl;
 use EcomForYou\Sitemap\Models\Category;
 use EcomForYou\Sitemap\Models\Page;
 use EcomForYou\Sitemap\Models\Product;
@@ -193,7 +194,7 @@ class ProcessSitemap implements ShouldQueue
         $sitemap = SitemapIndex::create();
 
         foreach ($this->generatedSitemaps as $generatedSitemap) {
-            $sitemap->add($baseUrl.'/storage/'.ltrim($generatedSitemap, '/'));
+            $sitemap->add(app(SitemapFileUrl::class)->forChannel($baseUrl, $generatedSitemap));
         }
 
         $path = $this->buildFilePath($channel);

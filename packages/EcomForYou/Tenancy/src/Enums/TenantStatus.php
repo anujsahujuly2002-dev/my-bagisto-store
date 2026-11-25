@@ -44,4 +44,30 @@ class TenantStatus
             self::FAILED,
         ];
     }
+
+    /**
+     * The statuses of a tenant whose database has been built, the ones a command run over every store reaches.
+     *
+     * @return list<string>
+     */
+    public static function withDatabase(): array
+    {
+        return [
+            self::ACTIVE,
+            self::SUSPENDED,
+        ];
+    }
+
+    /**
+     * The statuses a tenant can be provisioned from: never built, or built and cleaned up after a failure.
+     *
+     * @return list<string>
+     */
+    public static function provisionable(): array
+    {
+        return [
+            self::PENDING_VERIFICATION,
+            self::FAILED,
+        ];
+    }
 }

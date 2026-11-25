@@ -3,6 +3,7 @@
 namespace EcomForYou\Tenancy\Tasks;
 
 use Closure;
+use EcomForYou\Core\Filesystem\StorageConfigurator;
 use EcomForYou\Tenancy\Exceptions\NoTenantSelectedException;
 use EcomForYou\Tenancy\Models\Tenant;
 use Illuminate\Contracts\Foundation\Application;
@@ -27,10 +28,17 @@ class FilesystemTask implements SwitchingTask
     protected array $originals = [];
 
     /**
-     * Create the task, remembering the single store's configuration of every tenant disk.
+     * The default disk before any switch.
+     */
+    protected ?string $originalDefault;
+
+    /**
+     * Create the task, remembering the single store's default disk and its configuration of every tenant disk.
      */
     public function __construct(protected Application $app)
     {
+        $this->originalDefault = config('filesystems.default');
+
         foreach (array_keys(config('tenancy.filesystem.disks', [])) as $disk) {
             if (is_array($original = config("filesystems.disks.{$disk}"))) {
                 $this->originals[$disk] = $original;
@@ -39,7 +47,8 @@ class FilesystemTask implements SwitchingTask
     }
 
     /**
-     * Root every tenant disk and the local root in the tenant's own folder, and give a public disk the tenant's url.
+     * Root every tenant disk and the local root in the tenant's own folder, or under the tenant's own prefix on a
+     * remote disk, give a public disk the tenant's url, then apply the disk and credentials the store itself chose.
      */
     public function makeCurrent(Tenant $tenant): void
     {
@@ -49,15 +58,21 @@ class FilesystemTask implements SwitchingTask
             $paths = config("tenancy.filesystem.disks.{$disk}");
 
             $config = array_merge($original, [
-                'root' => storage_path($this->forTenant($paths['root'], $tenant)),
+                'root' => $this->rootFor($original, $paths['root'], $tenant),
             ]);
 
             if (isset($paths['url'])) {
                 $config['url'] = $tenant->url().$this->forTenant($paths['url'], $tenant);
             }
 
-            $this->useDisk($disk, $config);
+            config(["filesystems.disks.{$disk}" => $config]);
         }
+
+        config(['filesystems.default' => $this->originalDefault]);
+
+        $this->app->make(StorageConfigurator::class)->configure();
+
+        $this->forgetDisks();
     }
 
     /**
@@ -71,10 +86,33 @@ class FilesystemTask implements SwitchingTask
             : null);
 
         foreach ($this->originals as $disk => $original) {
-            $this->useDisk($disk, config('tenancy.enabled')
+            config(["filesystems.disks.{$disk}" => config('tenancy.enabled')
                 ? array_merge($original, ['driver' => self::UNAVAILABLE_DRIVER])
-                : $original);
+                : $original]);
         }
+
+        config(['filesystems.default' => $this->originalDefault]);
+
+        $this->forgetDisks();
+    }
+
+    /**
+     * The tenant's own local folders, the local root and each local tenant disk's root, found without making it
+     * current. A remote disk's prefix is not a folder and is left out.
+     *
+     * @return list<string>
+     */
+    public function directories(Tenant $tenant): array
+    {
+        $paths = [config('tenancy.filesystem.local_root')];
+
+        foreach ($this->originals as $disk => $original) {
+            if ($this->isLocal($original)) {
+                $paths[] = config("tenancy.filesystem.disks.{$disk}.root");
+            }
+        }
+
+        return array_map(fn (string $path) => storage_path($this->forTenant($path, $tenant)), $paths);
     }
 
     /**
@@ -83,6 +121,33 @@ class FilesystemTask implements SwitchingTask
     protected function forTenant(string $path, Tenant $tenant): string
     {
         return str_replace('{id}', (string) $tenant->id, $path);
+    }
+
+    /**
+     * A disk's root for the tenant: a folder under `storage/` for a local disk, or the tenant's prefix appended to
+     * the disk's own prefix for a remote one.
+     *
+     * @param  array<string, mixed>  $original
+     */
+    protected function rootFor(array $original, string $path, Tenant $tenant): string
+    {
+        $path = $this->forTenant($path, $tenant);
+
+        if ($this->isLocal($original)) {
+            return storage_path($path);
+        }
+
+        return ltrim(trim((string) ($original['root'] ?? ''), '/').'/'.trim($path, '/'), '/');
+    }
+
+    /**
+     * Whether a disk keeps its files on this server.
+     *
+     * @param  array<string, mixed>  $original
+     */
+    protected function isLocal(array $original): bool
+    {
+        return ($original['driver'] ?? null) === 'local';
     }
 
     /**
@@ -98,14 +163,13 @@ class FilesystemTask implements SwitchingTask
     }
 
     /**
-     * Set a disk's configuration and drop the resolved disk, so the next use builds it afresh.
-     *
-     * @param  array<string, mixed>  $config
+     * Drop every resolved tenant disk and the default one, so the next use builds each from its new configuration.
      */
-    protected function useDisk(string $disk, array $config): void
+    protected function forgetDisks(): void
     {
-        config(["filesystems.disks.{$disk}" => $config]);
-
-        $this->app['filesystem']->forgetDisk($disk);
+        $this->app['filesystem']->forgetDisk(array_values(array_unique(array_filter([
+            ...array_keys($this->originals),
+            config('filesystems.default'),
+        ]))));
     }
 }

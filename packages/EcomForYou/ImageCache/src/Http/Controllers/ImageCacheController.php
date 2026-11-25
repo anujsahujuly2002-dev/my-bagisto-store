@@ -274,8 +274,8 @@ class ImageCacheController extends Controller
     }
 
     /**
-     * Read an image from the configured disk, then from the configured paths for a file published beside
-     * the application rather than held on a disk.
+     * Read an image from the configured disk, then from the search roots for a file published beside the
+     * application rather than held on a disk.
      */
     protected function getImageContents(string $filename): ?string
     {
@@ -287,7 +287,10 @@ class ImageCacheController extends Controller
 
         $path = $this->getImagePath($filename);
 
-        if (! is_file($path)) {
+        if (
+            is_null($path)
+            || ! is_file($path)
+        ) {
             return null;
         }
 
@@ -333,15 +336,15 @@ class ImageCacheController extends Controller
     }
 
     /**
-     * Get the full image path from the filename.
+     * The path of a file published beside the application, searched in the configured paths, the public disk's
+     * root while it is local, and the public directory. The public disk's root is the current store's own, so no
+     * store's image is ever read from another's folder.
      */
-    protected function getImagePath(string $filename): string
+    protected function getImagePath(string $filename): ?string
     {
         $filename = $this->sanitizeFilename($filename);
 
-        $paths = config('imagecache.paths', []);
-
-        foreach ($paths as $basePath) {
+        foreach ($this->searchRoots() as $basePath) {
             $basePath = realpath(rtrim($basePath, '/'));
 
             if (! $basePath) {
@@ -358,46 +361,25 @@ class ImageCacheController extends Controller
             }
         }
 
-        $storageBase = realpath(storage_path('app/public'));
+        return null;
+    }
 
-        if ($storageBase) {
-            $realPath = realpath($storageBase.'/'.$filename);
+    /**
+     * The directories a file published beside the application is searched in, in order.
+     *
+     * @return list<string>
+     */
+    protected function searchRoots(): array
+    {
+        $roots = config('imagecache.paths', []);
 
-            if (
-                $realPath
-                && str_starts_with($realPath, $storageBase.'/')
-            ) {
-                return $realPath;
-            }
+        if (config('filesystems.disks.public.driver') === 'local') {
+            $roots[] = (string) config('filesystems.disks.public.root');
         }
 
-        $publicBase = realpath(public_path());
+        $roots[] = public_path();
 
-        if ($publicBase) {
-            $realPath = realpath($publicBase.'/'.$filename);
-
-            if (
-                $realPath
-                && str_starts_with($realPath, $publicBase.'/')
-            ) {
-                return $realPath;
-            }
-        }
-
-        $storagePublicBase = realpath(public_path('storage'));
-
-        if ($storagePublicBase) {
-            $realPath = realpath($storagePublicBase.'/'.$filename);
-
-            if (
-                $realPath
-                && str_starts_with($realPath, $storagePublicBase.'/')
-            ) {
-                return $realPath;
-            }
-        }
-
-        return storage_path('app/public/'.$filename);
+        return array_values(array_filter($roots, 'filled'));
     }
 
     /**

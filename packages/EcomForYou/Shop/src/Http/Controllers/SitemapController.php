@@ -2,6 +2,7 @@
 
 namespace EcomForYou\Shop\Http\Controllers;
 
+use EcomForYou\Sitemap\Helpers\SitemapFileUrl;
 use EcomForYou\Sitemap\Repositories\SitemapRepository;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
@@ -14,7 +15,10 @@ class SitemapController extends Controller
      *
      * @return void
      */
-    public function __construct(protected SitemapRepository $sitemapRepository) {}
+    public function __construct(
+        protected SitemapRepository $sitemapRepository,
+        protected SitemapFileUrl $sitemapFileUrl
+    ) {}
 
     /**
      * Serve `/sitemap.xml` for the channel matching the current request host.
@@ -42,7 +46,7 @@ class SitemapController extends Controller
 
             foreach ($files as $file) {
                 if ($disk->exists($file)) {
-                    $sitemapIndex->add($baseUrl.'/storage/'.ltrim($file, '/'));
+                    $sitemapIndex->add($this->sitemapFileUrl->forChannel($baseUrl, $file));
                 }
             }
         }

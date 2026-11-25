@@ -34,6 +34,7 @@ class ChannelTableSeeder extends Seeder
                 'code' => 'default',
                 'theme' => 'default',
                 'hostname' => config('app.url'),
+                'timezone' => $parameters['timezone'] ?? null,
                 'root_category_id' => 1,
                 'default_locale_id' => 1,
                 'base_currency_id' => 1,

@@ -22,7 +22,8 @@ class UrlTask implements SwitchingTask
     }
 
     /**
-     * Set the application url to the tenant's, and outside a request root every generated link there.
+     * Set the application url to the tenant's, and outside a request root every generated link there, on the
+     * tenant's own scheme rather than the console's.
      */
     public function makeCurrent(Tenant $tenant): void
     {
@@ -30,6 +31,8 @@ class UrlTask implements SwitchingTask
 
         if ($this->app->runningInConsole()) {
             $this->urls()->forceRootUrl($tenant->url());
+
+            $this->urls()->forceScheme(config('tenancy.scheme'));
         }
     }
 
@@ -42,6 +45,8 @@ class UrlTask implements SwitchingTask
 
         if ($this->app->runningInConsole()) {
             $this->urls()->forceRootUrl(null);
+
+            $this->urls()->forceScheme(null);
         }
     }
 

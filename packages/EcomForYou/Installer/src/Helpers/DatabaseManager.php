@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use RuntimeException;
 
 class DatabaseManager
 {
@@ -104,12 +105,38 @@ class DatabaseManager
     }
 
     /**
+     * Run every pending migration on the given connection, or the default one, throwing when the run fails.
+     * The installer and tenant provisioning both migrate a store through this one step.
+     */
+    public function migrate(?string $connection = null): void
+    {
+        $exitCode = Artisan::call('migrate', array_filter([
+            '--database' => $connection,
+            '--force' => true,
+            '--no-interaction' => true,
+        ], fn ($value) => ! is_null($value)));
+
+        if ($exitCode !== 0) {
+            throw new RuntimeException('The migrations failed: '.trim(Artisan::output()));
+        }
+    }
+
+    /**
+     * Seed a store's basic data on the default connection, throwing when a seeder fails. The installer and
+     * tenant provisioning both seed a store through this one step.
+     */
+    public function runSeeders(array $parameters = []): void
+    {
+        app(BagistoDatabaseSeeder::class)->run($parameters);
+    }
+
+    /**
      * Seed the database.
      */
     public function seed($parameter): bool
     {
         try {
-            app(BagistoDatabaseSeeder::class)->run($parameter);
+            $this->runSeeders($parameter);
 
             return true;
         } catch (Exception $e) {
@@ -145,23 +172,32 @@ class DatabaseManager
     }
 
     /**
+     * Create the store's first admin on the default connection, throwing when it cannot be created. The installer
+     * and tenant provisioning both create the first admin through this one step.
+     */
+    public function insertAdminUser(array $data = []): void
+    {
+        DB::table('admins')->insert([
+            'id' => self::USER_ID,
+            'name' => $data['name'] ?? self::DEFAULT_ADMIN_NAME,
+            'email' => $data['email'] ?? self::DEFAULT_ADMIN_EMAIL,
+            'password' => bcrypt($data['password'] ?? self::DEFAULT_ADMIN_PASSWORD),
+            'role_id' => 1,
+            'status' => 1,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        $this->syncPostgresSequences(['admins']);
+    }
+
+    /**
      * Create admin user.
      */
     public function createAdminUser(array $data = []): bool
     {
         try {
-            DB::table('admins')->insert([
-                'id' => self::USER_ID,
-                'name' => $data['name'] ?? self::DEFAULT_ADMIN_NAME,
-                'email' => $data['email'] ?? self::DEFAULT_ADMIN_EMAIL,
-                'password' => bcrypt($data['password'] ?? self::DEFAULT_ADMIN_PASSWORD),
-                'role_id' => 1,
-                'status' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            $this->syncPostgresSequences(['admins']);
+            $this->insertAdminUser($data);
 
             return true;
         } catch (Exception $e) {

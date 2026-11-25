@@ -3,6 +3,7 @@
 namespace EcomForYou\Admin\DataGrids\Marketing\SearchSEO;
 
 use EcomForYou\DataGrid\DataGrid;
+use EcomForYou\Sitemap\Helpers\SitemapFileUrl;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
@@ -162,7 +163,7 @@ class SitemapDataGrid extends DataGrid
                     .'/'.$stem.'-'.$row->id.'-'.$channelId.'.'.$extension
                 );
 
-                return $hostname.'/storage/'.$file;
+                return app(SitemapFileUrl::class)->forChannel($hostname, $file);
             })
             ->filter()
             ->values()

@@ -37,5 +37,14 @@ class ConfigurationGuard
         if (! is_array(config('database.connections.'.config('tenancy.landlord_connection')))) {
             throw new TenancyMisconfiguredException('The landlord connection is not configured.');
         }
+
+        $server = config('tenancy.database.server_connection');
+
+        if (
+            filled($server)
+            && ! is_array(config("database.connections.{$server}"))
+        ) {
+            throw new TenancyMisconfiguredException("The tenant database server connection [{$server}] is not configured.");
+        }
     }
 }

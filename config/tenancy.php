@@ -1,6 +1,7 @@
 <?php
 
 use EcomForYou\Core\Core;
+use EcomForYou\Product\Services\Search\SearchEngineManager;
 use EcomForYou\Tenancy\Tasks\CacheTask;
 use EcomForYou\Tenancy\Tasks\DatabaseTask;
 use EcomForYou\Tenancy\Tasks\FilesystemTask;
@@ -10,6 +11,7 @@ use EcomForYou\Tenancy\Tasks\UrlTask;
 use EcomForYou\Theme\AdminThemeResolver;
 use EcomForYou\Theme\Themes;
 use EcomForYou\Theme\Upload\UploadedPage;
+use Illuminate\Console\Scheduling\Schedule;
 
 $platformDomain = strtolower((string) env('TENANCY_PLATFORM_DOMAIN', 'platform.com'));
 
@@ -77,7 +79,9 @@ return [
     |
     | The landlord connection holds the tenants, plans and usage. The tenant connection is built
     | from the template connection, which defaults to `DB_CONNECTION`, with the database of the
-    | current tenant. A new tenant's database is named from the prefix and its uuid.
+    | current tenant. A new tenant's database is named from the prefix and its uuid. Databases
+    | are created and dropped through the server connection, which defaults to a copy of the
+    | template; its user must be allowed to `CREATE DATABASE` and `DROP DATABASE`.
     |
     */
 
@@ -89,6 +93,62 @@ return [
         'template' => env('TENANCY_DATABASE_TEMPLATE'),
 
         'prefix' => env('TENANCY_DATABASE_PREFIX', 'ecomforyou_'),
+
+        'server_connection' => env('TENANCY_DATABASE_SERVER_CONNECTION'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Provisioning
+    |--------------------------------------------------------------------------
+    |
+    | The queue a new store is provisioned on. Leave the connection unset to use the default queue
+    | connection; with tenancy on, the `database` queue is kept in the landlord database.
+    |
+    */
+
+    'provisioning' => [
+        'queue_connection' => env('TENANCY_PROVISIONING_QUEUE_CONNECTION'),
+
+        'queue' => env('TENANCY_PROVISIONING_QUEUE', 'default'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Queues
+    |--------------------------------------------------------------------------
+    |
+    | With tenancy on, the `database` queue, job batches and failed jobs are kept in the landlord
+    | database, so one worker serves every store. Each job carries the id of the store it was
+    | dispatched for, under this payload key, and runs with that store current.
+    |
+    */
+
+    'queue' => [
+        'payload_key' => 'tenant_id',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scheduler
+    |--------------------------------------------------------------------------
+    |
+    | With tenancy on, cron runs `tenants:schedule-run` every minute in place of `schedule:run`.
+    | Each active store's schedule is built with it current, and every store command runs as
+    | `tenants:run "<command>" --tenant=<id>`, so `withoutOverlapping()` holds per store. These
+    | commands are platform-wide and never wrapped.
+    |
+    */
+
+    'scheduler' => [
+        'unwrapped_commands' => [
+            'tenants:',
+            'landlord:',
+            'schedule:',
+            'queue:',
+        ],
+
+        'queue' => (bool) env('TENANCY_SCHEDULER_QUEUE', false),
     ],
 
     /*
@@ -96,10 +156,11 @@ return [
     | Tenant Disks
     |--------------------------------------------------------------------------
     |
-    | The disks re-rooted for the current tenant, as paths under `storage/`. A public disk's url is
-    | the tenant's own address plus the given path, served by the single `storage:link`. The local
-    | root holds the files that cannot go through a disk, such as uploaded theme views, and is what
-    | `tenant_storage_path()` resolves under.
+    | The disks re-rooted for the current tenant. A local disk's root is a path under `storage/`,
+    | and a public disk's url is the tenant's own address plus the given path, served by the single
+    | `storage:link`. A remote disk's root is a key prefix on its one bucket, added after any prefix
+    | the disk already has. The local root holds the files that cannot go through a disk, such as
+    | uploaded theme views, and is what `tenant_storage_path()` resolves under.
     |
     */
 
@@ -114,6 +175,14 @@ return [
 
             'private' => [
                 'root' => 'app/private/tenants/{id}',
+            ],
+
+            's3' => [
+                'root' => 'tenants/{id}',
+            ],
+
+            'r2' => [
+                'root' => 'tenants/{id}',
             ],
         ],
     ],
@@ -134,6 +203,12 @@ return [
         Themes::class,
         UploadedPage::class,
         AdminThemeResolver::class,
+        Schedule::class,
+        SearchEngineManager::class,
+        'product.search.connection.elastic',
+        'product.search.engine.database',
+        'product.search.engine.elastic',
+        'product.search.indexer.elastic',
     ],
 
     /*
